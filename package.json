@@ -15,9 +15,12 @@
     "react-dom": "16.13.1"
   },
   "devDependencies": {
+    "@types/node": "^13.11.0",
+    "@types/react": "^16.9.32",
     "husky": "^4.2.3",
     "lint-staged": "^10.1.2",
-    "prettier": "^2.0.4"
+    "prettier": "^2.0.4",
+    "typescript": "^3.8.3"
   },
   "husky": {
     "hooks": {
