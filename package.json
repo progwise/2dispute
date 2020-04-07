@@ -5,11 +5,26 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,css,md,html,json,graphql}\"",
+    "format:run": "prettier --write \"**/*.{js,jsx,ts,tsx,css,md,html,json,graphql}\""
   },
   "dependencies": {
     "next": "9.3.4",
     "react": "16.13.1",
     "react-dom": "16.13.1"
+  },
+  "devDependencies": {
+    "husky": "^4.2.3",
+    "lint-staged": "^10.1.2",
+    "prettier": "^2.0.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,md,html,json,graphql}": "prettier --write"
   }
 }
