@@ -23,7 +23,9 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react', '@typescript-eslint'],
-  rules: {},
+  rules: {
+    'arrow-body-style': ['error', 'as-needed'],
+  },
   settings: {
     react: {
       version: 'detect',
