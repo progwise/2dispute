@@ -11,9 +11,12 @@
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
+    "autoprefixer": "^9.7.6",
     "next": "9.3.4",
+    "postcss-import": "^12.0.1",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "tailwindcss": "^1.2.0"
   },
   "devDependencies": {
     "@types/node": "^13.11.0",
