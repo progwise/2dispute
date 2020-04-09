@@ -11,11 +11,23 @@ provider "auth0" {
 }
 
 resource "auth0_client" "next-app" {
-  name                = "Next.js App"
-  app_type            = "regular_web"
-  callbacks           = ["http://localhost:3000/api/callback"]
-  allowed_logout_urls = ["http://localhost:3000/"]
-  oidc_conformant     = true
+  name     = "Next.js App"
+  app_type = "regular_web"
+  callbacks = [
+    "http://localhost:3000/api/callback",
+    "https://2dispute-*.now.sh/api/callback",
+    "https://2dispute.now.sh/api/callback",
+    "https://*.2dispute.now.sh/api/callback",
+    "https://2dispute.com/api/callback",
+  ]
+  allowed_logout_urls = [
+    "http://localhost:3000/",
+    "https://2dispute-*.now.sh/",
+    "https://2dispute.now.sh/",
+    "https://*.2dispute.now.sh/",
+    "https://2dispute.com/",
+  ]
+  oidc_conformant = true
   jwt_configuration {
     alg = "RS256"
     scopes = {
