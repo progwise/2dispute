@@ -3,6 +3,8 @@ schema: './graphql/schema.graphql'
 documents: null
 generates:
   graphql/generated/graphql.ts:
+    config:
+      contextType: ../context#Context
     plugins:
       - 'typescript'
       - 'typescript-resolvers'
