@@ -1,11 +1,11 @@
 import React from 'react';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { useFormik } from 'formik';
-import { gql } from 'apollo-boost';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import { useMutation } from '@apollo/react-hooks';
 import withApollo from '../../utils/withApollo';
+import createSubjectMutation from './createSubject.gql';
 
 interface FormValues {
   subject: string;
@@ -17,16 +17,6 @@ const getTweetId = (tweetLink: string): string | undefined => {
   const [, tweetId] = tweetLink.match(twitterRegex) ?? [undefined, undefined];
   return tweetId;
 };
-
-const createSubjectMutation = gql`
-  mutation($subject: String!, $tweetId: String) {
-    createSubject(input: { subject: $subject, tweetId: $tweetId }) {
-      id
-      subject
-      tweetId
-    }
-  }
-`;
 
 const CreateDispute = (): JSX.Element => {
   const [createSubject, { data }] = useMutation(createSubjectMutation);
