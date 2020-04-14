@@ -1,4 +1,5 @@
 import React from 'react';
+import Router from 'next/router';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { useFormik } from 'formik';
 import Input from '../../components/Input/Input';
@@ -24,9 +25,14 @@ const CreateDispute = (): JSX.Element => {
       subject: '',
       tweetLink: '',
     },
-    onSubmit: values => {
+    onSubmit: async values => {
       const tweetId = getTweetId(values.tweetLink);
-      return createSubject({ variables: { subject: values.subject, tweetId } });
+      const { data } = await createSubject({
+        variables: { subject: values.subject, tweetId },
+      });
+      const subjectId = data.createSubject.id;
+
+      Router.push(`/subjects/${subjectId}`);
     },
   });
 
