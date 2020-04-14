@@ -1,10 +1,7 @@
-import { gql, ApolloServer } from 'apollo-server-micro';
+import { ApolloServer } from 'apollo-server-micro';
+import { importSchema } from 'graphql-import';
 
-const typeDefs = gql`
-  type Query {
-    sayHello(name: String): String!
-  }
-`;
+const typeDefs = importSchema('./graphql/schema.graphql');
 
 const resolvers = {
   Query: {
