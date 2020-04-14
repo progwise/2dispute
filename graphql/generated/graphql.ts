@@ -17,6 +17,11 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   allSubjects: Array<Subject>;
+  subject?: Maybe<Subject>;
+};
+
+export type QuerySubjectArgs = {
+  id: Scalars['ID'];
 };
 
 export type Mutation = {
@@ -151,9 +156,9 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Query: ResolverTypeWrapper<{}>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
   Mutation: ResolverTypeWrapper<{}>;
   Subject: ResolverTypeWrapper<Subject>;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
   SubjectCreateInput: SubjectCreateInput;
 };
 
@@ -162,9 +167,9 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   Boolean: Scalars['Boolean'];
   Query: {};
+  ID: Scalars['ID'];
   Mutation: {};
   Subject: Subject;
-  ID: Scalars['ID'];
   SubjectCreateInput: SubjectCreateInput;
 };
 
@@ -176,6 +181,12 @@ export type QueryResolvers<
     Array<ResolversTypes['Subject']>,
     ParentType,
     ContextType
+  >;
+  subject?: Resolver<
+    Maybe<ResolversTypes['Subject']>,
+    ParentType,
+    ContextType,
+    RequireFields<QuerySubjectArgs, 'id'>
   >;
 };
 
