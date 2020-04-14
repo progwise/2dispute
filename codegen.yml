@@ -1,13 +1,20 @@
 overwrite: true
 schema: './graphql/schema.graphql'
-documents: null
+documents: '**/*.gql'
 generates:
   graphql/generated/graphql.ts:
-    config:
-      contextType: ../context#Context
     plugins:
+      - add: '/* eslint-disable */'
       - 'typescript'
       - 'typescript-resolvers'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      contextType: ../context#Context
+      withHOC: false
+      withComponent: false
+      withHooks: true
+      gqlImport: apollo-boost#gql
 hooks:
   afterOneFileWrite:
     - prettier --write

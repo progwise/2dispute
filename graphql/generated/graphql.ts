@@ -1,10 +1,15 @@
+/* eslint-disable */
 import { GraphQLResolveInfo } from 'graphql';
 import { Context } from '../context';
+import { gql } from 'apollo-boost';
+import * as ApolloReactCommon from '@apollo/react-common';
+import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X];
 } &
   { [P in K]-?: NonNullable<T[P]> };
+
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -223,3 +228,69 @@ export type Resolvers<ContextType = Context> = {
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
  */
 export type IResolvers<ContextType = Context> = Resolvers<ContextType>;
+
+export type CreateSubjectMutationVariables = {
+  subject: Scalars['String'];
+  tweetId?: Maybe<Scalars['String']>;
+};
+
+export type CreateSubjectMutation = { __typename?: 'Mutation' } & {
+  createSubject: { __typename?: 'Subject' } & Pick<
+    Subject,
+    'id' | 'subject' | 'tweetId'
+  >;
+};
+
+export const CreateSubjectDocument = gql`
+  mutation createSubject($subject: String!, $tweetId: String) {
+    createSubject(input: { subject: $subject, tweetId: $tweetId }) {
+      id
+      subject
+      tweetId
+    }
+  }
+`;
+export type CreateSubjectMutationFn = ApolloReactCommon.MutationFunction<
+  CreateSubjectMutation,
+  CreateSubjectMutationVariables
+>;
+
+/**
+ * __useCreateSubjectMutation__
+ *
+ * To run a mutation, you first call `useCreateSubjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSubjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSubjectMutation, { data, loading, error }] = useCreateSubjectMutation({
+ *   variables: {
+ *      subject: // value for 'subject'
+ *      tweetId: // value for 'tweetId'
+ *   },
+ * });
+ */
+export function useCreateSubjectMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    CreateSubjectMutation,
+    CreateSubjectMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    CreateSubjectMutation,
+    CreateSubjectMutationVariables
+  >(CreateSubjectDocument, baseOptions);
+}
+export type CreateSubjectMutationHookResult = ReturnType<
+  typeof useCreateSubjectMutation
+>;
+export type CreateSubjectMutationResult = ApolloReactCommon.MutationResult<
+  CreateSubjectMutation
+>;
+export type CreateSubjectMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  CreateSubjectMutation,
+  CreateSubjectMutationVariables
+>;

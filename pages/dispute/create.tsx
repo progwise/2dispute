@@ -3,9 +3,8 @@ import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { useFormik } from 'formik';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
-import { useMutation } from '@apollo/react-hooks';
 import withApollo from '../../utils/withApollo';
-import createSubjectMutation from './createSubject.gql';
+import { useCreateSubjectMutation } from '../../graphql/generated/graphql';
 
 interface FormValues {
   subject: string;
@@ -19,7 +18,7 @@ const getTweetId = (tweetLink: string): string | undefined => {
 };
 
 const CreateDispute = (): JSX.Element => {
-  const [createSubject, { data }] = useMutation(createSubjectMutation);
+  const [createSubject] = useCreateSubjectMutation();
   const formik = useFormik<FormValues>({
     initialValues: {
       subject: '',
