@@ -1,0 +1,7 @@
+query getSubject($subjectId: ID!) {
+  subject(id: $subjectId) {
+    id
+    subject
+    tweetId
+  }
+}
