@@ -17,11 +17,6 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   allSubjects: Array<Subject>;
-  sayHello: Scalars['String'];
-};
-
-export type QuerySayHelloArgs = {
-  name?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -181,12 +176,6 @@ export type QueryResolvers<
     Array<ResolversTypes['Subject']>,
     ParentType,
     ContextType
-  >;
-  sayHello?: Resolver<
-    ResolversTypes['String'],
-    ParentType,
-    ContextType,
-    RequireFields<QuerySayHelloArgs, never>
   >;
 };
 

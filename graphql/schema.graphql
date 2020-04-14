@@ -1,7 +1,6 @@
 # import Subject, SubjectCreateInput from './Subject/Subject.graphql'
 
 type Query {
-  sayHello(name: String): String!
   allSubjects: [Subject!]!
 }
 

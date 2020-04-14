@@ -8,7 +8,6 @@ const typeDefs = importSchema('./graphql/schema.graphql');
 
 const resolvers: Resolvers = {
   Query: {
-    sayHello: (_parent, { name = 'World' }): string => `Hello ${name}`,
     ...subjectQueries,
   },
   Mutation: {
