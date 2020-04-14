@@ -1,12 +1,12 @@
 import { ApolloServer } from 'apollo-server-micro';
 import { importSchema } from 'graphql-import';
+import { Resolvers } from './generated/graphql';
 
 const typeDefs = importSchema('./graphql/schema.graphql');
 
-const resolvers = {
+const resolvers: Resolvers = {
   Query: {
-    sayHello: (_parent: never, { name = 'World' }: { name?: string }): string =>
-      `Hello ${name}`,
+    sayHello: (_parent, { name = 'World' }): string => `Hello ${name}`,
   },
 };
 

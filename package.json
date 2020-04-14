@@ -8,13 +8,15 @@
     "start": "next start",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,css,md,html,json,graphql}\"",
     "format:run": "prettier --write \"**/*.{js,jsx,ts,tsx,css,md,html,json,graphql}\"",
-    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\""
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\"",
+    "graphql:codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^0.11.0",
     "@fullhuman/postcss-purgecss": "^2.1.0",
     "apollo-server-micro": "^2.12.0",
     "autoprefixer": "^9.7.6",
+    "graphql": "^15.0.0",
     "graphql-import": "^1.0.2",
     "next": "9.3.4",
     "postcss-import": "^12.0.1",
@@ -24,6 +26,9 @@
     "tailwindcss": "^1.2.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.13.2",
+    "@graphql-codegen/typescript-resolvers": "1.13.2",
+    "@graphql-codegen/typescript": "1.13.2",
     "@types/node": "^13.11.0",
     "@types/react": "^16.9.32",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
@@ -42,6 +47,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,md,html,json,graphql}": "prettier --write",
-    "*.{js,jsx,ts,tsx}": "eslint --fix"
+    "*.{js,jsx,ts,tsx}": "eslint --fix",
+    "*": "npm run graphql:codegen"
   }
 }
