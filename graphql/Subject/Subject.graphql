@@ -1,0 +1,10 @@
+type Subject {
+  id: ID!
+  subject: String!
+  tweetId: String
+}
+
+input SubjectCreateInput {
+  subject: String!
+  tweetId: String
+}

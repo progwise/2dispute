@@ -15,11 +15,33 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  allSubjects: Array<Subject>;
   sayHello: Scalars['String'];
 };
 
 export type QuerySayHelloArgs = {
   name?: Maybe<Scalars['String']>;
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createSubject: Subject;
+};
+
+export type MutationCreateSubjectArgs = {
+  input: SubjectCreateInput;
+};
+
+export type Subject = {
+  __typename?: 'Subject';
+  id: Scalars['ID'];
+  subject: Scalars['String'];
+  tweetId?: Maybe<Scalars['String']>;
+};
+
+export type SubjectCreateInput = {
+  subject: Scalars['String'];
+  tweetId?: Maybe<Scalars['String']>;
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -133,6 +155,10 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Query: ResolverTypeWrapper<{}>;
+  Mutation: ResolverTypeWrapper<{}>;
+  Subject: ResolverTypeWrapper<Subject>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
+  SubjectCreateInput: SubjectCreateInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -140,12 +166,21 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   Boolean: Scalars['Boolean'];
   Query: {};
+  Mutation: {};
+  Subject: Subject;
+  ID: Scalars['ID'];
+  SubjectCreateInput: SubjectCreateInput;
 };
 
 export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
+  allSubjects?: Resolver<
+    Array<ResolversTypes['Subject']>,
+    ParentType,
+    ContextType
+  >;
   sayHello?: Resolver<
     ResolversTypes['String'],
     ParentType,
@@ -154,8 +189,32 @@ export type QueryResolvers<
   >;
 };
 
+export type MutationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
+> = {
+  createSubject?: Resolver<
+    ResolversTypes['Subject'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateSubjectArgs, 'input'>
+  >;
+};
+
+export type SubjectResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Subject'] = ResolversParentTypes['Subject']
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  subject?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  tweetId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
+  Subject?: SubjectResolvers<ContextType>;
 };
 
 /**
