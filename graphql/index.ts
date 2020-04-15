@@ -3,6 +3,7 @@ import { importSchema } from 'graphql-import';
 import { Resolvers } from './generated/graphql';
 import context from './context';
 import { subjectQueries, subjectMutations } from './Subject';
+import schemaDirectives from './schemaDirectives';
 
 const typeDefs = importSchema('./graphql/schema.graphql');
 
@@ -15,4 +16,9 @@ const resolvers: Resolvers = {
   },
 };
 
-export default new ApolloServer({ typeDefs, resolvers, context });
+export default new ApolloServer({
+  typeDefs,
+  resolvers,
+  context,
+  schemaDirectives,
+});

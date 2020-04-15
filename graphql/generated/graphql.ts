@@ -181,6 +181,15 @@ export type ResolversParentTypes = ResolversObject<{
   SubjectCreateInput: SubjectCreateInput;
 }>;
 
+export type AuthDirectiveArgs = {};
+
+export type AuthDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = Context,
+  Args = AuthDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type QueryResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
@@ -231,7 +240,17 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
  */
 export type IResolvers<ContextType = Context> = Resolvers<ContextType>;
+export type DirectiveResolvers<ContextType = Context> = ResolversObject<{
+  auth?: AuthDirectiveResolver<any, any, ContextType>;
+}>;
 
+/**
+ * @deprecated
+ * Use "DirectiveResolvers" root object instead. If you wish to get "IDirectiveResolvers", add "typesPrefix: I" to your config.
+ */
+export type IDirectiveResolvers<ContextType = Context> = DirectiveResolvers<
+  ContextType
+>;
 export type CreateSubjectMutationVariables = {
   subject: Scalars['String'];
   tweetId?: Maybe<Scalars['String']>;
