@@ -50,6 +50,9 @@ export type SubjectCreateInput = {
   tweetId?: Maybe<Scalars['String']>;
 };
 
+export type WithIndex<TObject> = TObject & Record<string, any>;
+export type ResolversObject<TObject> = WithIndex<TObject>;
+
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
 export type StitchingResolver<TResult, TParent, TContext, TArgs> = {
@@ -157,7 +160,7 @@ export type DirectiveResolverFn<
 ) => TResult | Promise<TResult>;
 
 /** Mapping between all available schema types and the resolvers types */
-export type ResolversTypes = {
+export type ResolversTypes = ResolversObject<{
   String: ResolverTypeWrapper<Scalars['String']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Query: ResolverTypeWrapper<{}>;
@@ -165,10 +168,10 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>;
   Subject: ResolverTypeWrapper<Subject>;
   SubjectCreateInput: SubjectCreateInput;
-};
+}>;
 
 /** Mapping between all available schema types and the resolvers parents */
-export type ResolversParentTypes = {
+export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String'];
   Boolean: Scalars['Boolean'];
   Query: {};
@@ -176,12 +179,12 @@ export type ResolversParentTypes = {
   Mutation: {};
   Subject: Subject;
   SubjectCreateInput: SubjectCreateInput;
-};
+}>;
 
 export type QueryResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
-> = {
+> = ResolversObject<{
   allSubjects?: Resolver<
     Array<ResolversTypes['Subject']>,
     ParentType,
@@ -193,35 +196,35 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QuerySubjectArgs, 'id'>
   >;
-};
+}>;
 
 export type MutationResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
-> = {
+> = ResolversObject<{
   createSubject?: Resolver<
     ResolversTypes['Subject'],
     ParentType,
     ContextType,
     RequireFields<MutationCreateSubjectArgs, 'input'>
   >;
-};
+}>;
 
 export type SubjectResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Subject'] = ResolversParentTypes['Subject']
-> = {
+> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   subject?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tweetId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
-};
+}>;
 
-export type Resolvers<ContextType = Context> = {
+export type Resolvers<ContextType = Context> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Subject?: SubjectResolvers<ContextType>;
-};
+}>;
 
 /**
  * @deprecated

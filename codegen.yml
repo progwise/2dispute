@@ -11,6 +11,7 @@ generates:
       - 'typescript-react-apollo'
     config:
       contextType: ../context#Context
+      useIndexSignature: true
       withHOC: false
       withComponent: false
       withHooks: true

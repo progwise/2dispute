@@ -27,9 +27,14 @@ const CreateDispute = (): JSX.Element => {
     },
     onSubmit: async values => {
       const tweetId = getTweetId(values.tweetLink);
-      const { data } = await createSubject({
+      const { data, errors } = await createSubject({
         variables: { subject: values.subject, tweetId },
       });
+
+      if (errors || data === undefined) {
+        throw new Error('submit failed');
+      }
+
       const subjectId = data.createSubject.id;
 
       Router.push(`/subjects/${subjectId}`);

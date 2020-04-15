@@ -27,7 +27,7 @@ const Subject = (): JSX.Element => {
     return <p>Loading...</p>;
   }
 
-  if (error || !data.subject) {
+  if (error || !data?.subject) {
     return (
       <p>
         Fehler
