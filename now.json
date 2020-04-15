@@ -3,6 +3,8 @@
     "AUTH0_DOMAIN": "@auth0-domain",
     "AUTH0_CLIENT_ID": "@auth0-client-id",
     "AUTH0_CLIENT_SECRET": "@auth0-client-secret",
+    "AUTH0_MANAGEMENT_CLIENT_ID": "auth0-management-client-id",
+    "AUTH0_MANAGEMENT_CLIENT_SECRET": "auth0-management-client-secret",
     "COOKIE_SECRET": "@cookie-secret"
   }
 }
