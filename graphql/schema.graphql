@@ -1,9 +1,11 @@
 # import Subject, SubjectCreateInput from './Subject/Subject.graphql'
+# import User from './User/User.graphql'
 # import @auth from './schemaDirectives/auth.graphql'
 
 type Query {
   allSubjects: [Subject!]!
   subject(id: ID!): Subject
+  me: User
 }
 
 type Mutation {
