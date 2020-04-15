@@ -9,5 +9,6 @@ type Subject {
 
 input SubjectCreateInput {
   subject: String!
+  firstMessage: String!
   tweetId: String
 }

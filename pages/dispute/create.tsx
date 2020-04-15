@@ -13,6 +13,7 @@ import {
 interface FormValues {
   subject: string;
   tweetLink: string;
+  firstMessage: string;
 }
 
 const getTweetId = (tweetLink: string): string | undefined => {
@@ -29,11 +30,16 @@ const CreateDispute = (): JSX.Element => {
     initialValues: {
       subject: '',
       tweetLink: '',
+      firstMessage: '',
     },
     onSubmit: async values => {
       const tweetId = getTweetId(values.tweetLink);
       const { data, errors } = await createSubject({
-        variables: { subject: values.subject, tweetId },
+        variables: {
+          subject: values.subject,
+          tweetId,
+          firstMessage: values.firstMessage,
+        },
       });
 
       if (errors || data === undefined) {
@@ -106,8 +112,11 @@ const CreateDispute = (): JSX.Element => {
               <span>???</span>
             </div>
             <textarea
+              name="firstMessage"
               className="col-start-1 col-span-3 border-2"
               placeholder="Deine Position"
+              onChange={formik.handleChange}
+              value={formik.values.firstMessage}
             ></textarea>
           </div>
         </div>

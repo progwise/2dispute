@@ -48,6 +48,7 @@ export type Subject = {
 };
 
 export type SubjectCreateInput = {
+  firstMessage: Scalars['String'];
   subject: Scalars['String'];
   tweetId?: Maybe<Scalars['String']>;
 };
@@ -284,6 +285,7 @@ export type MeQuery = { __typename?: 'Query' } & {
 export type CreateSubjectMutationVariables = {
   subject: Scalars['String'];
   tweetId?: Maybe<Scalars['String']>;
+  firstMessage: Scalars['String'];
 };
 
 export type CreateSubjectMutation = { __typename?: 'Mutation' } & {
@@ -354,8 +356,18 @@ export type MeQueryResult = ApolloReactCommon.QueryResult<
   MeQueryVariables
 >;
 export const CreateSubjectDocument = gql`
-  mutation createSubject($subject: String!, $tweetId: String) {
-    createSubject(input: { subject: $subject, tweetId: $tweetId }) {
+  mutation createSubject(
+    $subject: String!
+    $tweetId: String
+    $firstMessage: String!
+  ) {
+    createSubject(
+      input: {
+        subject: $subject
+        tweetId: $tweetId
+        firstMessage: $firstMessage
+      }
+    ) {
       id
       subject
       tweetId
@@ -382,6 +394,7 @@ export type CreateSubjectMutationFn = ApolloReactCommon.MutationFunction<
  *   variables: {
  *      subject: // value for 'subject'
  *      tweetId: // value for 'tweetId'
+ *      firstMessage: // value for 'firstMessage'
  *   },
  * });
  */
@@ -484,6 +497,7 @@ type Subject {
 }
 
 input SubjectCreateInput {
+  firstMessage: String!
   subject: String!
   tweetId: String
 }

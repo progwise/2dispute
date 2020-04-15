@@ -16,6 +16,7 @@ export interface SubjectStoreItem {
   subject: string;
   tweetId: string | null;
   userId: string;
+  firstMessage: string;
 }
 export type SubjectStore = SubjectStoreItem[];
 

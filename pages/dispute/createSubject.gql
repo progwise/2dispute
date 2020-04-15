@@ -6,8 +6,14 @@ query me {
   }
 }
 
-mutation createSubject($subject: String!, $tweetId: String) {
-  createSubject(input: { subject: $subject, tweetId: $tweetId }) {
+mutation createSubject(
+  $subject: String!
+  $tweetId: String
+  $firstMessage: String!
+) {
+  createSubject(
+    input: { subject: $subject, tweetId: $tweetId, firstMessage: $firstMessage }
+  ) {
     id
     subject
     tweetId

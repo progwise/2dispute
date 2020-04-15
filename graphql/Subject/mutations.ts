@@ -14,6 +14,7 @@ const mutations: MutationResolvers = {
       subject: input.subject,
       tweetId: input.tweetId ?? null,
       userId: context.user?.id,
+      firstMessage: input.firstMessage,
     };
     context.subject.updateStore([...context.subject.getStore(), subject]);
     return subject;
