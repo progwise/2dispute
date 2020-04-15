@@ -4,13 +4,14 @@ import context from './context';
 import { subjectResolvers, subjectQueries, subjectMutations } from './Subject';
 import schemaDirectives from './schemaDirectives';
 import { userQueries } from './User';
-import { disputeResolvers } from './Dispute';
+import { disputeResolvers, disputeQueries } from './Dispute';
 import { messageResolvers } from './Message';
 
 const resolvers: Resolvers = {
   Query: {
     ...subjectQueries,
     ...userQueries,
+    ...disputeQueries,
   },
   Mutation: {
     ...subjectMutations,

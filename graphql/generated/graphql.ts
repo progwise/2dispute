@@ -27,8 +27,13 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   allSubjects: Array<Subject>;
+  dispute?: Maybe<Dispute>;
   me?: Maybe<User>;
   subject?: Maybe<Subject>;
+};
+
+export type QueryDisputeArgs = {
+  id: Scalars['ID'];
 };
 
 export type QuerySubjectArgs = {
@@ -248,6 +253,12 @@ export type QueryResolvers<
     Array<ResolversTypes['Subject']>,
     ParentType,
     ContextType
+  >;
+  dispute?: Resolver<
+    Maybe<ResolversTypes['Dispute']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryDisputeArgs, 'id'>
   >;
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   subject?: Resolver<
@@ -558,6 +569,7 @@ directive @auth on FIELD_DEFINITION
 
 type Query {
   allSubjects: [Subject!]!
+  dispute(id: ID!): Dispute
   me: User
   subject(id: ID!): Subject
 }

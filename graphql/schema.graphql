@@ -7,6 +7,7 @@ type Query {
   allSubjects: [Subject!]!
   subject(id: ID!): Subject
   me: User
+  dispute(id: ID!): Dispute
 }
 
 type Mutation {
