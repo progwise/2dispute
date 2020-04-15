@@ -11,12 +11,26 @@ export interface Context {
   };
 }
 
+export interface MessageStoreItem {
+  id: string;
+  text: string;
+  authorId: string;
+}
+
+export interface DisputeStoreItem {
+  id: string;
+  partnerIdA: string;
+  partnerIdB: string;
+  messages: MessageStoreItem[];
+}
+
 export interface SubjectStoreItem {
   id: string;
   subject: string;
   tweetId: string | null;
   userId: string;
   firstMessage: string;
+  disputes: DisputeStoreItem[];
 }
 export type SubjectStore = SubjectStoreItem[];
 

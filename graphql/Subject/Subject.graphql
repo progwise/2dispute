@@ -1,14 +1,21 @@
 # import User from '../User/User.graphql'
+# import Dispute from '../Dispute/Dispute.graphql'
 
 type Subject {
   id: ID!
   subject: String!
   tweetId: String
   author: User!
+  disputes: [Dispute!]!
 }
 
 input SubjectCreateInput {
   subject: String!
   firstMessage: String!
   tweetId: String
+}
+
+input ReplyOnSubjectInput {
+  subjectId: ID!
+  message: String!
 }

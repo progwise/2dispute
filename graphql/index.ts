@@ -4,6 +4,8 @@ import context from './context';
 import { subjectResolvers, subjectQueries, subjectMutations } from './Subject';
 import schemaDirectives from './schemaDirectives';
 import { userQueries } from './User';
+import { disputeResolvers } from './Dispute';
+import { messageResolvers } from './Message';
 
 const resolvers: Resolvers = {
   Query: {
@@ -14,6 +16,8 @@ const resolvers: Resolvers = {
     ...subjectMutations,
   },
   Subject: subjectResolvers,
+  Dispute: disputeResolvers,
+  Message: messageResolvers,
 };
 
 export default new ApolloServer({

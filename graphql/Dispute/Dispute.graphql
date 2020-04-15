@@ -1,0 +1,9 @@
+# import Message from '../Message/Message.graphql'
+
+type Dispute {
+  id: ID!
+  subject: Subject!
+  partnerA: User!
+  partnerB: User!
+  messages: [Message!]!
+}

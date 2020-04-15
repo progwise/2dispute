@@ -1,6 +1,11 @@
 /* eslint-disable */
 import { GraphQLResolveInfo } from 'graphql';
-import { SubjectStoreItem, Context } from '../context';
+import {
+  SubjectStoreItem,
+  DisputeStoreItem,
+  MessageStoreItem,
+  Context,
+} from '../context';
 import { gql } from 'apollo-boost';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
@@ -33,15 +38,21 @@ export type QuerySubjectArgs = {
 export type Mutation = {
   __typename?: 'Mutation';
   createSubject: Subject;
+  replyOnSubject: Dispute;
 };
 
 export type MutationCreateSubjectArgs = {
   input: SubjectCreateInput;
 };
 
+export type MutationReplyOnSubjectArgs = {
+  input: ReplyOnSubjectInput;
+};
+
 export type Subject = {
   __typename?: 'Subject';
   author: User;
+  disputes: Array<Dispute>;
   id: Scalars['ID'];
   subject: Scalars['String'];
   tweetId?: Maybe<Scalars['String']>;
@@ -53,11 +64,32 @@ export type SubjectCreateInput = {
   tweetId?: Maybe<Scalars['String']>;
 };
 
+export type ReplyOnSubjectInput = {
+  message: Scalars['String'];
+  subjectId: Scalars['ID'];
+};
+
+export type Dispute = {
+  __typename?: 'Dispute';
+  id: Scalars['ID'];
+  messages: Array<Message>;
+  partnerA: User;
+  partnerB: User;
+  subject: Subject;
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
   name: Scalars['String'];
   picture?: Maybe<Scalars['String']>;
+};
+
+export type Message = {
+  __typename?: 'Message';
+  author: User;
+  id: Scalars['ID'];
+  text: Scalars['String'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -178,7 +210,10 @@ export type ResolversTypes = ResolversObject<{
   Mutation: ResolverTypeWrapper<{}>;
   Subject: ResolverTypeWrapper<SubjectStoreItem>;
   SubjectCreateInput: SubjectCreateInput;
+  ReplyOnSubjectInput: ReplyOnSubjectInput;
+  Dispute: ResolverTypeWrapper<DisputeStoreItem>;
   User: ResolverTypeWrapper<User>;
+  Message: ResolverTypeWrapper<MessageStoreItem>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -190,7 +225,10 @@ export type ResolversParentTypes = ResolversObject<{
   Mutation: {};
   Subject: SubjectStoreItem;
   SubjectCreateInput: SubjectCreateInput;
+  ReplyOnSubjectInput: ReplyOnSubjectInput;
+  Dispute: DisputeStoreItem;
   User: User;
+  Message: MessageStoreItem;
 }>;
 
 export type AuthDirectiveArgs = {};
@@ -230,6 +268,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationCreateSubjectArgs, 'input'>
   >;
+  replyOnSubject?: Resolver<
+    ResolversTypes['Dispute'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationReplyOnSubjectArgs, 'input'>
+  >;
 }>;
 
 export type SubjectResolvers<
@@ -237,9 +281,30 @@ export type SubjectResolvers<
   ParentType extends ResolversParentTypes['Subject'] = ResolversParentTypes['Subject']
 > = ResolversObject<{
   author?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  disputes?: Resolver<
+    Array<ResolversTypes['Dispute']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   subject?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tweetId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
+export type DisputeResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Dispute'] = ResolversParentTypes['Dispute']
+> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  messages?: Resolver<
+    Array<ResolversTypes['Message']>,
+    ParentType,
+    ContextType
+  >;
+  partnerA?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  partnerB?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  subject?: Resolver<ResolversTypes['Subject'], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -253,11 +318,23 @@ export type UserResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
+export type MessageResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']
+> = ResolversObject<{
+  author?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
 export type Resolvers<ContextType = Context> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Subject?: SubjectResolvers<ContextType>;
+  Dispute?: DisputeResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  Message?: MessageResolvers<ContextType>;
 }>;
 
 /**
@@ -487,10 +564,12 @@ type Query {
 
 type Mutation {
   createSubject(input: SubjectCreateInput!): Subject!
+  replyOnSubject(input: ReplyOnSubjectInput!): Dispute!
 }
 
 type Subject {
   author: User!
+  disputes: [Dispute!]!
   id: ID!
   subject: String!
   tweetId: String
@@ -502,9 +581,28 @@ input SubjectCreateInput {
   tweetId: String
 }
 
+input ReplyOnSubjectInput {
+  message: String!
+  subjectId: ID!
+}
+
+type Dispute {
+  id: ID!
+  messages: [Message!]!
+  partnerA: User!
+  partnerB: User!
+  subject: Subject!
+}
+
 type User {
   id: ID!
   name: String!
   picture: String
+}
+
+type Message {
+  author: User!
+  id: ID!
+  text: String!
 }
 `;
