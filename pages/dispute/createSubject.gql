@@ -1,3 +1,11 @@
+query me {
+  me {
+    id
+    name
+    picture
+  }
+}
+
 mutation createSubject($subject: String!, $tweetId: String) {
   createSubject(input: { subject: $subject, tweetId: $tweetId }) {
     id

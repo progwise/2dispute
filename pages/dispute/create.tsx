@@ -5,7 +5,10 @@ import { useFormik } from 'formik';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import withApollo from '../../utils/withApollo';
-import { useCreateSubjectMutation } from '../../graphql/generated/graphql';
+import {
+  useCreateSubjectMutation,
+  useMeQuery,
+} from '../../graphql/generated/graphql';
 
 interface FormValues {
   subject: string;
@@ -20,6 +23,8 @@ const getTweetId = (tweetLink: string): string | undefined => {
 
 const CreateDispute = (): JSX.Element => {
   const [createSubject] = useCreateSubjectMutation();
+  const { data, loading, error } = useMeQuery();
+
   const formik = useFormik<FormValues>({
     initialValues: {
       subject: '',
@@ -42,6 +47,19 @@ const CreateDispute = (): JSX.Element => {
   });
 
   const tweetId = getTweetId(formik.values.tweetLink);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error || !data) {
+    return <p>Fehler...</p>;
+  }
+
+  if (!data.me) {
+    Router.push('/api/login');
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -78,17 +96,13 @@ const CreateDispute = (): JSX.Element => {
           )}
           <div className="grid grid-cols-4">
             <div className="col-span-2 flex flex-col items-center py-4">
-              <img
-                src="https://www.progwise.net/static/c7930b51fec4d6e53d183f2cefd721e7/9af95/michael-vogt.jpg"
-                className="rounded-full w-32"
-              />
-              <span>Du</span>
+              {data.me.picture && (
+                <img src={data.me.picture} className="rounded-full" />
+              )}
+              <span>{data.me.name}</span>
             </div>
             <div className="col-span-2 flex flex-col items-center py-4">
-              <img
-                src="https://www.progwise.net/static/95ed2645d74a2c245115ee4b1b2dc864/9af95/pascal-helbig.jpg"
-                className="rounded-full w-32"
-              />
+              <span className="rounded-full h-32 w-32" />
               <span>???</span>
             </div>
             <textarea
