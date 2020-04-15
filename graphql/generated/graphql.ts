@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { GraphQLResolveInfo } from 'graphql';
-import { Context } from '../context';
+import { SubjectStoreItem, Context } from '../context';
 import { gql } from 'apollo-boost';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
@@ -40,6 +40,7 @@ export type MutationCreateSubjectArgs = {
 
 export type Subject = {
   __typename?: 'Subject';
+  author: User;
   id: Scalars['ID'];
   subject: Scalars['String'];
   tweetId?: Maybe<Scalars['String']>;
@@ -48,6 +49,12 @@ export type Subject = {
 export type SubjectCreateInput = {
   subject: Scalars['String'];
   tweetId?: Maybe<Scalars['String']>;
+};
+
+export type User = {
+  __typename?: 'User';
+  id: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -166,8 +173,9 @@ export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Mutation: ResolverTypeWrapper<{}>;
-  Subject: ResolverTypeWrapper<Subject>;
+  Subject: ResolverTypeWrapper<SubjectStoreItem>;
   SubjectCreateInput: SubjectCreateInput;
+  User: ResolverTypeWrapper<User>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -177,8 +185,9 @@ export type ResolversParentTypes = ResolversObject<{
   Query: {};
   ID: Scalars['ID'];
   Mutation: {};
-  Subject: Subject;
+  Subject: SubjectStoreItem;
   SubjectCreateInput: SubjectCreateInput;
+  User: User;
 }>;
 
 export type AuthDirectiveArgs = {};
@@ -223,9 +232,19 @@ export type SubjectResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Subject'] = ResolversParentTypes['Subject']
 > = ResolversObject<{
+  author?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   subject?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tweetId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
+export type UserResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
+> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -233,6 +252,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Subject?: SubjectResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 }>;
 
 /**

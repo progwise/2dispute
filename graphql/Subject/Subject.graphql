@@ -1,7 +1,10 @@
+# import User from '../User/User.graphql'
+
 type Subject {
   id: ID!
   subject: String!
   tweetId: String
+  author: User!
 }
 
 input SubjectCreateInput {

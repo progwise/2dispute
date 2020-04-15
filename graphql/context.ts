@@ -1,4 +1,3 @@
-import { Subject } from './generated/graphql';
 import { NextApiRequest } from 'next';
 import auth0 from '../utils/auth0';
 
@@ -12,7 +11,10 @@ export interface Context {
   };
 }
 
-export interface SubjectStoreItem extends Subject {
+export interface SubjectStoreItem {
+  id: string;
+  subject: string;
+  tweetId: string | null;
   userId: string;
 }
 export type SubjectStore = SubjectStoreItem[];

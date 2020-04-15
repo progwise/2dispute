@@ -35,3 +35,10 @@ resource "auth0_client" "next-app" {
     }
   }
 }
+
+# Once created, this client must be allowed to use the Auth0 management API with the permission read:users.
+# This must be done manually, because Terraform does not support this.
+resource "auth0_client" "next-management-client" {
+  name     = "Next.js Management Client"
+  app_type = "non_interactive"
+}

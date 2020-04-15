@@ -16,6 +16,8 @@ generates:
       withComponent: false
       withHooks: true
       gqlImport: apollo-boost#gql
+      mappers:
+        Subject: ../context#SubjectStoreItem
 hooks:
   afterOneFileWrite:
     - prettier --write
