@@ -10,6 +10,7 @@ const getUserById = async (userId: string): Promise<User> => {
   return {
     id: userId,
     name: user.nickname,
+    picture: user.picture,
   };
 };
 
