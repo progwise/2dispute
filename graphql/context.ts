@@ -4,15 +4,20 @@ import auth0 from '../utils/auth0';
 
 export interface Context {
   subject: {
-    getStore: () => Subject[];
-    updateStore: (updatedStore: Subject[]) => void;
+    getStore: () => SubjectStore;
+    updateStore: (updatedStore: SubjectStore) => void;
   };
   user?: {
     id: string;
   };
 }
 
-let subjectStore: Subject[] = [];
+export interface SubjectStoreItem extends Subject {
+  userId: string;
+}
+export type SubjectStore = SubjectStoreItem[];
+
+let subjectStore: SubjectStore = [];
 
 const context = async ({ req }: { req: NextApiRequest }): Promise<Context> => {
   const session = await auth0(req).getSession(req);
@@ -20,7 +25,7 @@ const context = async ({ req }: { req: NextApiRequest }): Promise<Context> => {
 
   return {
     subject: {
-      getStore: (): Subject[] => subjectStore,
+      getStore: (): SubjectStore => subjectStore,
       updateStore: (updatedStore): void => {
         subjectStore = updatedStore;
       },
