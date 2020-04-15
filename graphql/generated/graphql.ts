@@ -402,3 +402,33 @@ export type GetSubjectQueryResult = ApolloReactCommon.QueryResult<
   GetSubjectQuery,
   GetSubjectQueryVariables
 >;
+
+export const typeDefs = `
+directive @auth on FIELD_DEFINITION
+
+type Query {
+  allSubjects: [Subject!]!
+  subject(id: ID!): Subject
+}
+
+type Mutation {
+  createSubject(input: SubjectCreateInput!): Subject!
+}
+
+type Subject {
+  author: User!
+  id: ID!
+  subject: String!
+  tweetId: String
+}
+
+input SubjectCreateInput {
+  subject: String!
+  tweetId: String
+}
+
+type User {
+  id: ID!
+  name: String!
+}
+`;
