@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { TwitterTweetEmbed } from 'react-twitter-embed';
 import {
   useGetSubjectLazyQuery,
   useReplyOnSubjectMutation,
@@ -9,6 +8,7 @@ import {
 import withApollo from '../../utils/withApollo';
 import Button from '../../components/Button/Button';
 import { useFormik } from 'formik';
+import SubjectHeader from '../../components/Subject/SubjectHeader';
 
 enum UserState {
   SubjectAuthor,
@@ -76,24 +76,10 @@ const Subject = (): JSX.Element => {
 
   return (
     <>
-      <div className="w-full text-center py-2">
-        <p className="text-blue-600">Das Thema</p>
-        <p className="text-lg">{data.subject.subject}</p>
-      </div>
-      {data.subject.tweetId && (
-        <div className="px-4 mx-auto">
-          <TwitterTweetEmbed
-            tweetId={data.subject.tweetId}
-            key={data.subject.tweetId}
-            placeholder="Lade Tweet..."
-            className="mx-auto"
-            options={{
-              lang: 'de',
-              align: 'center',
-            }}
-          />
-        </div>
-      )}
+      <SubjectHeader
+        subject={data.subject.subject}
+        tweetId={data.subject.tweetId ?? undefined}
+      />
       <div className="grid grid-cols-4">
         <div className="col-span-2 flex flex-col items-center py-4">
           {data.subject.author.picture && (

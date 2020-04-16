@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { useFormik } from 'formik';
 import {
   useGetDisputeLazyQuery,
@@ -8,6 +7,7 @@ import {
 } from '../../graphql/generated/graphql';
 import withApollo from '../../utils/withApollo';
 import Button from '../../components/Button/Button';
+import SubjectHeader from '../../components/Subject/SubjectHeader';
 
 enum UserState {
   PartnerA,
@@ -75,24 +75,10 @@ const Dispute = (): JSX.Element => {
 
   return (
     <>
-      <div className="w-full text-center py-2">
-        <p className="text-blue-600">Das Thema</p>
-        <p className="text-lg">{data.dispute.subject.subject}</p>
-      </div>
-      {data.dispute.subject.tweetId && (
-        <div className="px-4 mx-auto">
-          <TwitterTweetEmbed
-            tweetId={data.dispute.subject.tweetId}
-            key={data.dispute.subject.tweetId}
-            placeholder="Lade Tweet..."
-            className="mx-auto"
-            options={{
-              lang: 'de',
-              align: 'center',
-            }}
-          />
-        </div>
-      )}
+      <SubjectHeader
+        subject={data.dispute.subject.subject}
+        tweetId={data.dispute.subject.tweetId ?? undefined}
+      />
       <div className="grid grid-cols-4">
         {[data.dispute.partnerA, data.dispute.partnerB].map(partner => (
           <div
