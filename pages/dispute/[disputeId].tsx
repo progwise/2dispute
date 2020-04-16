@@ -125,7 +125,7 @@ const Dispute = (): JSX.Element => {
         {userState !== UserState.Visitor && (
           <form
             className={`${
-              userState === UserState.PartnerA ? 'col-start-1' : 'col-start2'
+              userState === UserState.PartnerA ? 'col-start-1' : 'col-start-2'
             } col-span-3`}
             onSubmit={formik.handleSubmit}
           >
