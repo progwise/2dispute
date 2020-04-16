@@ -1,0 +1,12 @@
+mutation replyOnDispute($disputeId: ID!, $message: String!) {
+  replyOnDispute(input: { disputeId: $disputeId, message: $message }) {
+    id
+    messages {
+      id
+      author {
+        id
+      }
+      text
+    }
+  }
+}

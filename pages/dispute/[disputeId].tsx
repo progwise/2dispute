@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { useFormik } from 'formik';
-import { useGetDisputeLazyQuery } from '../../graphql/generated/graphql';
+import {
+  useGetDisputeLazyQuery,
+  useReplyOnDisputeMutation,
+} from '../../graphql/generated/graphql';
 import withApollo from '../../utils/withApollo';
 import Button from '../../components/Button/Button';
 
@@ -25,10 +28,17 @@ const Dispute = (): JSX.Element => {
     loadDispute,
     { called, loading, data, error },
   ] = useGetDisputeLazyQuery();
+  const [replyOnDispute] = useReplyOnDisputeMutation();
 
   const formik = useFormik<FormValues>({
     initialValues: { message: '' },
-    onSubmit: values => console.log(values),
+    onSubmit: async values => {
+      const { data, errors } = await replyOnDispute({
+        variables: { disputeId, message: values.message },
+      });
+
+      if (errors || data === undefined) throw new Error('submit failed');
+    },
   });
 
   useEffect(() => {
