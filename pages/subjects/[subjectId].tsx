@@ -42,7 +42,7 @@ const Subject = (): JSX.Element => {
       if (errors || data === undefined) throw new Error('submit failed');
 
       const disputeId = data.replyOnSubject.id;
-      console.log('new dispute', disputeId);
+      router.push(`/dispute/${disputeId}`);
     },
   });
 
