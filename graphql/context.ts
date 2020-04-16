@@ -1,5 +1,8 @@
 import { NextApiRequest } from 'next';
+import Dataloader from 'dataloader';
 import auth0 from '../utils/auth0';
+import { User } from './generated/graphql';
+import { getUserById } from './User';
 
 export interface Context {
   subject: {
@@ -8,6 +11,9 @@ export interface Context {
   };
   user?: {
     id: string;
+  };
+  dataloaders: {
+    userDataloader: Dataloader<string, User>;
   };
 }
 
@@ -40,6 +46,10 @@ const context = async ({ req }: { req: NextApiRequest }): Promise<Context> => {
   const session = await auth0(req).getSession(req);
   const userId: string | undefined = session?.user.sub;
 
+  const userDataloader = new Dataloader<string, User>(userIds =>
+    Promise.all(userIds.map(getUserById)),
+  );
+
   return {
     subject: {
       getStore: (): SubjectStore => subjectStore,
@@ -48,6 +58,9 @@ const context = async ({ req }: { req: NextApiRequest }): Promise<Context> => {
       },
     },
     user: userId === undefined ? undefined : { id: userId },
+    dataloaders: {
+      userDataloader,
+    },
   };
 };
 

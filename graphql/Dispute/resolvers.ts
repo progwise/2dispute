@@ -1,9 +1,10 @@
 import { DisputeResolvers } from '../generated/graphql';
-import { getUserById } from '../User';
 
 const resolvers: DisputeResolvers = {
-  partnerA: parent => getUserById(parent.partnerIdA),
-  partnerB: parent => getUserById(parent.partnerIdB),
+  partnerA: (parent, _args, context) =>
+    context.dataloaders.userDataloader.load(parent.partnerIdA),
+  partnerB: (parent, _args, context) =>
+    context.dataloaders.userDataloader.load(parent.partnerIdB),
   subject: (parent, _arg, context) => {
     const subjectList = context.subject.getStore();
     const subject = subjectList.find(subject =>

@@ -1,8 +1,8 @@
 import { SubjectResolvers } from '../generated/graphql';
-import { getUserById } from '../User';
 
 const subjectResolvers: SubjectResolvers = {
-  author: parent => getUserById(parent.userId),
+  author: (parent, _args, context) =>
+    context.dataloaders.userDataloader.load(parent.userId),
   firstMessage: parent => ({
     id: parent.id,
     authorId: parent.userId,

@@ -1,8 +1,8 @@
 import { MessageResolvers } from '../generated/graphql';
-import { getUserById } from '../User';
 
 const resolvers: MessageResolvers = {
-  author: parent => getUserById(parent.authorId),
+  author: (parent, _args, context) =>
+    context.dataloaders.userDataloader.load(parent.authorId),
 };
 
 export default resolvers;
