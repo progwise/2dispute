@@ -13,4 +13,9 @@ query getSubject($subjectId: ID!) {
       text
     }
   }
+  me {
+    id
+    name
+    picture
+  }
 }

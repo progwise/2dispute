@@ -414,6 +414,7 @@ export type GetSubjectQuery = { __typename?: 'Query' } & {
         firstMessage: { __typename?: 'Message' } & Pick<Message, 'id' | 'text'>;
       }
   >;
+  me?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name' | 'picture'>>;
 };
 
 export const MeDocument = gql`
@@ -545,6 +546,11 @@ export const GetSubjectDocument = gql`
         id
         text
       }
+    }
+    me {
+      id
+      name
+      picture
     }
   }
 `;
