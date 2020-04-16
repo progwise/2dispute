@@ -63,6 +63,7 @@ export type Subject = {
   __typename?: 'Subject';
   author: User;
   disputes: Array<Dispute>;
+  firstMessage: Message;
   id: Scalars['ID'];
   subject: Scalars['String'];
   tweetId?: Maybe<Scalars['String']>;
@@ -315,6 +316,7 @@ export type SubjectResolvers<
     ParentType,
     ContextType
   >;
+  firstMessage?: Resolver<ResolversTypes['Message'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   subject?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tweetId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -601,6 +603,7 @@ type Mutation {
 type Subject {
   author: User!
   disputes: [Dispute!]!
+  firstMessage: Message!
   id: ID!
   subject: String!
   tweetId: String
