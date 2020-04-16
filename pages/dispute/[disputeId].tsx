@@ -27,7 +27,7 @@ const Dispute = (): JSX.Element => {
   const [
     loadDispute,
     { called, loading, data, error },
-  ] = useGetDisputeLazyQuery();
+  ] = useGetDisputeLazyQuery({ pollInterval: 10 * 1000 });
   const [replyOnDispute] = useReplyOnDisputeMutation();
 
   const formik = useFormik<FormValues>({
