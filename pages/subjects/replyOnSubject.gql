@@ -1,0 +1,5 @@
+mutation replyOnSubject($subjectId: ID!, $message: String!) {
+  replyOnSubject(input: { subjectId: $subjectId, message: $message }) {
+    id
+  }
+}

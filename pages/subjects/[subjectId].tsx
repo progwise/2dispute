@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
-import { useGetSubjectLazyQuery } from '../../graphql/generated/graphql';
+import {
+  useGetSubjectLazyQuery,
+  useReplyOnSubjectMutation,
+} from '../../graphql/generated/graphql';
 import withApollo from '../../utils/withApollo';
 import Button from '../../components/Button/Button';
 import { useFormik } from 'formik';
@@ -19,24 +22,34 @@ interface FormValues {
 
 const Subject = (): JSX.Element => {
   const router = useRouter();
-  const { subjectId } = router.query;
+  const subjectId = Array.isArray(router.query.subjectId)
+    ? router.query.subjectId[0]
+    : router.query.subjectId;
 
   const [
     loadSubject,
     { called, loading, data, error },
   ] = useGetSubjectLazyQuery();
+  const [replyOnSubjectMutation] = useReplyOnSubjectMutation();
 
   const formik = useFormik<FormValues>({
     initialValues: { message: '' },
-    onSubmit: values => console.log(values),
+    onSubmit: async values => {
+      const { data, errors } = await replyOnSubjectMutation({
+        variables: { subjectId, message: values.message },
+      });
+
+      if (errors || data === undefined) throw new Error('submit failed');
+
+      const disputeId = data.replyOnSubject.id;
+      console.log('new dispute', disputeId);
+    },
   });
 
   useEffect(() => {
     if (subjectId !== undefined) {
       loadSubject({
-        variables: {
-          subjectId: Array.isArray(subjectId) ? subjectId[0] : subjectId,
-        },
+        variables: { subjectId },
       });
     }
   }, [subjectId]);

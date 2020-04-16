@@ -417,6 +417,15 @@ export type GetSubjectQuery = { __typename?: 'Query' } & {
   me?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name' | 'picture'>>;
 };
 
+export type ReplyOnSubjectMutationVariables = {
+  subjectId: Scalars['ID'];
+  message: Scalars['String'];
+};
+
+export type ReplyOnSubjectMutation = { __typename?: 'Mutation' } & {
+  replyOnSubject: { __typename?: 'Dispute' } & Pick<Dispute, 'id'>;
+};
+
 export const MeDocument = gql`
   query me {
     me {
@@ -600,6 +609,57 @@ export type GetSubjectLazyQueryHookResult = ReturnType<
 export type GetSubjectQueryResult = ApolloReactCommon.QueryResult<
   GetSubjectQuery,
   GetSubjectQueryVariables
+>;
+export const ReplyOnSubjectDocument = gql`
+  mutation replyOnSubject($subjectId: ID!, $message: String!) {
+    replyOnSubject(input: { subjectId: $subjectId, message: $message }) {
+      id
+    }
+  }
+`;
+export type ReplyOnSubjectMutationFn = ApolloReactCommon.MutationFunction<
+  ReplyOnSubjectMutation,
+  ReplyOnSubjectMutationVariables
+>;
+
+/**
+ * __useReplyOnSubjectMutation__
+ *
+ * To run a mutation, you first call `useReplyOnSubjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReplyOnSubjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [replyOnSubjectMutation, { data, loading, error }] = useReplyOnSubjectMutation({
+ *   variables: {
+ *      subjectId: // value for 'subjectId'
+ *      message: // value for 'message'
+ *   },
+ * });
+ */
+export function useReplyOnSubjectMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ReplyOnSubjectMutation,
+    ReplyOnSubjectMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ReplyOnSubjectMutation,
+    ReplyOnSubjectMutationVariables
+  >(ReplyOnSubjectDocument, baseOptions);
+}
+export type ReplyOnSubjectMutationHookResult = ReturnType<
+  typeof useReplyOnSubjectMutation
+>;
+export type ReplyOnSubjectMutationResult = ApolloReactCommon.MutationResult<
+  ReplyOnSubjectMutation
+>;
+export type ReplyOnSubjectMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ReplyOnSubjectMutation,
+  ReplyOnSubjectMutationVariables
 >;
 
 export const typeDefs = `
