@@ -403,6 +403,34 @@ export type CreateSubjectMutation = { __typename?: 'Mutation' } & {
   >;
 };
 
+export type GetDisputeQueryVariables = {
+  disputeId: Scalars['ID'];
+};
+
+export type GetDisputeQuery = { __typename?: 'Query' } & {
+  dispute?: Maybe<
+    { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
+        subject: { __typename?: 'Subject' } & Pick<
+          Subject,
+          'id' | 'subject' | 'tweetId'
+        >;
+        partnerA: { __typename?: 'User' } & PartnerFragment;
+        partnerB: { __typename?: 'User' } & PartnerFragment;
+        messages: Array<
+          { __typename?: 'Message' } & Pick<Message, 'id' | 'text'> & {
+              author: { __typename?: 'User' } & Pick<User, 'id'>;
+            }
+        >;
+      }
+  >;
+  me?: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>>;
+};
+
+export type PartnerFragment = { __typename?: 'User' } & Pick<
+  User,
+  'id' | 'name' | 'picture'
+>;
+
 export type GetSubjectQueryVariables = {
   subjectId: Scalars['ID'];
 };
@@ -426,6 +454,13 @@ export type ReplyOnSubjectMutation = { __typename?: 'Mutation' } & {
   replyOnSubject: { __typename?: 'Dispute' } & Pick<Dispute, 'id'>;
 };
 
+export const PartnerFragmentDoc = gql`
+  fragment Partner on User {
+    id
+    name
+    picture
+  }
+`;
 export const MeDocument = gql`
   query me {
     me {
@@ -539,6 +574,82 @@ export type CreateSubjectMutationResult = ApolloReactCommon.MutationResult<
 export type CreateSubjectMutationOptions = ApolloReactCommon.BaseMutationOptions<
   CreateSubjectMutation,
   CreateSubjectMutationVariables
+>;
+export const GetDisputeDocument = gql`
+  query getDispute($disputeId: ID!) {
+    dispute(id: $disputeId) {
+      id
+      subject {
+        id
+        subject
+        tweetId
+      }
+      partnerA {
+        ...Partner
+      }
+      partnerB {
+        ...Partner
+      }
+      messages {
+        id
+        author {
+          id
+        }
+        text
+      }
+    }
+    me {
+      id
+    }
+  }
+  ${PartnerFragmentDoc}
+`;
+
+/**
+ * __useGetDisputeQuery__
+ *
+ * To run a query within a React component, call `useGetDisputeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDisputeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDisputeQuery({
+ *   variables: {
+ *      disputeId: // value for 'disputeId'
+ *   },
+ * });
+ */
+export function useGetDisputeQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetDisputeQuery,
+    GetDisputeQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<GetDisputeQuery, GetDisputeQueryVariables>(
+    GetDisputeDocument,
+    baseOptions,
+  );
+}
+export function useGetDisputeLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetDisputeQuery,
+    GetDisputeQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    GetDisputeQuery,
+    GetDisputeQueryVariables
+  >(GetDisputeDocument, baseOptions);
+}
+export type GetDisputeQueryHookResult = ReturnType<typeof useGetDisputeQuery>;
+export type GetDisputeLazyQueryHookResult = ReturnType<
+  typeof useGetDisputeLazyQuery
+>;
+export type GetDisputeQueryResult = ApolloReactCommon.QueryResult<
+  GetDisputeQuery,
+  GetDisputeQueryVariables
 >;
 export const GetSubjectDocument = gql`
   query getSubject($subjectId: ID!) {

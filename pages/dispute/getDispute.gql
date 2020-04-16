@@ -1,0 +1,32 @@
+query getDispute($disputeId: ID!) {
+  dispute(id: $disputeId) {
+    id
+    subject {
+      id
+      subject
+      tweetId
+    }
+    partnerA {
+      ...Partner
+    }
+    partnerB {
+      ...Partner
+    }
+    messages {
+      id
+      author {
+        id
+      }
+      text
+    }
+  }
+  me {
+    id
+  }
+}
+
+fragment Partner on User {
+  id
+  name
+  picture
+}
