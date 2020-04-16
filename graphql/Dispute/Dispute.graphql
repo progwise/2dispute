@@ -7,3 +7,8 @@ type Dispute {
   partnerB: User!
   messages: [Message!]!
 }
+
+input ReplyOnDisputInput {
+  disputeId: ID!
+  message: String!
+}

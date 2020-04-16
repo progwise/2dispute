@@ -43,11 +43,16 @@ export type QuerySubjectArgs = {
 export type Mutation = {
   __typename?: 'Mutation';
   createSubject: Subject;
+  replyOnDispute: Dispute;
   replyOnSubject: Dispute;
 };
 
 export type MutationCreateSubjectArgs = {
   input: SubjectCreateInput;
+};
+
+export type MutationReplyOnDisputeArgs = {
+  input: ReplyOnDisputInput;
 };
 
 export type MutationReplyOnSubjectArgs = {
@@ -81,6 +86,11 @@ export type Dispute = {
   partnerA: User;
   partnerB: User;
   subject: Subject;
+};
+
+export type ReplyOnDisputInput = {
+  disputeId: Scalars['ID'];
+  message: Scalars['String'];
 };
 
 export type User = {
@@ -217,6 +227,7 @@ export type ResolversTypes = ResolversObject<{
   SubjectCreateInput: SubjectCreateInput;
   ReplyOnSubjectInput: ReplyOnSubjectInput;
   Dispute: ResolverTypeWrapper<DisputeStoreItem>;
+  ReplyOnDisputInput: ReplyOnDisputInput;
   User: ResolverTypeWrapper<User>;
   Message: ResolverTypeWrapper<MessageStoreItem>;
 }>;
@@ -232,6 +243,7 @@ export type ResolversParentTypes = ResolversObject<{
   SubjectCreateInput: SubjectCreateInput;
   ReplyOnSubjectInput: ReplyOnSubjectInput;
   Dispute: DisputeStoreItem;
+  ReplyOnDisputInput: ReplyOnDisputInput;
   User: User;
   Message: MessageStoreItem;
 }>;
@@ -278,6 +290,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationCreateSubjectArgs, 'input'>
+  >;
+  replyOnDispute?: Resolver<
+    ResolversTypes['Dispute'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationReplyOnDisputeArgs, 'input'>
   >;
   replyOnSubject?: Resolver<
     ResolversTypes['Dispute'],
@@ -576,6 +594,7 @@ type Query {
 
 type Mutation {
   createSubject(input: SubjectCreateInput!): Subject!
+  replyOnDispute(input: ReplyOnDisputInput!): Dispute!
   replyOnSubject(input: ReplyOnSubjectInput!): Dispute!
 }
 
@@ -604,6 +623,11 @@ type Dispute {
   partnerA: User!
   partnerB: User!
   subject: Subject!
+}
+
+input ReplyOnDisputInput {
+  disputeId: ID!
+  message: String!
 }
 
 type User {

@@ -1,5 +1,5 @@
 # import Subject, SubjectCreateInput, ReplyOnSubjectInput from './Subject/Subject.graphql'
-# import Dispute from './Dispute/Dispute.graphql'
+# import Dispute, ReplyOnDisputInput from './Dispute/Dispute.graphql'
 # import User from './User/User.graphql'
 # import @auth from './schemaDirectives/auth.graphql'
 
@@ -13,4 +13,5 @@ type Query {
 type Mutation {
   createSubject(input: SubjectCreateInput!): Subject! @auth
   replyOnSubject(input: ReplyOnSubjectInput!): Dispute! @auth
+  replyOnDispute(input: ReplyOnDisputInput!): Dispute! @auth
 }
