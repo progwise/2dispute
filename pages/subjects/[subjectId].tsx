@@ -57,6 +57,21 @@ const Subject = (): JSX.Element => {
           />
         </div>
       )}
+      <div className="grid grid-cols-4">
+        <div className="col-span-2 flex flex-col items-center py-4">
+          {data.subject.author.picture && (
+            <img src={data.subject.author.picture} className="rounded-full" />
+          )}
+          <span>{data.subject.author.name}</span>
+        </div>
+        <div className="col-span-2 flex flex-col items-center py-4">
+          <span className="rounded-full h-32 w-32" />
+          <span>???</span>
+        </div>
+        <div className="col-start-1 col-span-3 border-2">
+          {data.subject.firstMessage.text}
+        </div>
+      </div>
     </>
   );
 };

@@ -3,5 +3,14 @@ query getSubject($subjectId: ID!) {
     id
     subject
     tweetId
+    author {
+      id
+      name
+      picture
+    }
+    firstMessage {
+      id
+      text
+    }
   }
 }

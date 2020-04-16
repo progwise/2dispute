@@ -409,7 +409,10 @@ export type GetSubjectQueryVariables = {
 
 export type GetSubjectQuery = { __typename?: 'Query' } & {
   subject?: Maybe<
-    { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject' | 'tweetId'>
+    { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject' | 'tweetId'> & {
+        author: { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'picture'>;
+        firstMessage: { __typename?: 'Message' } & Pick<Message, 'id' | 'text'>;
+      }
   >;
 };
 
@@ -533,6 +536,15 @@ export const GetSubjectDocument = gql`
       id
       subject
       tweetId
+      author {
+        id
+        name
+        picture
+      }
+      firstMessage {
+        id
+        text
+      }
     }
   }
 `;
