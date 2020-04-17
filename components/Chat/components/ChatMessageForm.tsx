@@ -46,9 +46,12 @@ const ChatMessageForm = ({
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         value={formik.values.message}
+        disabled={formik.isSubmitting}
         error={(formik.touched.message && formik.errors.message) || undefined}
       />
-      <Button type="submit">{submitButtonText}</Button>
+      <Button type="submit" disabled={formik.isSubmitting}>
+        {submitButtonText}
+      </Button>
     </form>
   );
 };

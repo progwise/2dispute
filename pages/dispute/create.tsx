@@ -88,6 +88,7 @@ const CreateDispute = (): JSX.Element => {
             onBlur={formik.handleBlur}
             value={formik.values.subject}
             error={formik.touched.subject ? formik.errors.subject : undefined}
+            disabled={formik.isSubmitting}
           />
           <Input
             name="tweetLink"
@@ -99,6 +100,7 @@ const CreateDispute = (): JSX.Element => {
             error={
               formik.touched.tweetLink ? formik.errors.tweetLink : undefined
             }
+            disabled={formik.isSubmitting}
           />
           {tweetId && (
             <div className="px-4 mx-auto">
@@ -137,12 +139,15 @@ const CreateDispute = (): JSX.Element => {
                     ? formik.errors.firstMessage
                     : undefined
                 }
+                disabled={formik.isSubmitting}
               />
             </div>
           </div>
         </div>
         <div className="py-4">
-          <Button type="submit">Veröffentlichen</Button>
+          <Button type="submit" disabled={formik.isSubmitting}>
+            Veröffentlichen
+          </Button>
         </div>
       </form>
     </>

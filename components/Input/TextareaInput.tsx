@@ -2,6 +2,7 @@ import React from 'react';
 import { InputError } from '.';
 
 interface TextareaInputProps {
+  disabled?: boolean;
   error?: string;
   name?: string;
   onBlur?: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
@@ -11,6 +12,7 @@ interface TextareaInputProps {
 }
 
 const TextareaInput = ({
+  disabled = false,
   error,
   name,
   onBlur,
@@ -21,6 +23,7 @@ const TextareaInput = ({
   <>
     <textarea
       className="w-full border-2 disabled:opacity-75"
+      disabled={disabled}
       name={name}
       onBlur={onBlur}
       onChange={onChange}
