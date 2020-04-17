@@ -384,6 +384,33 @@ export type DirectiveResolvers<ContextType = Context> = ResolversObject<{
 export type IDirectiveResolvers<ContextType = Context> = DirectiveResolvers<
   ContextType
 >;
+export type ChatSubjectFragment = { __typename?: 'Subject' } & Pick<
+  Subject,
+  'id'
+> & {
+    author: { __typename?: 'User' } & ChatPersonFragment;
+    firstMessage: { __typename?: 'Message' } & Pick<Message, 'text'>;
+  };
+
+export type ChatDisputeFragment = { __typename?: 'Dispute' } & Pick<
+  Dispute,
+  'id'
+> & {
+    partnerA: { __typename?: 'User' } & ChatPersonFragment;
+    partnerB: { __typename?: 'User' } & ChatPersonFragment;
+    messages: Array<{ __typename?: 'Message' } & ChatMessageFragment>;
+  };
+
+export type ChatMessageFragment = { __typename?: 'Message' } & Pick<
+  Message,
+  'id' | 'text'
+> & { author: { __typename?: 'User' } & Pick<User, 'id'> };
+
+export type ChatPersonFragment = { __typename?: 'User' } & Pick<
+  User,
+  'id' | 'name' | 'picture'
+>;
+
 export type MeQueryVariables = {};
 
 export type MeQuery = { __typename?: 'Query' } & {
@@ -414,22 +441,10 @@ export type GetDisputeQuery = { __typename?: 'Query' } & {
           Subject,
           'id' | 'subject' | 'tweetId'
         >;
-        partnerA: { __typename?: 'User' } & PartnerFragment;
-        partnerB: { __typename?: 'User' } & PartnerFragment;
-        messages: Array<
-          { __typename?: 'Message' } & Pick<Message, 'id' | 'text'> & {
-              author: { __typename?: 'User' } & Pick<User, 'id'>;
-            }
-        >;
-      }
+      } & ChatDisputeFragment
   >;
-  me?: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>>;
+  me?: Maybe<{ __typename?: 'User' } & ChatPersonFragment>;
 };
-
-export type PartnerFragment = { __typename?: 'User' } & Pick<
-  User,
-  'id' | 'name' | 'picture'
->;
 
 export type ReplyOnDisputeMutationVariables = {
   disputeId: Scalars['ID'];
@@ -452,12 +467,10 @@ export type GetSubjectQueryVariables = {
 
 export type GetSubjectQuery = { __typename?: 'Query' } & {
   subject?: Maybe<
-    { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject' | 'tweetId'> & {
-        author: { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'picture'>;
-        firstMessage: { __typename?: 'Message' } & Pick<Message, 'id' | 'text'>;
-      }
+    { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject' | 'tweetId'> &
+      ChatSubjectFragment
   >;
-  me?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name' | 'picture'>>;
+  me?: Maybe<{ __typename?: 'User' } & ChatPersonFragment>;
 };
 
 export type ReplyOnSubjectMutationVariables = {
@@ -469,12 +482,49 @@ export type ReplyOnSubjectMutation = { __typename?: 'Mutation' } & {
   replyOnSubject: { __typename?: 'Dispute' } & Pick<Dispute, 'id'>;
 };
 
-export const PartnerFragmentDoc = gql`
-  fragment Partner on User {
+export const ChatPersonFragmentDoc = gql`
+  fragment ChatPerson on User {
     id
     name
     picture
   }
+`;
+export const ChatSubjectFragmentDoc = gql`
+  fragment ChatSubject on Subject {
+    id
+    author {
+      ...ChatPerson
+    }
+    firstMessage {
+      text
+    }
+  }
+  ${ChatPersonFragmentDoc}
+`;
+export const ChatMessageFragmentDoc = gql`
+  fragment ChatMessage on Message {
+    id
+    text
+    author {
+      id
+    }
+  }
+`;
+export const ChatDisputeFragmentDoc = gql`
+  fragment ChatDispute on Dispute {
+    id
+    partnerA {
+      ...ChatPerson
+    }
+    partnerB {
+      ...ChatPerson
+    }
+    messages {
+      ...ChatMessage
+    }
+  }
+  ${ChatPersonFragmentDoc}
+  ${ChatMessageFragmentDoc}
 `;
 export const MeDocument = gql`
   query me {
@@ -599,25 +649,14 @@ export const GetDisputeDocument = gql`
         subject
         tweetId
       }
-      partnerA {
-        ...Partner
-      }
-      partnerB {
-        ...Partner
-      }
-      messages {
-        id
-        author {
-          id
-        }
-        text
-      }
+      ...ChatDispute
     }
     me {
-      id
+      ...ChatPerson
     }
   }
-  ${PartnerFragmentDoc}
+  ${ChatDisputeFragmentDoc}
+  ${ChatPersonFragmentDoc}
 `;
 
 /**
@@ -730,22 +769,14 @@ export const GetSubjectDocument = gql`
       id
       subject
       tweetId
-      author {
-        id
-        name
-        picture
-      }
-      firstMessage {
-        id
-        text
-      }
+      ...ChatSubject
     }
     me {
-      id
-      name
-      picture
+      ...ChatPerson
     }
   }
+  ${ChatSubjectFragmentDoc}
+  ${ChatPersonFragmentDoc}
 `;
 
 /**

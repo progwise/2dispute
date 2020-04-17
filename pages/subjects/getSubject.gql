@@ -3,19 +3,9 @@ query getSubject($subjectId: ID!) {
     id
     subject
     tweetId
-    author {
-      id
-      name
-      picture
-    }
-    firstMessage {
-      id
-      text
-    }
+    ...ChatSubject
   }
   me {
-    id
-    name
-    picture
+    ...ChatPerson
   }
 }

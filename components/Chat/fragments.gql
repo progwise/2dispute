@@ -1,0 +1,36 @@
+fragment ChatSubject on Subject {
+  id
+  author {
+    ...ChatPerson
+  }
+  firstMessage {
+    text
+  }
+}
+
+fragment ChatDispute on Dispute {
+  id
+  partnerA {
+    ...ChatPerson
+  }
+  partnerB {
+    ...ChatPerson
+  }
+  messages {
+    ...ChatMessage
+  }
+}
+
+fragment ChatMessage on Message {
+  id
+  text
+  author {
+    id
+  }
+}
+
+fragment ChatPerson on User {
+  id
+  name
+  picture
+}

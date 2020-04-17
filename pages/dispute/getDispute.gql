@@ -6,27 +6,9 @@ query getDispute($disputeId: ID!) {
       subject
       tweetId
     }
-    partnerA {
-      ...Partner
-    }
-    partnerB {
-      ...Partner
-    }
-    messages {
-      id
-      author {
-        id
-      }
-      text
-    }
+    ...ChatDispute
   }
   me {
-    id
+    ...ChatPerson
   }
-}
-
-fragment Partner on User {
-  id
-  name
-  picture
 }
