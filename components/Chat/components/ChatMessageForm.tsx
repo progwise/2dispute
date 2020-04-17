@@ -27,7 +27,10 @@ const ChatMessageForm = ({
   const formik = useFormik<ChatFormValues>({
     initialValues: { message: '' },
     validationSchema: chatFormSchema,
-    onSubmit: values => onSubmit && onSubmit(values),
+    onSubmit: async (values, formikHelpers) => {
+      onSubmit && (await onSubmit(values));
+      formikHelpers.resetForm();
+    },
   });
 
   return (
