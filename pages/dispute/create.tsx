@@ -2,8 +2,8 @@ import React from 'react';
 import Router from 'next/router';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Input, InputError, TextareaInput } from '../../components/Input';
+import Yup from '../../utils/yup';
+import { Input, TextareaInput } from '../../components/Input';
 import Button from '../../components/Button/Button';
 import withApollo from '../../utils/withApollo';
 import {
@@ -18,9 +18,9 @@ interface FormValues {
 }
 
 const createDisputeSchema = Yup.object().shape<FormValues>({
-  subject: Yup.string().required().min(1),
-  tweetLink: Yup.string(),
-  firstMessage: Yup.string().required(),
+  subject: Yup.string().required().label('Thema'),
+  tweetLink: Yup.string().label('Twitter Link'),
+  firstMessage: Yup.string().required().label('Chat-Nachricht'),
 });
 
 const getTweetId = (tweetLink: string): string | undefined => {

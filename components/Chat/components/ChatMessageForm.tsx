@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import Yup from '../../../utils/yup';
 import Button from '../../Button/Button';
 import { TextareaInput } from '../../Input';
 
@@ -9,7 +9,7 @@ export interface ChatFormValues {
 }
 
 const chatFormSchema = Yup.object().shape<ChatFormValues>({
-  message: Yup.string().required(),
+  message: Yup.string().required().label('Chat-Nachricht'),
 });
 
 interface ChatMessageFormProps {
