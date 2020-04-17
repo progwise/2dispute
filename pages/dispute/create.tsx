@@ -2,6 +2,7 @@ import React from 'react';
 import Router from 'next/router';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import withApollo from '../../utils/withApollo';
@@ -9,12 +10,19 @@ import {
   useCreateSubjectMutation,
   useMeQuery,
 } from '../../graphql/generated/graphql';
+import InputError from '../../components/Input/InputError';
 
 interface FormValues {
   subject: string;
   tweetLink: string;
   firstMessage: string;
 }
+
+const createDisputeSchema = Yup.object().shape<FormValues>({
+  subject: Yup.string().required().min(1),
+  tweetLink: Yup.string(),
+  firstMessage: Yup.string().required(),
+});
 
 const getTweetId = (tweetLink: string): string | undefined => {
   const twitterRegex = /twitter\.com\/(?:\w+)\/status(?:es)?\/(\d+)/i;
@@ -27,6 +35,7 @@ const CreateDispute = (): JSX.Element => {
   const { data, loading, error } = useMeQuery();
 
   const formik = useFormik<FormValues>({
+    validationSchema: createDisputeSchema,
     initialValues: {
       subject: '',
       tweetLink: '',
@@ -77,14 +86,20 @@ const CreateDispute = (): JSX.Element => {
             label="Das Thema"
             placeholder="Neues Thema"
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             value={formik.values.subject}
+            error={formik.touched.subject ? formik.errors.subject : undefined}
           />
           <Input
             name="tweetLink"
             label="Twitter Link"
             placeholder="https://twitter.com/..."
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             value={formik.values.tweetLink}
+            error={
+              formik.touched.tweetLink ? formik.errors.tweetLink : undefined
+            }
           />
           {tweetId && (
             <div className="px-4 mx-auto">
@@ -111,13 +126,19 @@ const CreateDispute = (): JSX.Element => {
               <span className="rounded-full h-32 w-32" />
               <span>???</span>
             </div>
-            <textarea
-              name="firstMessage"
-              className="col-start-1 col-span-3 border-2"
-              placeholder="Deine Position"
-              onChange={formik.handleChange}
-              value={formik.values.firstMessage}
-            ></textarea>
+            <div className="col-start-1 col-span-3">
+              <textarea
+                name="firstMessage"
+                className="border-2 w-full"
+                placeholder="Deine Position"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.firstMessage}
+              ></textarea>
+              {formik.touched.firstMessage && formik.errors.firstMessage && (
+                <InputError error={formik.errors.firstMessage} />
+              )}
+            </div>
           </div>
         </div>
         <div className="py-4">
