@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Button from '../../Button/Button';
-import InputError from '../../Input/InputError';
+import { TextareaInput } from '../../Input';
 
 export interface ChatFormValues {
   message: string;
@@ -40,17 +40,14 @@ const ChatMessageForm = ({
       } col-span-3 flex flex-col items-start`}
       onSubmit={formik.handleSubmit}
     >
-      <textarea
+      <TextareaInput
         name="message"
-        className="w-full border-2"
         placeholder="Deine Position"
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         value={formik.values.message}
+        error={(formik.touched.message && formik.errors.message) || undefined}
       />
-      {formik.touched.message && formik.errors.message && (
-        <InputError error={formik.errors.message} />
-      )}
       <Button type="submit">{submitButtonText}</Button>
     </form>
   );

@@ -3,14 +3,13 @@ import Router from 'next/router';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Input from '../../components/Input/Input';
+import { Input, InputError, TextareaInput } from '../../components/Input';
 import Button from '../../components/Button/Button';
 import withApollo from '../../utils/withApollo';
 import {
   useCreateSubjectMutation,
   useMeQuery,
 } from '../../graphql/generated/graphql';
-import InputError from '../../components/Input/InputError';
 
 interface FormValues {
   subject: string;
@@ -127,17 +126,18 @@ const CreateDispute = (): JSX.Element => {
               <span>???</span>
             </div>
             <div className="col-start-1 col-span-3">
-              <textarea
+              <TextareaInput
                 name="firstMessage"
-                className="border-2 w-full"
                 placeholder="Deine Position"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.firstMessage}
-              ></textarea>
-              {formik.touched.firstMessage && formik.errors.firstMessage && (
-                <InputError error={formik.errors.firstMessage} />
-              )}
+                error={
+                  formik.touched.firstMessage
+                    ? formik.errors.firstMessage
+                    : undefined
+                }
+              />
             </div>
           </div>
         </div>
