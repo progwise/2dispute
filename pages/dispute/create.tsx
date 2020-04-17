@@ -82,7 +82,7 @@ const CreateDispute = (): JSX.Element => {
         <div>
           <Input
             name="subject"
-            label="Das Thema"
+            label="Das Thema *"
             placeholder="Neues Thema"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -130,7 +130,7 @@ const CreateDispute = (): JSX.Element => {
             <div className="col-start-1 col-span-3">
               <TextareaInput
                 name="firstMessage"
-                placeholder="Deine Position"
+                placeholder="Deine Position *"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.firstMessage}

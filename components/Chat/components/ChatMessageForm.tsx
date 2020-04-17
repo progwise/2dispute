@@ -42,7 +42,7 @@ const ChatMessageForm = ({
     >
       <TextareaInput
         name="message"
-        placeholder="Deine Position"
+        placeholder="Deine Position *"
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         value={formik.values.message}
