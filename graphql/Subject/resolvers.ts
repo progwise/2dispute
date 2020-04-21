@@ -8,6 +8,7 @@ const subjectResolvers: SubjectResolvers = {
     _id: parent._id,
     authorId: parent.userId,
     text: parent.firstMessage,
+    createdAt: parent.createdAt,
   }),
 };
 

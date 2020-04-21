@@ -1,5 +1,9 @@
 /* eslint-disable */
-import { GraphQLResolveInfo } from 'graphql';
+import {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from 'graphql';
 import { SubjectDocument } from '../Subject/SubjectSchema';
 import { DisputeDocument } from '../Dispute/DisputeSchema';
 import { MessageDocument } from '../Message/MessageSchema';
@@ -20,6 +24,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: Date;
 };
 
 export type Query = {
@@ -60,6 +65,7 @@ export type MutationReplyOnSubjectArgs = {
 export type Subject = {
   __typename?: 'Subject';
   author: User;
+  createdAt: Scalars['DateTime'];
   disputes: Array<Dispute>;
   firstMessage: Message;
   id: Scalars['ID'];
@@ -80,6 +86,7 @@ export type ReplyOnSubjectInput = {
 
 export type Dispute = {
   __typename?: 'Dispute';
+  createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   messages: Array<Message>;
   partnerA: User;
@@ -102,6 +109,7 @@ export type User = {
 export type Message = {
   __typename?: 'Message';
   author: User;
+  createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   text: Scalars['String'];
 };
@@ -219,6 +227,7 @@ export type DirectiveResolverFn<
 export type ResolversTypes = ResolversObject<{
   String: ResolverTypeWrapper<Scalars['String']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Query: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -235,6 +244,7 @@ export type ResolversTypes = ResolversObject<{
 export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String'];
   Boolean: Scalars['Boolean'];
+  DateTime: Scalars['DateTime'];
   Query: {};
   ID: Scalars['ID'];
   Mutation: {};
@@ -255,6 +265,11 @@ export type AuthDirectiveResolver<
   ContextType = Context,
   Args = AuthDirectiveArgs
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export interface DateTimeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+  name: 'DateTime';
+}
 
 export type QueryResolvers<
   ContextType = Context,
@@ -309,6 +324,7 @@ export type SubjectResolvers<
   ParentType extends ResolversParentTypes['Subject'] = ResolversParentTypes['Subject']
 > = ResolversObject<{
   author?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   disputes?: Resolver<
     Array<ResolversTypes['Dispute']>,
     ParentType,
@@ -325,6 +341,7 @@ export type DisputeResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Dispute'] = ResolversParentTypes['Dispute']
 > = ResolversObject<{
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   messages?: Resolver<
     Array<ResolversTypes['Message']>,
@@ -352,12 +369,14 @@ export type MessageResolvers<
   ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']
 > = ResolversObject<{
   author?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
 export type Resolvers<ContextType = Context> = ResolversObject<{
+  DateTime?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Subject?: SubjectResolvers<ContextType>;
@@ -878,6 +897,8 @@ export type ReplyOnSubjectMutationOptions = ApolloReactCommon.BaseMutationOption
 export const typeDefs = `
 directive @auth on FIELD_DEFINITION
 
+scalar DateTime
+
 type Query {
   allSubjects: [Subject!]!
   dispute(id: ID!): Dispute
@@ -893,6 +914,7 @@ type Mutation {
 
 type Subject {
   author: User!
+  createdAt: DateTime!
   disputes: [Dispute!]!
   firstMessage: Message!
   id: ID!
@@ -912,6 +934,7 @@ input ReplyOnSubjectInput {
 }
 
 type Dispute {
+  createdAt: DateTime!
   id: ID!
   messages: [Message!]!
   partnerA: User!
@@ -932,6 +955,7 @@ type User {
 
 type Message {
   author: User!
+  createdAt: DateTime!
   id: ID!
   text: String!
 }

@@ -7,6 +7,7 @@ export interface SubjectDocument extends mongoose.Document {
   userId: string;
   firstMessage: string;
   disputes: DisputeDocument[];
+  createdAt: Date;
 }
 
 const SubjectSchema = new mongoose.Schema(
@@ -16,6 +17,7 @@ const SubjectSchema = new mongoose.Schema(
     userId: { type: String, required: true },
     firstMessage: { type: String, required: true },
     disputes: { type: [DisputeSchema], required: true },
+    createdAt: { type: Date, required: true },
   },
   { collection: 'subjects' },
 );

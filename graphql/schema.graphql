@@ -3,6 +3,8 @@
 # import User from './User/User.graphql'
 # import @auth from './schemaDirectives/auth.graphql'
 
+scalar DateTime
+
 type Query {
   allSubjects: [Subject!]!
   subject(id: ID!): Subject

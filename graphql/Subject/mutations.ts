@@ -15,6 +15,7 @@ const mutations: MutationResolvers = {
       userId: context.user?.id,
       firstMessage: input.firstMessage,
       disputes: [],
+      createdAt: new Date(),
     });
 
     return newSubject.save();
@@ -35,20 +36,25 @@ const mutations: MutationResolvers = {
       throw new ApolloError('Subject not found');
     }
 
+    const now = new Date();
+
     const newDispute: DisputeDocument = {
       _id: mongoose.Types.ObjectId(),
       partnerIdA: subject.userId,
       partnerIdB: context.user.id,
+      createdAt: now,
       messages: [
         {
           _id: mongoose.Types.ObjectId(),
           authorId: subject.userId,
           text: subject.firstMessage,
+          createdAt: subject.createdAt,
         },
         {
           _id: mongoose.Types.ObjectId(),
           authorId: context.user.id,
           text: message,
+          createdAt: now,
         },
       ],
     };

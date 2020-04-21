@@ -23,6 +23,7 @@
     "formik": "^2.1.4",
     "graphql": "^15.0.0",
     "graphql-import": "^1.0.2",
+    "graphql-iso-date": "^3.6.1",
     "mongoose": "^5.9.9",
     "next": "9.3.4",
     "next-with-apollo": "^5.0.0",

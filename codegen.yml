@@ -21,6 +21,8 @@ generates:
         Subject: ../Subject/SubjectSchema#SubjectDocument
         Dispute: ../Dispute/DisputeSchema#DisputeDocument
         Message: ../Message/MessageSchema#MessageDocument
+      scalars:
+        DateTime: Date
 hooks:
   afterOneFileWrite:
     - prettier --write

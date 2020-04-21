@@ -1,4 +1,5 @@
 import { ApolloServer } from 'apollo-server-micro';
+import { GraphQLDateTime } from 'graphql-iso-date';
 import { Resolvers, typeDefs } from './generated/graphql';
 import context from './context';
 import { subjectResolvers, subjectQueries, subjectMutations } from './Subject';
@@ -20,6 +21,7 @@ const resolvers: Resolvers = {
   Subject: subjectResolvers,
   Dispute: disputeResolvers,
   Message: messageResolvers,
+  DateTime: GraphQLDateTime,
 };
 
 export default new ApolloServer({

@@ -9,19 +9,23 @@
       "_id": ObjectId("deac6eca85ff665a2feddd69"),
       "partnerIdA": "auth0|5e8ee039658e660c13004a03",
       "partnerIdB": "auth0|5e8f367c9374050c0b984f1e",
+      "createdAt": ISODate("2020-04-21T10:08:56.106Z"),
       "messages": [
         {
           "_id": ObjectId("deac6eca85ff665a2feddd69"),
           "authorId": "auth0|5e8ee039658e660c13004a03",
-          "text": "Meiner Meinung nach..."
+          "text": "Meiner Meinung nach...",
+          "createdAt": ISODate("2020-04-21T09:08:56.106Z")
         },
         {
           "_id": ObjectId("d8ed4179f2f9d4b9cb52daf0"),
           "authorId": "auth0|5e8f367c9374050c0b984f1e",
-          "text": "Ich habe da eine andere Meinung"
+          "text": "Ich habe da eine andere Meinung",
+          "createdAt": ISODate("2020-04-21T10:08:56.106Z")
         }
       ]
     }
   ],
-  "__v": 1
+  "__v": 1,
+  "createdAt": ISODate("2020-04-21T09:08:56.106Z")
 }

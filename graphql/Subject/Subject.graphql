@@ -9,6 +9,7 @@ type Subject {
   author: User!
   disputes: [Dispute!]!
   firstMessage: Message!
+  createdAt: DateTime!
 }
 
 input SubjectCreateInput {

@@ -6,6 +6,7 @@ type Dispute {
   partnerA: User!
   partnerB: User!
   messages: [Message!]!
+  createdAt: DateTime!
 }
 
 input ReplyOnDisputInput {

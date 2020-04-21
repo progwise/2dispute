@@ -43,6 +43,7 @@ const mutations: MutationResolvers = {
       _id: mongoose.Types.ObjectId(),
       authorId: userId,
       text: message,
+      createdAt: new Date(),
     };
     selectedDispute.messages.push(newMessage);
 
