@@ -428,25 +428,6 @@ export type ChatPersonFragment = { __typename?: 'User' } & Pick<
   'id' | 'name' | 'picture'
 >;
 
-export type MeQueryVariables = {};
-
-export type MeQuery = { __typename?: 'Query' } & {
-  me?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name' | 'picture'>>;
-};
-
-export type CreateSubjectMutationVariables = {
-  subject: Scalars['String'];
-  tweetId?: Maybe<Scalars['String']>;
-  firstMessage: Scalars['String'];
-};
-
-export type CreateSubjectMutation = { __typename?: 'Mutation' } & {
-  createSubject: { __typename?: 'Subject' } & Pick<
-    Subject,
-    'id' | 'subject' | 'tweetId'
-  >;
-};
-
 export type GetDisputeQueryVariables = {
   disputeId: Scalars['ID'];
 };
@@ -476,6 +457,25 @@ export type ReplyOnDisputeMutation = { __typename?: 'Mutation' } & {
           }
       >;
     };
+};
+
+export type MeQueryVariables = {};
+
+export type MeQuery = { __typename?: 'Query' } & {
+  me?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name' | 'picture'>>;
+};
+
+export type CreateSubjectMutationVariables = {
+  subject: Scalars['String'];
+  tweetId?: Maybe<Scalars['String']>;
+  firstMessage: Scalars['String'];
+};
+
+export type CreateSubjectMutation = { __typename?: 'Mutation' } & {
+  createSubject: { __typename?: 'Subject' } & Pick<
+    Subject,
+    'id' | 'subject' | 'tweetId'
+  >;
 };
 
 export type GetSubjectQueryVariables = {
@@ -543,120 +543,6 @@ export const ChatDisputeFragmentDoc = gql`
   ${ChatPersonFragmentDoc}
   ${ChatMessageFragmentDoc}
 `;
-export const MeDocument = gql`
-  query me {
-    me {
-      id
-      name
-      picture
-    }
-  }
-`;
-
-/**
- * __useMeQuery__
- *
- * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
- * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMeQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMeQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<MeQuery, MeQueryVariables>,
-) {
-  return ApolloReactHooks.useQuery<MeQuery, MeQueryVariables>(
-    MeDocument,
-    baseOptions,
-  );
-}
-export function useMeLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    MeQuery,
-    MeQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<MeQuery, MeQueryVariables>(
-    MeDocument,
-    baseOptions,
-  );
-}
-export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
-export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
-export type MeQueryResult = ApolloReactCommon.QueryResult<
-  MeQuery,
-  MeQueryVariables
->;
-export const CreateSubjectDocument = gql`
-  mutation createSubject(
-    $subject: String!
-    $tweetId: String
-    $firstMessage: String!
-  ) {
-    createSubject(
-      input: {
-        subject: $subject
-        tweetId: $tweetId
-        firstMessage: $firstMessage
-      }
-    ) {
-      id
-      subject
-      tweetId
-    }
-  }
-`;
-export type CreateSubjectMutationFn = ApolloReactCommon.MutationFunction<
-  CreateSubjectMutation,
-  CreateSubjectMutationVariables
->;
-
-/**
- * __useCreateSubjectMutation__
- *
- * To run a mutation, you first call `useCreateSubjectMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateSubjectMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createSubjectMutation, { data, loading, error }] = useCreateSubjectMutation({
- *   variables: {
- *      subject: // value for 'subject'
- *      tweetId: // value for 'tweetId'
- *      firstMessage: // value for 'firstMessage'
- *   },
- * });
- */
-export function useCreateSubjectMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    CreateSubjectMutation,
-    CreateSubjectMutationVariables
-  >,
-) {
-  return ApolloReactHooks.useMutation<
-    CreateSubjectMutation,
-    CreateSubjectMutationVariables
-  >(CreateSubjectDocument, baseOptions);
-}
-export type CreateSubjectMutationHookResult = ReturnType<
-  typeof useCreateSubjectMutation
->;
-export type CreateSubjectMutationResult = ApolloReactCommon.MutationResult<
-  CreateSubjectMutation
->;
-export type CreateSubjectMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  CreateSubjectMutation,
-  CreateSubjectMutationVariables
->;
 export const GetDisputeDocument = gql`
   query getDispute($disputeId: ID!) {
     dispute(id: $disputeId) {
@@ -779,6 +665,120 @@ export type ReplyOnDisputeMutationResult = ApolloReactCommon.MutationResult<
 export type ReplyOnDisputeMutationOptions = ApolloReactCommon.BaseMutationOptions<
   ReplyOnDisputeMutation,
   ReplyOnDisputeMutationVariables
+>;
+export const MeDocument = gql`
+  query me {
+    me {
+      id
+      name
+      picture
+    }
+  }
+`;
+
+/**
+ * __useMeQuery__
+ *
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<MeQuery, MeQueryVariables>,
+) {
+  return ApolloReactHooks.useQuery<MeQuery, MeQueryVariables>(
+    MeDocument,
+    baseOptions,
+  );
+}
+export function useMeLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    MeQuery,
+    MeQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<MeQuery, MeQueryVariables>(
+    MeDocument,
+    baseOptions,
+  );
+}
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = ApolloReactCommon.QueryResult<
+  MeQuery,
+  MeQueryVariables
+>;
+export const CreateSubjectDocument = gql`
+  mutation createSubject(
+    $subject: String!
+    $tweetId: String
+    $firstMessage: String!
+  ) {
+    createSubject(
+      input: {
+        subject: $subject
+        tweetId: $tweetId
+        firstMessage: $firstMessage
+      }
+    ) {
+      id
+      subject
+      tweetId
+    }
+  }
+`;
+export type CreateSubjectMutationFn = ApolloReactCommon.MutationFunction<
+  CreateSubjectMutation,
+  CreateSubjectMutationVariables
+>;
+
+/**
+ * __useCreateSubjectMutation__
+ *
+ * To run a mutation, you first call `useCreateSubjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSubjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSubjectMutation, { data, loading, error }] = useCreateSubjectMutation({
+ *   variables: {
+ *      subject: // value for 'subject'
+ *      tweetId: // value for 'tweetId'
+ *      firstMessage: // value for 'firstMessage'
+ *   },
+ * });
+ */
+export function useCreateSubjectMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    CreateSubjectMutation,
+    CreateSubjectMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    CreateSubjectMutation,
+    CreateSubjectMutationVariables
+  >(CreateSubjectDocument, baseOptions);
+}
+export type CreateSubjectMutationHookResult = ReturnType<
+  typeof useCreateSubjectMutation
+>;
+export type CreateSubjectMutationResult = ApolloReactCommon.MutationResult<
+  CreateSubjectMutation
+>;
+export type CreateSubjectMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  CreateSubjectMutation,
+  CreateSubjectMutationVariables
 >;
 export const GetSubjectDocument = gql`
   query getSubject($subjectId: ID!) {

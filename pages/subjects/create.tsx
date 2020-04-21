@@ -17,7 +17,7 @@ interface FormValues {
   firstMessage: string;
 }
 
-const createDisputeSchema = Yup.object().shape<FormValues>({
+const createSubjectSchema = Yup.object().shape<FormValues>({
   subject: Yup.string().required().label('Thema'),
   tweetLink: Yup.string().label('Twitter Link'),
   firstMessage: Yup.string().required().label('Chat-Nachricht'),
@@ -29,13 +29,13 @@ const getTweetId = (tweetLink: string): string | undefined => {
   return tweetId;
 };
 
-const CreateDispute = (): JSX.Element => {
+const CreateSubject = (): JSX.Element => {
   const [createSubject] = useCreateSubjectMutation();
   const { data, loading, error } = useMeQuery();
   const router = useRouter();
 
   const formik = useFormik<FormValues>({
-    validationSchema: createDisputeSchema,
+    validationSchema: createSubjectSchema,
     initialValues: {
       subject: '',
       tweetLink: '',
@@ -78,7 +78,7 @@ const CreateDispute = (): JSX.Element => {
 
   return (
     <>
-      <h1 className="text-xl text-center py-4">Create a Dispute</h1>
+      <h1 className="text-xl text-center py-4">Create a Subject</h1>
       <form onSubmit={formik.handleSubmit}>
         <div>
           <Input
@@ -155,4 +155,4 @@ const CreateDispute = (): JSX.Element => {
   );
 };
 
-export default withApollo(CreateDispute);
+export default withApollo(CreateSubject);
