@@ -5,6 +5,7 @@
     "AUTH0_CLIENT_SECRET": "@auth0-client-secret",
     "AUTH0_MANAGEMENT_CLIENT_ID": "@auth0-management-client-id",
     "AUTH0_MANAGEMENT_CLIENT_SECRET": "@auth0-management-client-secret",
-    "COOKIE_SECRET": "@cookie-secret"
+    "COOKIE_SECRET": "@cookie-secret",
+    "MONGODB_CONNECTION_STRING": "@mongodb-connection-string"
   }
 }

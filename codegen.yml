@@ -18,9 +18,9 @@ generates:
       withHooks: true
       gqlImport: apollo-boost#gql
       mappers:
-        Subject: ../context#SubjectStoreItem
-        Dispute: ../context#DisputeStoreItem
-        Message: ../context#MessageStoreItem
+        Subject: ../Subject/SubjectSchema#SubjectDocument
+        Dispute: ../Dispute/DisputeSchema#DisputeDocument
+        Message: ../Message/MessageSchema#MessageDocument
 hooks:
   afterOneFileWrite:
     - prettier --write

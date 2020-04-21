@@ -1,11 +1,9 @@
 /* eslint-disable */
 import { GraphQLResolveInfo } from 'graphql';
-import {
-  SubjectStoreItem,
-  DisputeStoreItem,
-  MessageStoreItem,
-  Context,
-} from '../context';
+import { SubjectDocument } from '../Subject/SubjectSchema';
+import { DisputeDocument } from '../Dispute/DisputeSchema';
+import { MessageDocument } from '../Message/MessageSchema';
+import { Context } from '../context';
 import { gql } from 'apollo-boost';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
@@ -224,13 +222,13 @@ export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Mutation: ResolverTypeWrapper<{}>;
-  Subject: ResolverTypeWrapper<SubjectStoreItem>;
+  Subject: ResolverTypeWrapper<SubjectDocument>;
   SubjectCreateInput: SubjectCreateInput;
   ReplyOnSubjectInput: ReplyOnSubjectInput;
-  Dispute: ResolverTypeWrapper<DisputeStoreItem>;
+  Dispute: ResolverTypeWrapper<DisputeDocument>;
   ReplyOnDisputInput: ReplyOnDisputInput;
   User: ResolverTypeWrapper<User>;
-  Message: ResolverTypeWrapper<MessageStoreItem>;
+  Message: ResolverTypeWrapper<MessageDocument>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -240,13 +238,13 @@ export type ResolversParentTypes = ResolversObject<{
   Query: {};
   ID: Scalars['ID'];
   Mutation: {};
-  Subject: SubjectStoreItem;
+  Subject: SubjectDocument;
   SubjectCreateInput: SubjectCreateInput;
   ReplyOnSubjectInput: ReplyOnSubjectInput;
-  Dispute: DisputeStoreItem;
+  Dispute: DisputeDocument;
   ReplyOnDisputInput: ReplyOnDisputInput;
   User: User;
-  Message: MessageStoreItem;
+  Message: MessageDocument;
 }>;
 
 export type AuthDirectiveArgs = {};

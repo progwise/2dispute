@@ -1,10 +1,14 @@
+import * as mongoose from 'mongoose';
 import { QueryResolvers } from '../generated/graphql';
 
 const queries: QueryResolvers = {
-  dispute: (_parent, { id }, context) => {
-    const subjectList = context.subject.getStore();
-    const allDisputes = subjectList.map(subject => subject.disputes).flat();
-    return allDisputes.find(dispute => dispute.id === id) ?? null;
+  dispute: async (_parent, { id }, context) => {
+    const data = await context.mongoose.models.Subject.aggregate()
+      .unwind('disputes')
+      .match({ 'disputes._id': mongoose.Types.ObjectId(id) })
+      .exec();
+
+    return data[0]?.disputes || null;
   },
 };
 

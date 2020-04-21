@@ -1,9 +1,10 @@
 import { QueryResolvers } from '../generated/graphql';
 
 const queries: QueryResolvers = {
-  allSubjects: (_parent, _inputs, context) => context.subject.getStore(),
+  allSubjects: (_parent, _inputs, context) =>
+    context.mongoose.models.Subject.find({}).exec(),
   subject: (_parent, { id }, context) =>
-    context.subject.getStore().find(subject => subject.id === id) ?? null,
+    context.mongoose.models.Subject.findById(id).exec(),
 };
 
 export default queries;

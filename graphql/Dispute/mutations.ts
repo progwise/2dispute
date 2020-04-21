@@ -3,51 +3,52 @@ import {
   ApolloError,
   ForbiddenError,
 } from 'apollo-server-micro';
-import { v4 as uuid } from 'uuid';
+import * as mongoose from 'mongoose';
 import { MutationResolvers } from '../generated/graphql';
-import { MessageStoreItem, DisputeStoreItem, SubjectStore } from '../context';
+import { MessageDocument } from '../Message/MessageSchema';
 
 const mutations: MutationResolvers = {
-  replyOnDispute: (parent, { input: { disputeId, message } }, context) => {
+  replyOnDispute: async (
+    parent,
+    { input: { disputeId, message } },
+    context,
+  ) => {
     if (context.user === undefined) {
       throw new AuthenticationError('not authenticated');
     }
     const userId = context.user.id;
 
-    const subjectStore = context.subject.getStore();
-    const disputeList = subjectStore.map(subject => subject.disputes).flat();
-    const dispute = disputeList.find(dispute => dispute.id === disputeId);
+    const subject = await context.mongoose.models.Subject.findOne({
+      'disputes._id': mongoose.Types.ObjectId(disputeId),
+    });
 
-    if (dispute === undefined) {
+    const selectedDispute = subject?.disputes.find(dispute =>
+      dispute._id.equals(disputeId),
+    );
+
+    if (subject === null || selectedDispute === undefined) {
       throw new ApolloError('Dispute not found');
     }
 
-    const isUserDisputePartner = [dispute.partnerIdA, dispute.partnerIdB].some(
-      partnerId => partnerId === userId,
-    );
+    const isUserDisputePartner = [
+      selectedDispute.partnerIdA,
+      selectedDispute.partnerIdB,
+    ].some(partnerId => partnerId === userId);
 
     if (!isUserDisputePartner) {
       throw new ForbiddenError('User is not a dispute partner');
     }
 
-    const newMessage: MessageStoreItem = {
-      id: uuid(),
+    const newMessage: MessageDocument = {
+      _id: mongoose.Types.ObjectId(),
       authorId: userId,
       text: message,
     };
-    const updatedDispute: DisputeStoreItem = {
-      ...dispute,
-      messages: [...dispute.messages, newMessage],
-    };
-    const updatedStore: SubjectStore = subjectStore.map(subject => ({
-      ...subject,
-      disputes: subject.disputes.map(dispute =>
-        dispute.id === updatedDispute.id ? updatedDispute : dispute,
-      ),
-    }));
+    selectedDispute.messages.push(newMessage);
 
-    context.subject.updateStore(updatedStore);
-    return updatedDispute;
+    await subject.save();
+
+    return selectedDispute;
   },
 };
 

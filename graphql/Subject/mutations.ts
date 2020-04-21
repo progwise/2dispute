@@ -1,7 +1,7 @@
-import { v4 as uuid } from 'uuid';
+import * as mongoose from 'mongoose';
+import { AuthenticationError, ApolloError } from 'apollo-server-micro';
 import { MutationResolvers } from '../generated/graphql';
-import { SubjectStoreItem, DisputeStoreItem } from '../context';
-import { AuthenticationError } from 'apollo-server-micro';
+import { DisputeDocument } from '../Dispute/DisputeSchema';
 
 const mutations: MutationResolvers = {
   createSubject: (_parent, { input }, context) => {
@@ -9,62 +9,52 @@ const mutations: MutationResolvers = {
       throw new AuthenticationError('not authenticated');
     }
 
-    const subject: SubjectStoreItem = {
-      id: uuid(),
+    const newSubject = new context.mongoose.models.Subject({
       subject: input.subject,
-      tweetId: input.tweetId ?? null,
+      tweetId: input.tweetId,
       userId: context.user?.id,
       firstMessage: input.firstMessage,
       disputes: [],
-    };
-    context.subject.updateStore([...context.subject.getStore(), subject]);
-    return subject;
+    });
+
+    return newSubject.save();
   },
 
-  replyOnSubject: (_parent, { input: { subjectId, message } }, context) => {
+  replyOnSubject: async (
+    _parent,
+    { input: { subjectId, message } },
+    context,
+  ) => {
     if (context.user === undefined) {
       throw new AuthenticationError('not authenticated');
     }
 
-    const chosenSubject = context.subject
-      .getStore()
-      .find(subject => subject.id === subjectId);
+    const subject = await context.mongoose.models.Subject.findById(subjectId);
 
-    if (chosenSubject === undefined) {
-      throw new Error('Subject not found');
+    if (subject === null) {
+      throw new ApolloError('Subject not found');
     }
 
-    const newDispute: DisputeStoreItem = {
-      id: uuid(),
-      partnerIdA: chosenSubject.userId,
+    const newDispute: DisputeDocument = {
+      _id: mongoose.Types.ObjectId(),
+      partnerIdA: subject.userId,
       partnerIdB: context.user.id,
       messages: [
         {
-          id: uuid(),
-          authorId: chosenSubject.userId,
-          text: chosenSubject.firstMessage,
+          _id: mongoose.Types.ObjectId(),
+          authorId: subject.userId,
+          text: subject.firstMessage,
         },
         {
-          id: uuid(),
+          _id: mongoose.Types.ObjectId(),
           authorId: context.user.id,
           text: message,
         },
       ],
     };
 
-    const updatedSubject: SubjectStoreItem = {
-      ...chosenSubject,
-      disputes: [...chosenSubject.disputes, newDispute],
-    };
-
-    const updatedStore = context.subject.getStore().map(subject => {
-      if (subject.id === updatedSubject.id) {
-        return updatedSubject;
-      }
-      return subject;
-    });
-
-    context.subject.updateStore(updatedStore);
+    subject.disputes.push(newDispute);
+    await subject.save();
 
     return newDispute;
   },
