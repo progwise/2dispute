@@ -43,6 +43,9 @@ const SubjectChat = ({
       break;
   }
 
+  const handleLoginClick = (): Promise<boolean> =>
+    router.push(`/api/login?redirectTo=${router.asPath}`);
+
   return (
     <ChatContainer>
       <ChatPartners
@@ -59,7 +62,7 @@ const SubjectChat = ({
       )}
       {userState === UserState.Unauthenticated && (
         <div className="col-start-1 col-span-4 py-4 flex justify-center">
-          <Button onClick={(): Promise<boolean> => router.push('/api/login')}>
+          <Button onClick={handleLoginClick}>
             Melden Sie sich an, um auf dieses Thema zu antworten.
           </Button>
         </div>

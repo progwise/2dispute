@@ -1,5 +1,5 @@
 import React from 'react';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { useFormik } from 'formik';
 import Yup from '../../utils/yup';
@@ -32,6 +32,7 @@ const getTweetId = (tweetLink: string): string | undefined => {
 const CreateDispute = (): JSX.Element => {
   const [createSubject] = useCreateSubjectMutation();
   const { data, loading, error } = useMeQuery();
+  const router = useRouter();
 
   const formik = useFormik<FormValues>({
     validationSchema: createDisputeSchema,
@@ -56,7 +57,7 @@ const CreateDispute = (): JSX.Element => {
 
       const subjectId = data.createSubject.id;
 
-      Router.push(`/subjects/${subjectId}`);
+      router.push(`/subjects/${subjectId}`);
     },
   });
 
@@ -71,7 +72,7 @@ const CreateDispute = (): JSX.Element => {
   }
 
   if (!data.me) {
-    Router.push('/api/login');
+    router.push(`/api/login?redirectTo=${router.asPath}`);
     return <p>Loading...</p>;
   }
 
