@@ -1,0 +1,15 @@
+query getAllSubjects {
+  allSubjects {
+    id
+    subject
+    author {
+      name
+    }
+    disputes {
+      id
+      partnerB {
+        name
+      }
+    }
+  }
+}

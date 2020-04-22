@@ -487,6 +487,21 @@ export type CreateSubjectMutation = { __typename?: 'Mutation' } & {
   >;
 };
 
+export type GetAllSubjectsQueryVariables = {};
+
+export type GetAllSubjectsQuery = { __typename?: 'Query' } & {
+  allSubjects: Array<
+    { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject'> & {
+        author: { __typename?: 'User' } & Pick<User, 'name'>;
+        disputes: Array<
+          { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
+              partnerB: { __typename?: 'User' } & Pick<User, 'name'>;
+            }
+        >;
+      }
+  >;
+};
+
 export type GetSubjectQueryVariables = {
   subjectId: Scalars['ID'];
 };
@@ -804,6 +819,71 @@ export type CreateSubjectMutationResult = ApolloReactCommon.MutationResult<
 export type CreateSubjectMutationOptions = ApolloReactCommon.BaseMutationOptions<
   CreateSubjectMutation,
   CreateSubjectMutationVariables
+>;
+export const GetAllSubjectsDocument = gql`
+  query getAllSubjects {
+    allSubjects {
+      id
+      subject
+      author {
+        name
+      }
+      disputes {
+        id
+        partnerB {
+          name
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetAllSubjectsQuery__
+ *
+ * To run a query within a React component, call `useGetAllSubjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllSubjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllSubjectsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllSubjectsQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetAllSubjectsQuery,
+    GetAllSubjectsQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    GetAllSubjectsQuery,
+    GetAllSubjectsQueryVariables
+  >(GetAllSubjectsDocument, baseOptions);
+}
+export function useGetAllSubjectsLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetAllSubjectsQuery,
+    GetAllSubjectsQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    GetAllSubjectsQuery,
+    GetAllSubjectsQueryVariables
+  >(GetAllSubjectsDocument, baseOptions);
+}
+export type GetAllSubjectsQueryHookResult = ReturnType<
+  typeof useGetAllSubjectsQuery
+>;
+export type GetAllSubjectsLazyQueryHookResult = ReturnType<
+  typeof useGetAllSubjectsLazyQuery
+>;
+export type GetAllSubjectsQueryResult = ApolloReactCommon.QueryResult<
+  GetAllSubjectsQuery,
+  GetAllSubjectsQueryVariables
 >;
 export const GetSubjectDocument = gql`
   query getSubject($subjectId: ID!) {
