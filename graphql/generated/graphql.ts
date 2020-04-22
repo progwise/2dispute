@@ -484,8 +484,13 @@ export type GetSubjectQueryVariables = {
 
 export type GetSubjectQuery = { __typename?: 'Query' } & {
   subject?: Maybe<
-    { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject' | 'tweetId'> &
-      ChatSubjectFragment
+    { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject' | 'tweetId'> & {
+        disputes: Array<
+          { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
+              partnerB: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
+            }
+        >;
+      } & ChatSubjectFragment
   >;
   me?: Maybe<{ __typename?: 'User' } & ChatPersonFragment>;
 };
@@ -787,6 +792,13 @@ export const GetSubjectDocument = gql`
       subject
       tweetId
       ...ChatSubject
+      disputes {
+        id
+        partnerB {
+          id
+          name
+        }
+      }
     }
     me {
       ...ChatPerson

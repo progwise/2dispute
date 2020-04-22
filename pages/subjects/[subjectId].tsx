@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Link from '../../components/Link/Link';
 import {
   useGetSubjectLazyQuery,
   useReplyOnSubjectMutation,
@@ -64,6 +65,22 @@ const Subject = (): JSX.Element => {
         me={data.me}
         onNewMessage={handleNewMessage}
       />
+      <div>
+        Dispute zu diesem Thema:
+        {data.subject.disputes.length === 0 ? (
+          'Es existieren noch keine Dispute'
+        ) : (
+          <ul className="list-disc pl-8">
+            {data.subject.disputes.map(dispute => (
+              <li key={dispute.id}>
+                <Link href={`/dispute/${dispute.id}`}>
+                  Disput mit {dispute.partnerB.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </>
   );
 };

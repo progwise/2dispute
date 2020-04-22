@@ -4,6 +4,13 @@ query getSubject($subjectId: ID!) {
     subject
     tweetId
     ...ChatSubject
+    disputes {
+      id
+      partnerB {
+        id
+        name
+      }
+    }
   }
   me {
     ...ChatPerson
