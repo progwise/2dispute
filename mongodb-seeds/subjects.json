@@ -10,6 +10,7 @@
       "partnerIdA": "auth0|5e8ee039658e660c13004a03",
       "partnerIdB": "auth0|5e8f367c9374050c0b984f1e",
       "createdAt": ISODate("2020-04-21T10:08:56.106Z"),
+      "lastMessageAt": ISODate("2020-04-21T10:08:56.106Z"),
       "messages": [
         {
           "_id": ObjectId("deac6eca85ff665a2feddd69"),

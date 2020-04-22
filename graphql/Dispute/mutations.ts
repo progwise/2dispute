@@ -39,13 +39,16 @@ const mutations: MutationResolvers = {
       throw new ForbiddenError('User is not a dispute partner');
     }
 
+    const now = new Date();
+
     const newMessage: MessageDocument = {
       _id: mongoose.Types.ObjectId(),
       authorId: userId,
       text: message,
-      createdAt: new Date(),
+      createdAt: now,
     };
     selectedDispute.messages.push(newMessage);
+    selectedDispute.lastMessageAt = now;
 
     await subject.save();
 

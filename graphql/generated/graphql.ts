@@ -88,6 +88,7 @@ export type Dispute = {
   __typename?: 'Dispute';
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
+  lastMessageAt: Scalars['DateTime'];
   messages: Array<Message>;
   partnerA: User;
   partnerB: User;
@@ -343,6 +344,7 @@ export type DisputeResolvers<
 > = ResolversObject<{
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  lastMessageAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   messages?: Resolver<
     Array<ResolversTypes['Message']>,
     ParentType,
@@ -966,6 +968,7 @@ input ReplyOnSubjectInput {
 type Dispute {
   createdAt: DateTime!
   id: ID!
+  lastMessageAt: DateTime!
   messages: [Message!]!
   partnerA: User!
   partnerB: User!

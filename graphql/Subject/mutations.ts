@@ -43,6 +43,7 @@ const mutations: MutationResolvers = {
       partnerIdA: subject.userId,
       partnerIdB: context.user.id,
       createdAt: now,
+      lastMessageAt: now,
       messages: [
         {
           _id: mongoose.Types.ObjectId(),

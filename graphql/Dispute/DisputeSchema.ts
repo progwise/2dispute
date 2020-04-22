@@ -7,6 +7,7 @@ export interface DisputeDocument {
   partnerIdB: string;
   messages: MessageDocument[];
   createdAt: Date;
+  lastMessageAt: Date;
 }
 
 const DisputeSchema = new mongoose.Schema({
@@ -14,6 +15,7 @@ const DisputeSchema = new mongoose.Schema({
   partnerIdB: { type: String, required: true },
   messages: { type: [MessageSchema], required: true },
   createdAt: { type: Date, required: true },
+  lastMessageAt: { type: Date, required: true },
 });
 
 export default DisputeSchema;
