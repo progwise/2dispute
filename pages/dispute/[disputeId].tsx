@@ -7,6 +7,7 @@ import {
 import withApollo from '../../utils/withApollo';
 import SubjectHeader from '../../components/Subject/SubjectHeader';
 import { DisputeChat, ChatFormValues } from '../../components/Chat';
+import Link from '../../components/Link/Link';
 
 const Dispute = (): JSX.Element => {
   const router = useRouter();
@@ -48,6 +49,10 @@ const Dispute = (): JSX.Element => {
     );
   }
 
+  const otherDisputesOfSubject = data.dispute.subject.disputes.filter(
+    dispute => dispute.id !== disputeId,
+  );
+
   return (
     <>
       <SubjectHeader
@@ -59,6 +64,23 @@ const Dispute = (): JSX.Element => {
         me={data.me}
         onNewMessage={handleNewMessage}
       />
+      <div>
+        Andere Dispute zu diesem Thema:
+        {otherDisputesOfSubject.length === 0 ? (
+          'Es existieren keine weiteren Dispute zu diesem Thema'
+        ) : (
+          <ul className="list-disc pl-8">
+            {otherDisputesOfSubject.map(dispute => (
+              <li key={dispute.id}>
+                <Link href={`/dispute/${dispute.id}`}>
+                  Disput zwischen {dispute.partnerA.name} und{' '}
+                  {dispute.partnerB.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </>
   );
 };
