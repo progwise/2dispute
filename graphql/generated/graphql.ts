@@ -438,7 +438,14 @@ export type GetDisputeQuery = { __typename?: 'Query' } & {
         subject: { __typename?: 'Subject' } & Pick<
           Subject,
           'id' | 'subject' | 'tweetId'
-        >;
+        > & {
+            disputes: Array<
+              { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
+                  partnerA: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
+                  partnerB: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
+                }
+            >;
+          };
       } & ChatDisputeFragment
   >;
   me?: Maybe<{ __typename?: 'User' } & ChatPersonFragment>;
@@ -556,6 +563,17 @@ export const GetDisputeDocument = gql`
         id
         subject
         tweetId
+        disputes {
+          id
+          partnerA {
+            id
+            name
+          }
+          partnerB {
+            id
+            name
+          }
+        }
       }
       ...ChatDispute
     }
