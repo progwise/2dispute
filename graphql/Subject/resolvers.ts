@@ -1,4 +1,11 @@
 import { SubjectResolvers } from '../generated/graphql';
+import { DisputeDocument } from '../Dispute/DisputeSchema';
+
+const compareDisputesByLastMessageAt = (
+  disputeA: DisputeDocument,
+  disputeB: DisputeDocument,
+): number =>
+  disputeB.lastMessageAt.getTime() - disputeA.lastMessageAt.getTime();
 
 const subjectResolvers: SubjectResolvers = {
   id: parent => parent._id,
@@ -10,6 +17,7 @@ const subjectResolvers: SubjectResolvers = {
     text: parent.firstMessage,
     createdAt: parent.createdAt,
   }),
+  disputes: parent => parent.disputes.sort(compareDisputesByLastMessageAt),
 };
 
 export default subjectResolvers;
