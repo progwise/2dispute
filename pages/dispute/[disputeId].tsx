@@ -72,7 +72,7 @@ const Dispute = (): JSX.Element => {
           <ul className="list-disc pl-8">
             {otherDisputesOfSubject.map(dispute => (
               <li key={dispute.id}>
-                <Link href={`/dispute/${dispute.id}`}>
+                <Link href="/dispute/[disputeId]" as={`/dispute/${dispute.id}`}>
                   Disput zwischen {dispute.partnerA.name} und{' '}
                   {dispute.partnerB.name}
                 </Link>

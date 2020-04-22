@@ -26,13 +26,16 @@ const Subjects = (): JSX.Element => {
       <ul className="list-disc pl-8">
         {data.allSubjects.map(subject => (
           <li key={subject.id}>
-            <Link href={`/subjects/${subject.id}`}>
+            <Link href="/subjects/[subjectId]" as={`/subjects/${subject.id}`}>
               {subject.subject} von {subject.author.name}
             </Link>
             <ul className="list-disc pl-8">
               {subject.disputes.map(dispute => (
                 <li key={dispute.id}>
-                  <Link href={`/dispute/${dispute.id}`}>
+                  <Link
+                    href="/dispute/[disputeId]"
+                    as={`/dispute/${dispute.id}`}
+                  >
                     Disput mit {dispute.partnerB.name}
                   </Link>
                 </li>

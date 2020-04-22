@@ -57,7 +57,7 @@ const CreateSubject = (): JSX.Element => {
 
       const subjectId = data.createSubject.id;
 
-      router.push(`/subjects/${subjectId}`);
+      router.push('/subjects/[subjectId]', `/subjects/${subjectId}`);
     },
   });
 
