@@ -30,14 +30,13 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  allSubjects: Array<Subject>;
-  allSubjects2: SubjectConnection;
+  allSubjects: SubjectConnection;
   dispute?: Maybe<Dispute>;
   me?: Maybe<User>;
   subject?: Maybe<Subject>;
 };
 
-export type QueryAllSubjects2Args = {
+export type QueryAllSubjectsArgs = {
   first?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
   last?: Maybe<Scalars['Int']>;
@@ -324,15 +323,10 @@ export type QueryResolvers<
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = ResolversObject<{
   allSubjects?: Resolver<
-    Array<ResolversTypes['Subject']>,
-    ParentType,
-    ContextType
-  >;
-  allSubjects2?: Resolver<
     ResolversTypes['SubjectConnection'],
     ParentType,
     ContextType,
-    RequireFields<QueryAllSubjects2Args, 'first' | 'last'>
+    RequireFields<QueryAllSubjectsArgs, 'first' | 'last'>
   >;
   dispute?: Resolver<
     Maybe<ResolversTypes['Dispute']>,
@@ -583,16 +577,20 @@ export type CreateSubjectMutation = { __typename?: 'Mutation' } & {
 export type GetAllSubjectsQueryVariables = {};
 
 export type GetAllSubjectsQuery = { __typename?: 'Query' } & {
-  allSubjects: Array<
-    { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject'> & {
-        author: { __typename?: 'User' } & Pick<User, 'name'>;
-        disputes: Array<
-          { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
-              partnerB: { __typename?: 'User' } & Pick<User, 'name'>;
-            }
-        >;
+  allSubjects: { __typename?: 'SubjectConnection' } & {
+    edges: Array<
+      { __typename?: 'SubjectEdge' } & {
+        node: { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject'> & {
+            author: { __typename?: 'User' } & Pick<User, 'name'>;
+            disputes: Array<
+              { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
+                  partnerB: { __typename?: 'User' } & Pick<User, 'name'>;
+                }
+            >;
+          };
       }
-  >;
+    >;
+  };
 };
 
 export type GetSubjectQueryVariables = {
@@ -916,15 +914,19 @@ export type CreateSubjectMutationOptions = ApolloReactCommon.BaseMutationOptions
 export const GetAllSubjectsDocument = gql`
   query getAllSubjects {
     allSubjects {
-      id
-      subject
-      author {
-        name
-      }
-      disputes {
-        id
-        partnerB {
-          name
+      edges {
+        node {
+          id
+          subject
+          author {
+            name
+          }
+          disputes {
+            id
+            partnerB {
+              name
+            }
+          }
         }
       }
     }
@@ -1105,8 +1107,7 @@ directive @auth on FIELD_DEFINITION
 scalar DateTime
 
 type Query {
-  allSubjects: [Subject!]!
-  allSubjects2(first: Int = 10, after: String, last: Int = 10, before: String): SubjectConnection!
+  allSubjects(first: Int = 10, after: String, last: Int = 10, before: String): SubjectConnection!
   dispute(id: ID!): Dispute
   me: User
   subject(id: ID!): Subject

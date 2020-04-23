@@ -6,8 +6,7 @@
 scalar DateTime
 
 type Query {
-  allSubjects: [Subject!]!
-  allSubjects2(
+  allSubjects(
     first: Int = 10
     after: String
     last: Int = 10

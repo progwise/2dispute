@@ -24,7 +24,7 @@ const Subjects = (): JSX.Element => {
     <>
       <h1>Alle Themen</h1>
       <ul className="list-disc pl-8">
-        {data.allSubjects.map(subject => (
+        {data.allSubjects.edges.map(({ node: subject }) => (
           <li key={subject.id}>
             <Link href="/subjects/[subjectId]" as={`/subjects/${subject.id}`}>
               {subject.subject} von {subject.author.name}
