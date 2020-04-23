@@ -12,6 +12,7 @@ import { gql } from 'apollo-boost';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X];
 } &
@@ -30,9 +31,17 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   allSubjects: Array<Subject>;
+  allSubjects2: SubjectConnection;
   dispute?: Maybe<Dispute>;
   me?: Maybe<User>;
   subject?: Maybe<Subject>;
+};
+
+export type QueryAllSubjects2Args = {
+  first?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
 };
 
 export type QueryDisputeArgs = {
@@ -84,6 +93,12 @@ export type ReplyOnSubjectInput = {
   subjectId: Scalars['ID'];
 };
 
+export type SubjectConnection = {
+  __typename?: 'SubjectConnection';
+  edges: Array<SubjectEdge>;
+  pageInfo: PageInfo;
+};
+
 export type Dispute = {
   __typename?: 'Dispute';
   createdAt: Scalars['DateTime'];
@@ -113,6 +128,20 @@ export type Message = {
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   text: Scalars['String'];
+};
+
+export type SubjectEdge = {
+  __typename?: 'SubjectEdge';
+  cursor: Scalars['String'];
+  node: Subject;
+};
+
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  hasPreviousPage: Scalars['Boolean'];
+  hasNextPage: Scalars['Boolean'];
+  startCursor: Scalars['String'];
+  endCursor: Scalars['String'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -230,15 +259,25 @@ export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Query: ResolverTypeWrapper<{}>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Mutation: ResolverTypeWrapper<{}>;
   Subject: ResolverTypeWrapper<SubjectDocument>;
   SubjectCreateInput: SubjectCreateInput;
   ReplyOnSubjectInput: ReplyOnSubjectInput;
+  SubjectConnection: ResolverTypeWrapper<
+    Omit<SubjectConnection, 'edges'> & {
+      edges: Array<ResolversTypes['SubjectEdge']>;
+    }
+  >;
   Dispute: ResolverTypeWrapper<DisputeDocument>;
   ReplyOnDisputInput: ReplyOnDisputInput;
   User: ResolverTypeWrapper<User>;
   Message: ResolverTypeWrapper<MessageDocument>;
+  SubjectEdge: ResolverTypeWrapper<
+    Omit<SubjectEdge, 'node'> & { node: ResolversTypes['Subject'] }
+  >;
+  PageInfo: ResolverTypeWrapper<PageInfo>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -247,15 +286,23 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
   DateTime: Scalars['DateTime'];
   Query: {};
+  Int: Scalars['Int'];
   ID: Scalars['ID'];
   Mutation: {};
   Subject: SubjectDocument;
   SubjectCreateInput: SubjectCreateInput;
   ReplyOnSubjectInput: ReplyOnSubjectInput;
+  SubjectConnection: Omit<SubjectConnection, 'edges'> & {
+    edges: Array<ResolversParentTypes['SubjectEdge']>;
+  };
   Dispute: DisputeDocument;
   ReplyOnDisputInput: ReplyOnDisputInput;
   User: User;
   Message: MessageDocument;
+  SubjectEdge: Omit<SubjectEdge, 'node'> & {
+    node: ResolversParentTypes['Subject'];
+  };
+  PageInfo: PageInfo;
 }>;
 
 export type AuthDirectiveArgs = {};
@@ -280,6 +327,12 @@ export type QueryResolvers<
     Array<ResolversTypes['Subject']>,
     ParentType,
     ContextType
+  >;
+  allSubjects2?: Resolver<
+    ResolversTypes['SubjectConnection'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryAllSubjects2Args, 'first' | 'last'>
   >;
   dispute?: Resolver<
     Maybe<ResolversTypes['Dispute']>,
@@ -338,6 +391,19 @@ export type SubjectResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
+export type SubjectConnectionResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['SubjectConnection'] = ResolversParentTypes['SubjectConnection']
+> = ResolversObject<{
+  edges?: Resolver<
+    Array<ResolversTypes['SubjectEdge']>,
+    ParentType,
+    ContextType
+  >;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
 export type DisputeResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Dispute'] = ResolversParentTypes['Dispute']
@@ -377,14 +443,41 @@ export type MessageResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
+export type SubjectEdgeResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['SubjectEdge'] = ResolversParentTypes['SubjectEdge']
+> = ResolversObject<{
+  cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  node?: Resolver<ResolversTypes['Subject'], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
+export type PageInfoResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']
+> = ResolversObject<{
+  hasPreviousPage?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  startCursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  endCursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
 export type Resolvers<ContextType = Context> = ResolversObject<{
   DateTime?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Subject?: SubjectResolvers<ContextType>;
+  SubjectConnection?: SubjectConnectionResolvers<ContextType>;
   Dispute?: DisputeResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
+  SubjectEdge?: SubjectEdgeResolvers<ContextType>;
+  PageInfo?: PageInfoResolvers<ContextType>;
 }>;
 
 /**
@@ -1013,6 +1106,7 @@ scalar DateTime
 
 type Query {
   allSubjects: [Subject!]!
+  allSubjects2(first: Int = 10, after: String, last: Int = 10, before: String): SubjectConnection!
   dispute(id: ID!): Dispute
   me: User
   subject(id: ID!): Subject
@@ -1045,6 +1139,11 @@ input ReplyOnSubjectInput {
   subjectId: ID!
 }
 
+type SubjectConnection {
+  edges: [SubjectEdge!]!
+  pageInfo: PageInfo!
+}
+
 type Dispute {
   createdAt: DateTime!
   id: ID!
@@ -1071,5 +1170,17 @@ type Message {
   createdAt: DateTime!
   id: ID!
   text: String!
+}
+
+type SubjectEdge {
+  cursor: String!
+  node: Subject!
+}
+
+type PageInfo {
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+  startCursor: String!
+  endCursor: String!
 }
 `;

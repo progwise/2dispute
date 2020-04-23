@@ -22,3 +22,20 @@ input ReplyOnSubjectInput {
   subjectId: ID!
   message: String!
 }
+
+type SubjectConnection {
+  pageInfo: PageInfo!
+  edges: [SubjectEdge!]!
+}
+
+type PageInfo {
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+  startCursor: String!
+  endCursor: String!
+}
+
+type SubjectEdge {
+  cursor: String!
+  node: Subject!
+}
