@@ -574,7 +574,9 @@ export type CreateSubjectMutation = { __typename?: 'Mutation' } & {
   >;
 };
 
-export type GetAllSubjectsQueryVariables = {};
+export type GetAllSubjectsQueryVariables = {
+  cursor?: Maybe<Scalars['String']>;
+};
 
 export type GetAllSubjectsQuery = { __typename?: 'Query' } & {
   allSubjects: { __typename?: 'SubjectConnection' } & {
@@ -589,6 +591,10 @@ export type GetAllSubjectsQuery = { __typename?: 'Query' } & {
             >;
           };
       }
+    >;
+    pageInfo: { __typename?: 'PageInfo' } & Pick<
+      PageInfo,
+      'hasNextPage' | 'endCursor'
     >;
   };
 };
@@ -912,8 +918,8 @@ export type CreateSubjectMutationOptions = ApolloReactCommon.BaseMutationOptions
   CreateSubjectMutationVariables
 >;
 export const GetAllSubjectsDocument = gql`
-  query getAllSubjects {
-    allSubjects {
+  query getAllSubjects($cursor: String) {
+    allSubjects(first: 20, after: $cursor) {
       edges {
         node {
           id
@@ -928,6 +934,10 @@ export const GetAllSubjectsDocument = gql`
             }
           }
         }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }
@@ -945,6 +955,7 @@ export const GetAllSubjectsDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllSubjectsQuery({
  *   variables: {
+ *      cursor: // value for 'cursor'
  *   },
  * });
  */

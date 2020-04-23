@@ -2,11 +2,14 @@ import React from 'react';
 import withApollo from '../../utils/withApollo';
 import { useGetAllSubjectsQuery } from '../../graphql/generated/graphql';
 import Link from '../../components/Link/Link';
+import Button from '../../components/Button/Button';
 
 const Subjects = (): JSX.Element => {
-  const { called, loading, data, error } = useGetAllSubjectsQuery();
+  const { called, loading, data, error, fetchMore } = useGetAllSubjectsQuery({
+    notifyOnNetworkStatusChange: true,
+  });
 
-  if (!called || loading) {
+  if (!called || (loading && !data)) {
     return <p>Loading...</p>;
   }
 
@@ -19,6 +22,28 @@ const Subjects = (): JSX.Element => {
       </p>
     );
   }
+
+  const handleFetchMoreClick = (): void => {
+    fetchMore({
+      variables: {
+        cursor: data.allSubjects.pageInfo.endCursor,
+      },
+      updateQuery: (prevResult, { fetchMoreResult }) => {
+        const newEdges = fetchMoreResult?.allSubjects.edges;
+        const pageInfo = fetchMoreResult?.allSubjects.pageInfo;
+
+        return newEdges?.length
+          ? {
+              allSubjects: {
+                ...prevResult.allSubjects,
+                edges: [...prevResult.allSubjects.edges, ...newEdges],
+                pageInfo,
+              },
+            }
+          : prevResult;
+      },
+    });
+  };
 
   return (
     <>
@@ -44,6 +69,11 @@ const Subjects = (): JSX.Element => {
           </li>
         ))}
       </ul>
+      {data.allSubjects.pageInfo.hasNextPage && (
+        <Button disabled={loading} onClick={handleFetchMoreClick}>
+          mehr Themen laden
+        </Button>
+      )}
     </>
   );
 };

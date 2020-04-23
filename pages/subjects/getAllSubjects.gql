@@ -1,5 +1,5 @@
-query getAllSubjects {
-  allSubjects {
+query getAllSubjects($cursor: String) {
+  allSubjects(first: 20, after: $cursor) {
     edges {
       node {
         id
@@ -14,6 +14,10 @@ query getAllSubjects {
           }
         }
       }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
     }
   }
 }
