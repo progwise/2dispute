@@ -8,10 +8,16 @@ export default class DocumentConnectionResolver<
   T extends Document
 > extends ConnectionResolver<T> {
   private mongooseModel: Model<T>;
+  private filter = {};
 
-  constructor(options: ConnectionResolverOptions, mongooseModel: Model<T>) {
+  constructor(
+    options: ConnectionResolverOptions,
+    mongooseModel: Model<T>,
+    filter: {},
+  ) {
     super(options);
     this.mongooseModel = mongooseModel;
+    this.filter = filter;
   }
 
   protected async getAfter(
@@ -20,7 +26,10 @@ export default class DocumentConnectionResolver<
     limit: number,
   ): Promise<T[]> {
     const afterId = this.getIdFromCursor(after);
-    const afterItem = await this.mongooseModel.findById(afterId).exec();
+    const afterItem = await this.mongooseModel
+      .findById(afterId)
+      .where(this.filter)
+      .exec();
 
     if (afterItem === null) throw new ApolloError('after cursor not found');
 
@@ -28,18 +37,25 @@ export default class DocumentConnectionResolver<
       .find()
       .sort(sortString)
       .where(this.buildWhere(sortString, afterItem))
+      .where(this.filter)
       .limit(limit)
       .exec();
   }
 
   protected getAll(sortString: string, limit: number): Promise<T[]> {
-    return this.mongooseModel.find().sort(sortString).limit(limit).exec();
+    return this.mongooseModel
+      .find()
+      .where(this.filter)
+      .sort(sortString)
+      .limit(limit)
+      .exec();
   }
 
   protected getCountsAfter(item: T, sortString: string): Promise<number> {
     return this.mongooseModel
       .countDocuments({})
       .where(this.buildWhere(sortString, item))
+      .where(this.filter)
       .exec();
   }
 
