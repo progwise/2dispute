@@ -27,16 +27,12 @@ const Home = (): JSX.Element => {
         {data.latestActiveDisputes.edges.length > 0 ? (
           <ul className="list-disc pl-8">
             {data.latestActiveDisputes.edges.map(({ node: dispute }) => (
-              <Link
-                key={dispute.id}
-                href="/dispute/[disputeId]"
-                as={`/dispute/${dispute.id}`}
-              >
-                <li>
+              <li key={dispute.id}>
+                <Link href="/dispute/[disputeId]" as={`/dispute/${dispute.id}`}>
                   {dispute.subject.subject} (Dispute zwischen{' '}
                   {dispute.partnerA.name} und {dispute.partnerB.name})
-                </li>
-              </Link>
+                </Link>
+              </li>
             ))}
           </ul>
         ) : (
@@ -48,15 +44,14 @@ const Home = (): JSX.Element => {
         {data.unansweredSubjects.edges.length > 0 ? (
           <ul className="list-disc pl-8">
             {data.unansweredSubjects.edges.map(({ node: subject }) => (
-              <Link
-                key={subject.id}
-                href="/subjects/[subjectId]"
-                as={`/subjects/${subject.id}`}
-              >
-                <li>
+              <li key={subject.id}>
+                <Link
+                  href="/subjects/[subjectId]"
+                  as={`/subjects/${subject.id}`}
+                >
                   {subject.subject} von {subject.author.name}
-                </li>
-              </Link>
+                </Link>
+              </li>
             ))}
           </ul>
         ) : (
