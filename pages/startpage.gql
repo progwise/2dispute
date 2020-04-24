@@ -1,0 +1,37 @@
+query StartPage {
+  latestActiveDisputes: allDisputes(first: 10) {
+    edges {
+      node {
+        id
+        lastMessageAt
+        partnerA {
+          ...StartPageUser
+        }
+        partnerB {
+          ...StartPageUser
+        }
+        subject {
+          subject
+        }
+      }
+    }
+  }
+  unansweredSubjects: allSubjects(first: 10, filter: { hasDisputes: false }) {
+    edges {
+      node {
+        id
+        subject
+        hasDisputes
+        author {
+          ...StartPageUser
+        }
+        createdAt
+      }
+    }
+  }
+}
+
+fragment StartPageUser on User {
+  id
+  name
+}

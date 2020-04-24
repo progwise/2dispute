@@ -656,6 +656,40 @@ export type ReplyOnDisputeMutation = { __typename?: 'Mutation' } & {
     };
 };
 
+export type StartPageQueryVariables = {};
+
+export type StartPageQuery = { __typename?: 'Query' } & {
+  latestActiveDisputes: { __typename?: 'DisputeConnection' } & {
+    edges: Array<
+      { __typename?: 'DisputeEdge' } & {
+        node: { __typename?: 'Dispute' } & Pick<
+          Dispute,
+          'id' | 'lastMessageAt'
+        > & {
+            partnerA: { __typename?: 'User' } & StartPageUserFragment;
+            partnerB: { __typename?: 'User' } & StartPageUserFragment;
+            subject: { __typename?: 'Subject' } & Pick<Subject, 'subject'>;
+          };
+      }
+    >;
+  };
+  unansweredSubjects: { __typename?: 'SubjectConnection' } & {
+    edges: Array<
+      { __typename?: 'SubjectEdge' } & {
+        node: { __typename?: 'Subject' } & Pick<
+          Subject,
+          'id' | 'subject' | 'hasDisputes' | 'createdAt'
+        > & { author: { __typename?: 'User' } & StartPageUserFragment };
+      }
+    >;
+  };
+};
+
+export type StartPageUserFragment = { __typename?: 'User' } & Pick<
+  User,
+  'id' | 'name'
+>;
+
 export type MeQueryVariables = {};
 
 export type MeQuery = { __typename?: 'Query' } & {
@@ -769,6 +803,12 @@ export const ChatDisputeFragmentDoc = gql`
   }
   ${ChatPersonFragmentDoc}
   ${ChatMessageFragmentDoc}
+`;
+export const StartPageUserFragmentDoc = gql`
+  fragment StartPageUser on User {
+    id
+    name
+  }
 `;
 export const GetAllDisputesDocument = gql`
   query getAllDisputes($cursor: String) {
@@ -980,6 +1020,87 @@ export type ReplyOnDisputeMutationResult = ApolloReactCommon.MutationResult<
 export type ReplyOnDisputeMutationOptions = ApolloReactCommon.BaseMutationOptions<
   ReplyOnDisputeMutation,
   ReplyOnDisputeMutationVariables
+>;
+export const StartPageDocument = gql`
+  query StartPage {
+    latestActiveDisputes: allDisputes(first: 10) {
+      edges {
+        node {
+          id
+          lastMessageAt
+          partnerA {
+            ...StartPageUser
+          }
+          partnerB {
+            ...StartPageUser
+          }
+          subject {
+            subject
+          }
+        }
+      }
+    }
+    unansweredSubjects: allSubjects(first: 10, filter: { hasDisputes: false }) {
+      edges {
+        node {
+          id
+          subject
+          hasDisputes
+          author {
+            ...StartPageUser
+          }
+          createdAt
+        }
+      }
+    }
+  }
+  ${StartPageUserFragmentDoc}
+`;
+
+/**
+ * __useStartPageQuery__
+ *
+ * To run a query within a React component, call `useStartPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStartPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStartPageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useStartPageQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    StartPageQuery,
+    StartPageQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<StartPageQuery, StartPageQueryVariables>(
+    StartPageDocument,
+    baseOptions,
+  );
+}
+export function useStartPageLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    StartPageQuery,
+    StartPageQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<StartPageQuery, StartPageQueryVariables>(
+    StartPageDocument,
+    baseOptions,
+  );
+}
+export type StartPageQueryHookResult = ReturnType<typeof useStartPageQuery>;
+export type StartPageLazyQueryHookResult = ReturnType<
+  typeof useStartPageLazyQuery
+>;
+export type StartPageQueryResult = ApolloReactCommon.QueryResult<
+  StartPageQuery,
+  StartPageQueryVariables
 >;
 export const MeDocument = gql`
   query me {
