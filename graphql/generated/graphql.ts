@@ -581,6 +581,34 @@ export type ChatPersonFragment = { __typename?: 'User' } & Pick<
   'id' | 'name' | 'picture'
 >;
 
+export type GetAllDisputesQueryVariables = {
+  cursor?: Maybe<Scalars['String']>;
+};
+
+export type GetAllDisputesQuery = { __typename?: 'Query' } & {
+  allDisputes: { __typename?: 'DisputeConnection' } & {
+    edges: Array<
+      { __typename?: 'DisputeEdge' } & {
+        node: { __typename?: 'Dispute' } & Pick<
+          Dispute,
+          'id' | 'lastMessageAt'
+        > & {
+            subject: { __typename?: 'Subject' } & Pick<
+              Subject,
+              'id' | 'subject'
+            >;
+            partnerA: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
+            partnerB: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
+          };
+      }
+    >;
+    pageInfo: { __typename?: 'PageInfo' } & Pick<
+      PageInfo,
+      'endCursor' | 'hasNextPage'
+    >;
+  };
+};
+
 export type GetDisputeQueryVariables = {
   disputeId: Scalars['ID'];
 };
@@ -733,6 +761,83 @@ export const ChatDisputeFragmentDoc = gql`
   ${ChatPersonFragmentDoc}
   ${ChatMessageFragmentDoc}
 `;
+export const GetAllDisputesDocument = gql`
+  query getAllDisputes($cursor: String) {
+    allDisputes(first: 20, after: $cursor) {
+      edges {
+        node {
+          id
+          lastMessageAt
+          subject {
+            id
+            subject
+          }
+          partnerA {
+            id
+            name
+          }
+          partnerB {
+            id
+            name
+          }
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetAllDisputesQuery__
+ *
+ * To run a query within a React component, call `useGetAllDisputesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllDisputesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllDisputesQuery({
+ *   variables: {
+ *      cursor: // value for 'cursor'
+ *   },
+ * });
+ */
+export function useGetAllDisputesQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetAllDisputesQuery,
+    GetAllDisputesQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    GetAllDisputesQuery,
+    GetAllDisputesQueryVariables
+  >(GetAllDisputesDocument, baseOptions);
+}
+export function useGetAllDisputesLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetAllDisputesQuery,
+    GetAllDisputesQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    GetAllDisputesQuery,
+    GetAllDisputesQueryVariables
+  >(GetAllDisputesDocument, baseOptions);
+}
+export type GetAllDisputesQueryHookResult = ReturnType<
+  typeof useGetAllDisputesQuery
+>;
+export type GetAllDisputesLazyQueryHookResult = ReturnType<
+  typeof useGetAllDisputesLazyQuery
+>;
+export type GetAllDisputesQueryResult = ApolloReactCommon.QueryResult<
+  GetAllDisputesQuery,
+  GetAllDisputesQueryVariables
+>;
 export const GetDisputeDocument = gql`
   query getDispute($disputeId: ID!) {
     dispute(id: $disputeId) {
