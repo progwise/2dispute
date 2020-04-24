@@ -18,6 +18,7 @@ const subjectResolvers: SubjectResolvers = {
     createdAt: parent.createdAt,
   }),
   disputes: parent => parent.disputes.sort(compareDisputesByLastMessageAt),
+  hasDisputes: parent => parent.disputes.length > 0,
 };
 
 export default subjectResolvers;

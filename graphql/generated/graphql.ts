@@ -84,6 +84,7 @@ export type Subject = {
   createdAt: Scalars['DateTime'];
   disputes: Array<Dispute>;
   firstMessage: Message;
+  hasDisputes: Scalars['Boolean'];
   id: Scalars['ID'];
   subject: Scalars['String'];
   tweetId?: Maybe<Scalars['String']>;
@@ -419,6 +420,7 @@ export type SubjectResolvers<
     ContextType
   >;
   firstMessage?: Resolver<ResolversTypes['Message'], ParentType, ContextType>;
+  hasDisputes?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   subject?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tweetId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -1305,6 +1307,7 @@ type Subject {
   createdAt: DateTime!
   disputes: [Dispute!]!
   firstMessage: Message!
+  hasDisputes: Boolean!
   id: ID!
   subject: String!
   tweetId: String
