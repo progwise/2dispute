@@ -1,4 +1,5 @@
 # import Message from '../Message/Message.graphql'
+# import PageInfo from '../PageInfo/PageInfo.graphql'
 
 type Dispute {
   id: ID!
@@ -8,6 +9,16 @@ type Dispute {
   messages: [Message!]!
   createdAt: DateTime!
   lastMessageAt: DateTime!
+}
+
+type DisputeConnection {
+  edges: [DisputeEdge!]!
+  pageInfo: PageInfo!
+}
+
+type DisputeEdge {
+  cursor: String!
+  node: Dispute!
 }
 
 input ReplyOnDisputInput {
