@@ -1,4 +1,4 @@
-# import Subject, SubjectCreateInput, ReplyOnSubjectInput, SubjectConnection from './Subject/Subject.graphql'
+# import Subject, SubjectCreateInput, ReplyOnSubjectInput, SubjectConnection, SubjectFilter from './Subject/Subject.graphql'
 # import Dispute, ReplyOnDisputInput, DisputeConnection from './Dispute/Dispute.graphql'
 # import User from './User/User.graphql'
 # import @auth from './schemaDirectives/auth.graphql'
@@ -11,6 +11,7 @@ type Query {
     after: String
     last: Int = 10
     before: String
+    filter: SubjectFilter
   ): SubjectConnection!
   allDisputes(
     first: Int = 10

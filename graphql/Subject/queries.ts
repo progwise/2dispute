@@ -4,9 +4,20 @@ import DocumentConnectionResolver from '../helper/ConnectionResolver/DocumentCon
 
 const queries: QueryResolvers = {
   allSubjects: async (_parent, args, context) => {
+    const hasDisputes = args.filter?.hasDisputes ?? undefined;
+
+    let filter = {};
+    if (hasDisputes !== undefined) {
+      filter = {
+        ...filter,
+        disputes: hasDisputes ? { $not: { $size: 0 } } : { $size: 0 },
+      };
+    }
+
     const connectionResolver = new DocumentConnectionResolver<SubjectDocument>(
       { args, sortString: '-createdAt _id' },
       context.mongoose.models.Subject,
+      filter,
     );
     return connectionResolver.getConnection();
   },

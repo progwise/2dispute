@@ -34,3 +34,7 @@ type SubjectEdge {
   cursor: String!
   node: Subject!
 }
+
+input SubjectFilter {
+  hasDisputes: Boolean
+}

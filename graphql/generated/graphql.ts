@@ -49,6 +49,7 @@ export type QueryAllSubjectsArgs = {
   after?: Maybe<Scalars['String']>;
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
+  filter?: Maybe<SubjectFilter>;
 };
 
 export type QueryDisputeArgs = {
@@ -105,6 +106,10 @@ export type SubjectConnection = {
   __typename?: 'SubjectConnection';
   edges: Array<SubjectEdge>;
   pageInfo: PageInfo;
+};
+
+export type SubjectFilter = {
+  hasDisputes?: Maybe<Scalars['Boolean']>;
 };
 
 export type Dispute = {
@@ -290,6 +295,7 @@ export type ResolversTypes = ResolversObject<{
       edges: Array<ResolversTypes['SubjectEdge']>;
     }
   >;
+  SubjectFilter: SubjectFilter;
   Dispute: ResolverTypeWrapper<DisputeDocument>;
   DisputeConnection: ResolverTypeWrapper<
     Omit<DisputeConnection, 'edges'> & {
@@ -323,6 +329,7 @@ export type ResolversParentTypes = ResolversObject<{
   SubjectConnection: Omit<SubjectConnection, 'edges'> & {
     edges: Array<ResolversParentTypes['SubjectEdge']>;
   };
+  SubjectFilter: SubjectFilter;
   Dispute: DisputeDocument;
   DisputeConnection: Omit<DisputeConnection, 'edges'> & {
     edges: Array<ResolversParentTypes['DisputeEdge']>;
@@ -1290,7 +1297,7 @@ scalar DateTime
 
 type Query {
   allDisputes(first: Int = 10, after: String, last: Int = 10, before: String): DisputeConnection!
-  allSubjects(first: Int = 10, after: String, last: Int = 10, before: String): SubjectConnection!
+  allSubjects(first: Int = 10, after: String, last: Int = 10, before: String, filter: SubjectFilter): SubjectConnection!
   dispute(id: ID!): Dispute
   me: User
   subject(id: ID!): Subject
@@ -1327,6 +1334,10 @@ input ReplyOnSubjectInput {
 type SubjectConnection {
   edges: [SubjectEdge!]!
   pageInfo: PageInfo!
+}
+
+input SubjectFilter {
+  hasDisputes: Boolean
 }
 
 type Dispute {
