@@ -42,7 +42,7 @@ const Home = (): JSX.Element => {
       <div className="py-4">
         <h1>Unbeantwortete Themen:</h1>
         <ul className="list-disc pl-8">
-          {data.unrespondedSubjects.edges.map(({ node: subject }) => (
+          {data.unansweredSubjects.edges.map(({ node: subject }) => (
             <Link
               key={subject.id}
               href="/subjects/[subjectId]"
