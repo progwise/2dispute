@@ -1,7 +1,20 @@
 import * as mongoose from 'mongoose';
 import { QueryResolvers } from '../generated/graphql';
+import AggregationConnectionResolver from '../helper/ConnectionResolver/AggregationConnectionResolver';
+import { DisputeDocument } from './DisputeSchema';
 
 const queries: QueryResolvers = {
+  allDisputes: async (_parent, args, context) => {
+    const connectionResolver = new AggregationConnectionResolver<
+      DisputeDocument
+    >(
+      { args, sortString: '-disputes.lastMessageAt disputes._id' },
+      context.mongoose.models.Subject,
+      'disputes',
+    );
+
+    return connectionResolver.getConnection();
+  },
   dispute: async (_parent, { id }, context) => {
     const data = await context.mongoose.models.Subject.aggregate()
       .unwind('disputes')
