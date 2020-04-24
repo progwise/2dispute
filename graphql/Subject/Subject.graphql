@@ -11,6 +11,7 @@ type Subject {
   disputes: [Dispute!]!
   firstMessage: Message!
   createdAt: DateTime!
+  hasDisputes: Boolean!
 }
 
 input SubjectCreateInput {
