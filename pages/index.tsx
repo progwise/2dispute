@@ -36,7 +36,7 @@ const Home = (): JSX.Element => {
             ))}
           </ul>
         ) : (
-          <span>Keine Dispute</span>
+          <span className="text-gray-600">Keine Dispute</span>
         )}
       </div>
       <div className="py-4">
@@ -55,7 +55,7 @@ const Home = (): JSX.Element => {
             ))}
           </ul>
         ) : (
-          <span>Keine unbeantwortete Themen</span>
+          <span className="text-gray-600">Keine unbeantwortete Themen</span>
         )}
       </div>
     </>
