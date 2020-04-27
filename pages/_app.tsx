@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import Header from '../components/Header/Header';
+import Header from '../components/Header';
 import '../css/tailwind.css';
 
 interface MyAppProp {
@@ -9,12 +9,14 @@ interface MyAppProp {
 }
 
 const MyApp = ({ Component, pageProps }: MyAppProp): JSX.Element => (
-  <div className="max-w-screen-lg mx-auto shadow-lg border p-2">
-    <Header />
-    <main>
-      <Component {...pageProps} />
-    </main>
-    <footer />
+  <div className="px-8">
+    <div className="max-w-screen-lg mx-auto">
+      <Header />
+      <main>
+        <Component {...pageProps} />
+      </main>
+      <footer />
+    </div>
   </div>
 );
 
