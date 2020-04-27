@@ -1,5 +1,5 @@
-import auth0 from '../../utils/auth0';
 import { NextApiHandler } from 'next';
+import auth0 from '../../utils/auth0';
 
 const login: NextApiHandler = async (req, res) => {
   const redirectToParam = Array.isArray(req.query.redirectTo)

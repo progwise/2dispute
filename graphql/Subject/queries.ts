@@ -1,6 +1,6 @@
 import { QueryResolvers } from '../generated/graphql';
-import { SubjectDocument } from './SubjectSchema';
 import DocumentConnectionResolver from '../helper/ConnectionResolver/DocumentConnectionResolver';
+import { SubjectDocument } from './SubjectSchema';
 
 const queries: QueryResolvers = {
   allSubjects: async (_parent, args, context) => {

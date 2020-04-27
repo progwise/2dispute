@@ -1,14 +1,14 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import {
   ChatSubjectFragment,
   ChatPersonFragment,
 } from '../../graphql/generated/graphql';
+import Button from '../Button/Button';
 import ChatContainer from './components/ChatContainer';
 import ChatPartners from './components/ChatPartners';
 import ChatMessage from './components/ChatMessage';
 import ChatMessageForm, { ChatFormValues } from './components/ChatMessageForm';
-import Button from '../Button/Button';
-import { useRouter } from 'next/router';
 
 interface SubjectChatProps {
   subject: ChatSubjectFragment;

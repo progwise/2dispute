@@ -2,10 +2,10 @@
 
 import mongoose, { Model } from 'mongoose';
 import { ApolloError } from 'apollo-server-micro';
+import getValueByPath from '../getValueByPath';
 import ConnectionResolver, {
   ConnectionResolverOptions,
 } from './ConnectionResolver';
-import getValueByPath from '../getValueByPath';
 
 export default class AggregationConnectionResolver<
   T
