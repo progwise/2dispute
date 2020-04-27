@@ -26,6 +26,8 @@ fragment ChatMessage on Message {
   text
   author {
     id
+    name
+    picture
   }
 }
 

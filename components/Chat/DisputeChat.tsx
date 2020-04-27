@@ -4,7 +4,6 @@ import {
   ChatPersonFragment,
 } from '../../graphql/generated/graphql';
 import ChatContainer from './components/ChatContainer';
-import ChatPartners from './components/ChatPartners';
 import ChatMessage from './components/ChatMessage';
 import ChatMessageForm, { ChatFormValues } from './components/ChatMessageForm';
 
@@ -41,9 +40,9 @@ const DisputeChat = ({
 
   return (
     <ChatContainer>
-      <ChatPartners partnerA={dispute.partnerA} partnerB={dispute.partnerB} />
       {dispute.messages.map(message => (
         <ChatMessage
+          author={message.author}
           key={message.id}
           position={
             message.author.id === dispute.partnerA.id ? 'left' : 'right'

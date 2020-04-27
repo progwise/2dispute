@@ -6,7 +6,6 @@ import {
 } from '../../graphql/generated/graphql';
 import Button from '../Button/Button';
 import ChatContainer from './components/ChatContainer';
-import ChatPartners from './components/ChatPartners';
 import ChatMessage from './components/ChatMessage';
 import ChatMessageForm, { ChatFormValues } from './components/ChatMessageForm';
 
@@ -48,11 +47,11 @@ const SubjectChat = ({
 
   return (
     <ChatContainer>
-      <ChatPartners
-        partnerA={subject.author}
-        partnerB={(userState !== UserState.Author && me) || undefined}
+      <ChatMessage
+        position="left"
+        text={subject.firstMessage.text}
+        author={subject.author}
       />
-      <ChatMessage position="left" text={subject.firstMessage.text} />
       {userState === UserState.Visitor && (
         <ChatMessageForm
           position="right"
@@ -61,7 +60,7 @@ const SubjectChat = ({
         />
       )}
       {userState === UserState.Unauthenticated && (
-        <div className="col-start-1 col-span-4 py-4 flex justify-center">
+        <div className="col-start-1 col-span-3 py-4 flex justify-center">
           <Button onClick={handleLoginClick}>
             Melden Sie sich an, um auf dieses Thema zu antworten.
           </Button>
