@@ -583,7 +583,7 @@ export type ChatDisputeFragment = { __typename?: 'Dispute' } & Pick<
 export type ChatMessageFragment = { __typename?: 'Message' } & Pick<
   Message,
   'id' | 'text'
-> & { author: { __typename?: 'User' } & Pick<User, 'id'> };
+> & { author: { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'picture'> };
 
 export type ChatPersonFragment = { __typename?: 'User' } & Pick<
   User,
@@ -791,6 +791,8 @@ export const ChatMessageFragmentDoc = gql`
     text
     author {
       id
+      name
+      picture
     }
   }
 `;
