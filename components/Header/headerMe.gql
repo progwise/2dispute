@@ -1,0 +1,6 @@
+query headerMe {
+  me {
+    id
+    name
+  }
+}

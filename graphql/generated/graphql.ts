@@ -590,6 +590,12 @@ export type ChatPersonFragment = { __typename?: 'User' } & Pick<
   'id' | 'name' | 'picture'
 >;
 
+export type HeaderMeQueryVariables = {};
+
+export type HeaderMeQuery = { __typename?: 'Query' } & {
+  me?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>;
+};
+
 export type GetAllDisputesQueryVariables = {
   cursor?: Maybe<Scalars['String']>;
 };
@@ -810,6 +816,60 @@ export const StartPageUserFragmentDoc = gql`
     name
   }
 `;
+export const HeaderMeDocument = gql`
+  query headerMe {
+    me {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useHeaderMeQuery__
+ *
+ * To run a query within a React component, call `useHeaderMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHeaderMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHeaderMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useHeaderMeQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    HeaderMeQuery,
+    HeaderMeQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<HeaderMeQuery, HeaderMeQueryVariables>(
+    HeaderMeDocument,
+    baseOptions,
+  );
+}
+export function useHeaderMeLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    HeaderMeQuery,
+    HeaderMeQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<HeaderMeQuery, HeaderMeQueryVariables>(
+    HeaderMeDocument,
+    baseOptions,
+  );
+}
+export type HeaderMeQueryHookResult = ReturnType<typeof useHeaderMeQuery>;
+export type HeaderMeLazyQueryHookResult = ReturnType<
+  typeof useHeaderMeLazyQuery
+>;
+export type HeaderMeQueryResult = ApolloReactCommon.QueryResult<
+  HeaderMeQuery,
+  HeaderMeQueryVariables
+>;
 export const GetAllDisputesDocument = gql`
   query getAllDisputes($cursor: String) {
     allDisputes(first: 20, after: $cursor) {
