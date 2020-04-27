@@ -2,33 +2,31 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useHeaderMeQuery } from '../../graphql/generated/graphql';
 import withApollo from '../../utils/withApollo';
-import Link from '../Link/Link';
+import NavBar, { NavBarItem } from './NavBar';
+import Logo from './Logo';
 
 const Header = (): JSX.Element => {
-  const { loading, data } = useHeaderMeQuery();
+  const { data } = useHeaderMeQuery();
   const router = useRouter();
 
-  let userName: string;
-  let authLink: JSX.Element | undefined = undefined;
+  const isAuthenticated = data?.me ? true : false;
 
-  if (data?.me) {
-    userName = data.me.name;
-    authLink = <Link href="/api/logout">abmelden</Link>;
-  } else if (loading) {
-    userName = 'loading...';
-  } else {
-    userName = 'unangemeldet';
-    authLink = (
-      <Link href={`/api/login?redirectTo=${router.asPath}`}>anmelden</Link>
-    );
-  }
+  const loginPath = `/api/login?redirectTo=${router.asPath}`;
+  const logoutPath = '/api/logout';
 
   return (
-    <header className="w-full py-4 flex flex-col items-center">
-      <span className="text-2xl">2 Dispute</span>
-      <span>
-        Benutzer: {userName} {authLink && <>({authLink})</>}
-      </span>
+    <header className="pb-20">
+      <NavBar>
+        {isAuthenticated ? (
+          <NavBarItem href={logoutPath}>Abmelden</NavBarItem>
+        ) : (
+          <>
+            <NavBarItem href={loginPath}>Anmelden</NavBarItem>
+            <NavBarItem href={loginPath}>Registrieren</NavBarItem>
+          </>
+        )}
+      </NavBar>
+      <Logo />
     </header>
   );
 };
