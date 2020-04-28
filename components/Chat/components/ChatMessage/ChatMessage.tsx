@@ -19,7 +19,7 @@ const ChatMessage = ({
       position === 'left'
         ? 'col-start-1 mb-24 pr-4'
         : 'col-start-3 mt-24 pl-4 flex-row-reverse'
-    } flex`}
+    } flex text-xl text-gray-800 font-text-message`}
   >
     <TextboxWithAuthorPicture
       authorPicture={author.picture ?? ''}
