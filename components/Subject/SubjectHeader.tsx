@@ -16,7 +16,7 @@ const SubjectHeader = ({
       <p className="text-lg">{subject}</p>
     </div>
     {tweetId && (
-      <div className="px-4 mx-auto">
+      <div className="py-4 mx-auto">
         <TwitterTweetEmbed
           tweetId={tweetId}
           key={tweetId}
