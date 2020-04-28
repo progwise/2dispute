@@ -1,5 +1,14 @@
+const tailwindSansFontFamily =
+  'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
+const sansFontFamily = `"Open Sans", ${tailwindSansFontFamily}`;
+const textMessageFontFamily = `Muli, ${sansFontFamily}`;
+
 module.exports = {
   theme: {
+    fontFamily: {
+      sans: sansFontFamily,
+      'text-message': textMessageFontFamily,
+    },
     extend: {
       maxHeight: {
         '24': '6rem',
