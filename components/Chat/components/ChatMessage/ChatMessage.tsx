@@ -1,21 +1,14 @@
 import React from 'react';
-import { ChatPersonFragment } from '../../../../graphql/generated/graphql';
+import { ChatMessageFragment } from '../../../../graphql/generated/graphql';
 import Arrow from './Arrow';
 import TextboxWithAuthorPicture from './TextboxWithAuthorPicture';
 
 interface ChatMessageProps {
-  text: string;
+  message: ChatMessageFragment;
   position: 'left' | 'right';
-  author: ChatPersonFragment;
-  createdAt: string;
 }
 
-const ChatMessage = ({
-  text,
-  position,
-  author,
-  createdAt,
-}: ChatMessageProps): JSX.Element => (
+const ChatMessage = ({ message, position }: ChatMessageProps): JSX.Element => (
   <div
     className={`${
       position === 'left'
@@ -24,11 +17,11 @@ const ChatMessage = ({
     } flex text-xl text-gray-800 font-text-message`}
   >
     <TextboxWithAuthorPicture
-      authorPicture={author.picture ?? ''}
+      authorPicture={message.author.picture ?? ''}
       position={position}
-      createdAt={createdAt}
+      createdAt={message.createdAt}
     >
-      {text}
+      {message.text}
     </TextboxWithAuthorPicture>
     <Arrow position={position} />
   </div>

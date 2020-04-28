@@ -42,13 +42,11 @@ const DisputeChat = ({
     <ChatContainer>
       {dispute.messages.map(message => (
         <ChatMessage
-          author={message.author}
           key={message.id}
+          message={message}
           position={
             message.author.id === dispute.partnerA.id ? 'left' : 'right'
           }
-          text={message.text}
-          createdAt={message.createdAt}
         />
       ))}
       {userState !== UserState.Visitor && (
