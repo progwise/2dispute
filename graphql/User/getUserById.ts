@@ -1,7 +1,7 @@
-import { User } from '../generated/graphql';
 import Auth0ManagementClient from './auth0ManagementClient';
+import { UserMapper } from '.';
 
-const getUserById = async (userId: string): Promise<User> => {
+const getUserById = async (userId: string): Promise<UserMapper> => {
   const user = await Auth0ManagementClient.getUser({ id: userId });
   if (user.nickname === undefined) {
     throw new Error('Username not found');

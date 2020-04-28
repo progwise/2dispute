@@ -7,6 +7,7 @@ import {
 import { SubjectDocument } from '../Subject/SubjectSchema';
 import { DisputeDocument } from '../Dispute/DisputeSchema';
 import { MessageDocument } from '../Message/MessageSchema';
+import { UserMapper } from '../User';
 import { Context } from '../context';
 import { gql } from 'apollo-boost';
 import * as ApolloReactCommon from '@apollo/react-common';
@@ -141,9 +142,17 @@ export type ReplyOnDisputInput = {
 
 export type User = {
   __typename?: 'User';
+  allSubjects: SubjectConnection;
   id: Scalars['ID'];
   name: Scalars['String'];
   picture?: Maybe<Scalars['String']>;
+};
+
+export type UserAllSubjectsArgs = {
+  first?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
 };
 
 export type Message = {
@@ -308,7 +317,7 @@ export type ResolversTypes = ResolversObject<{
     }
   >;
   ReplyOnDisputInput: ReplyOnDisputInput;
-  User: ResolverTypeWrapper<User>;
+  User: ResolverTypeWrapper<UserMapper>;
   Message: ResolverTypeWrapper<MessageDocument>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   SubjectEdge: ResolverTypeWrapper<
@@ -340,7 +349,7 @@ export type ResolversParentTypes = ResolversObject<{
     edges: Array<ResolversParentTypes['DisputeEdge']>;
   };
   ReplyOnDisputInput: ReplyOnDisputInput;
-  User: User;
+  User: UserMapper;
   Message: MessageDocument;
   PageInfo: PageInfo;
   SubjectEdge: Omit<SubjectEdge, 'node'> & {
@@ -493,6 +502,12 @@ export type UserResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
 > = ResolversObject<{
+  allSubjects?: Resolver<
+    ResolversTypes['SubjectConnection'],
+    ParentType,
+    ContextType,
+    RequireFields<UserAllSubjectsArgs, 'first' | 'last'>
+  >;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   picture?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -1563,6 +1578,7 @@ input ReplyOnDisputInput {
 }
 
 type User {
+  allSubjects(first: Int = 10, after: String, last: Int = 10, before: String): SubjectConnection!
   id: ID!
   name: String!
   picture: String
