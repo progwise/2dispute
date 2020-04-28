@@ -2,6 +2,7 @@ import React from 'react';
 import {
   ChatDisputeFragment,
   ChatPersonFragment,
+  ChatMessageFragment,
 } from '../../graphql/generated/graphql';
 import ChatContainer from './components/ChatContainer';
 import ChatMessage from './components/ChatMessage';
@@ -19,6 +20,45 @@ enum UserState {
   PartnerB,
   Visitor,
 }
+
+interface CombinedMessage {
+  authorId: string;
+  messages: ChatMessageFragment[];
+  id: string;
+}
+
+const addMessageToLastCombinedMessage = (
+  state: CombinedMessage[],
+  newMessage: ChatMessageFragment,
+): CombinedMessage[] =>
+  state.map((combinedMessage, index) => {
+    if (index === state.length - 1) {
+      return {
+        ...combinedMessage,
+        messages: [...combinedMessage.messages, newMessage],
+      };
+    }
+    return combinedMessage;
+  });
+
+const combineMessage = (messages: ChatMessageFragment[]): CombinedMessage[] =>
+  messages.reduce((state: CombinedMessage[], newMessage) => {
+    const lastCombinedMessage: CombinedMessage | undefined =
+      state[state.length - 1];
+
+    if (lastCombinedMessage?.authorId === newMessage.author.id) {
+      return addMessageToLastCombinedMessage(state, newMessage);
+    }
+
+    return [
+      ...state,
+      {
+        authorId: newMessage.author.id,
+        id: newMessage.id,
+        messages: [newMessage],
+      },
+    ];
+  }, []);
 
 const DisputeChat = ({
   dispute,
@@ -40,12 +80,12 @@ const DisputeChat = ({
 
   return (
     <ChatContainer>
-      {dispute.messages.map(message => (
+      {combineMessage(dispute.messages).map(combinedMessage => (
         <ChatMessage
-          key={message.id}
-          message={message}
+          key={combinedMessage.id}
+          message={combinedMessage.messages}
           position={
-            message.author.id === dispute.partnerA.id ? 'left' : 'right'
+            combinedMessage.authorId === dispute.partnerA.id ? 'left' : 'right'
           }
         />
       ))}
