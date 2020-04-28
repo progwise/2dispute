@@ -51,6 +51,7 @@ const SubjectChat = ({
         position="left"
         text={subject.firstMessage.text}
         author={subject.author}
+        createdAt={subject.createdAt}
       />
       {userState === UserState.Visitor && (
         <ChatMessageForm

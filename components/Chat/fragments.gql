@@ -6,6 +6,7 @@ fragment ChatSubject on Subject {
   firstMessage {
     text
   }
+  createdAt
 }
 
 fragment ChatDispute on Dispute {
@@ -24,6 +25,7 @@ fragment ChatDispute on Dispute {
 fragment ChatMessage on Message {
   id
   text
+  createdAt
   author {
     id
     name

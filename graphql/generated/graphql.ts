@@ -565,7 +565,7 @@ export type IDirectiveResolvers<ContextType = Context> = DirectiveResolvers<
 >;
 export type ChatSubjectFragment = { __typename?: 'Subject' } & Pick<
   Subject,
-  'id'
+  'id' | 'createdAt'
 > & {
     author: { __typename?: 'User' } & ChatPersonFragment;
     firstMessage: { __typename?: 'Message' } & Pick<Message, 'text'>;
@@ -582,7 +582,7 @@ export type ChatDisputeFragment = { __typename?: 'Dispute' } & Pick<
 
 export type ChatMessageFragment = { __typename?: 'Message' } & Pick<
   Message,
-  'id' | 'text'
+  'id' | 'text' | 'createdAt'
 > & { author: { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'picture'> };
 
 export type ChatPersonFragment = { __typename?: 'User' } & Pick<
@@ -785,6 +785,7 @@ export const ChatSubjectFragmentDoc = gql`
     firstMessage {
       text
     }
+    createdAt
   }
   ${ChatPersonFragmentDoc}
 `;
@@ -792,6 +793,7 @@ export const ChatMessageFragmentDoc = gql`
   fragment ChatMessage on Message {
     id
     text
+    createdAt
     author {
       id
       name
