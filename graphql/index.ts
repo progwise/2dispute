@@ -4,7 +4,7 @@ import { Resolvers, typeDefs } from './generated/graphql';
 import context from './context';
 import { subjectResolvers, subjectQueries, subjectMutations } from './Subject';
 import schemaDirectives from './schemaDirectives';
-import { userQueries } from './User';
+import { userQueries, userResolvers } from './User';
 import { disputeResolvers, disputeQueries, disputeMutations } from './Dispute';
 import { messageResolvers } from './Message';
 
@@ -21,6 +21,7 @@ const resolvers: Resolvers = {
   Subject: subjectResolvers,
   Dispute: disputeResolvers,
   Message: messageResolvers,
+  User: userResolvers,
   DateTime: GraphQLDateTime,
 };
 

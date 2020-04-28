@@ -1,5 +1,14 @@
+# import SubjectConnection from '../Subject/Subject.graphql'
+
 type User {
   id: ID!
   name: String!
   picture: String
+
+  allSubjects(
+    first: Int = 10
+    after: String
+    last: Int = 10
+    before: String
+  ): SubjectConnection!
 }
