@@ -7,12 +7,14 @@ interface ChatMessageProps {
   text: string;
   position: 'left' | 'right';
   author: ChatPersonFragment;
+  createdAt: string;
 }
 
 const ChatMessage = ({
   text,
   position,
   author,
+  createdAt,
 }: ChatMessageProps): JSX.Element => (
   <div
     className={`${
@@ -24,6 +26,7 @@ const ChatMessage = ({
     <TextboxWithAuthorPicture
       authorPicture={author.picture ?? ''}
       position={position}
+      createdAt={createdAt}
     >
       {text}
     </TextboxWithAuthorPicture>
