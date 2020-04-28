@@ -15,7 +15,7 @@ const Header = (): JSX.Element => {
   const logoutPath = '/api/logout';
 
   return (
-    <header className="pb-20">
+    <header className="pb-8">
       <NavBar>
         {isAuthenticated ? (
           <NavBarItem href={logoutPath}>Abmelden</NavBarItem>
