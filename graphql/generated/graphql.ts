@@ -674,7 +674,10 @@ export type StartPageQuery = { __typename?: 'Query' } & {
         > & {
             partnerA: { __typename?: 'User' } & StartPageUserFragment;
             partnerB: { __typename?: 'User' } & StartPageUserFragment;
-            subject: { __typename?: 'Subject' } & Pick<Subject, 'subject'>;
+            subject: { __typename?: 'Subject' } & Pick<
+              Subject,
+              'id' | 'subject'
+            >;
           };
       }
     >;
@@ -1097,6 +1100,7 @@ export const StartPageDocument = gql`
             ...StartPageUser
           }
           subject {
+            id
             subject
           }
         }

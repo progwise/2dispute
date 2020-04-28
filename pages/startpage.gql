@@ -11,6 +11,7 @@ query StartPage {
           ...StartPageUser
         }
         subject {
+          id
           subject
         }
       }
