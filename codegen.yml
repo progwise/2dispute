@@ -22,7 +22,7 @@ generates:
         Dispute: ../Dispute/DisputeSchema#DisputeDocument
         Message: ../Message/MessageSchema#MessageDocument
       scalars:
-        DateTime: Date
+        DateTime: string
 hooks:
   afterOneFileWrite:
     - prettier --write
