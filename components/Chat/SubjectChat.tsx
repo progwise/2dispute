@@ -47,12 +47,7 @@ const SubjectChat = ({
 
   return (
     <ChatContainer>
-      <ChatMessage
-        position="left"
-        text={subject.firstMessage.text}
-        author={subject.author}
-        createdAt={subject.createdAt}
-      />
+      <ChatMessage position="left" message={subject.firstMessage} />
       {userState === UserState.Visitor && (
         <ChatMessageForm
           position="right"

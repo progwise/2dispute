@@ -568,7 +568,7 @@ export type ChatSubjectFragment = { __typename?: 'Subject' } & Pick<
   'id' | 'createdAt'
 > & {
     author: { __typename?: 'User' } & ChatPersonFragment;
-    firstMessage: { __typename?: 'Message' } & Pick<Message, 'text'>;
+    firstMessage: { __typename?: 'Message' } & ChatMessageFragment;
   };
 
 export type ChatDisputeFragment = { __typename?: 'Dispute' } & Pick<
@@ -776,19 +776,6 @@ export const ChatPersonFragmentDoc = gql`
     picture
   }
 `;
-export const ChatSubjectFragmentDoc = gql`
-  fragment ChatSubject on Subject {
-    id
-    author {
-      ...ChatPerson
-    }
-    firstMessage {
-      text
-    }
-    createdAt
-  }
-  ${ChatPersonFragmentDoc}
-`;
 export const ChatMessageFragmentDoc = gql`
   fragment ChatMessage on Message {
     id
@@ -800,6 +787,20 @@ export const ChatMessageFragmentDoc = gql`
       picture
     }
   }
+`;
+export const ChatSubjectFragmentDoc = gql`
+  fragment ChatSubject on Subject {
+    id
+    author {
+      ...ChatPerson
+    }
+    firstMessage {
+      ...ChatMessage
+    }
+    createdAt
+  }
+  ${ChatPersonFragmentDoc}
+  ${ChatMessageFragmentDoc}
 `;
 export const ChatDisputeFragmentDoc = gql`
   fragment ChatDispute on Dispute {
