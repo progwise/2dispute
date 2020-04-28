@@ -22,6 +22,7 @@ type Query {
   subject(id: ID!): Subject
   me: User
   dispute(id: ID!): Dispute
+  user(id: ID!): User
 }
 
 type Mutation {

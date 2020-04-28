@@ -35,6 +35,7 @@ export type Query = {
   dispute?: Maybe<Dispute>;
   me?: Maybe<User>;
   subject?: Maybe<Subject>;
+  user?: Maybe<User>;
 };
 
 export type QueryAllDisputesArgs = {
@@ -57,6 +58,10 @@ export type QueryDisputeArgs = {
 };
 
 export type QuerySubjectArgs = {
+  id: Scalars['ID'];
+};
+
+export type QueryUserArgs = {
   id: Scalars['ID'];
 };
 
@@ -388,6 +393,12 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QuerySubjectArgs, 'id'>
+  >;
+  user?: Resolver<
+    Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryUserArgs, 'id'>
   >;
 }>;
 
@@ -1491,6 +1502,7 @@ type Query {
   dispute(id: ID!): Dispute
   me: User
   subject(id: ID!): Subject
+  user(id: ID!): User
 }
 
 type Mutation {
