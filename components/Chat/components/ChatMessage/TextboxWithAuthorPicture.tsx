@@ -25,7 +25,7 @@ const TextboxWithAuthorPicture = ({
     <div
       className={`${
         position === 'left' ? 'bg-orange-200' : 'bg-blue-200'
-      } w-full p-12 min-h-48 space-y-8`}
+      } w-full p-12 sm:min-h-48 space-y-8`}
     >
       {children}
     </div>

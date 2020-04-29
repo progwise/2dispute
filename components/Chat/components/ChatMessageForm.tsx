@@ -37,7 +37,7 @@ const ChatMessageForm = ({
     <form
       className={`${
         position === 'left' ? 'col-start-1' : 'col-start-2'
-      } col-span-3 flex flex-col items-start`}
+      } md:col-span-3 flex flex-col items-start`}
       onSubmit={formik.handleSubmit}
     >
       <TextareaInput
