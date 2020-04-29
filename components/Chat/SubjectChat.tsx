@@ -8,6 +8,7 @@ import Button from '../Button/Button';
 import ChatContainer from './components/ChatContainer';
 import ChatMessage from './components/ChatMessage';
 import ChatMessageForm, { ChatFormValues } from './components/ChatMessageForm';
+import ChatItemFullWidth from './components/ChatItemFullWidth';
 
 interface SubjectChatProps {
   subject: ChatSubjectFragment;
@@ -57,11 +58,11 @@ const SubjectChat = ({
         />
       )}
       {userState === UserState.Unauthenticated && (
-        <div className="col-start-1 md:col-span-3 py-4 flex justify-center">
+        <ChatItemFullWidth className="py-4 flex justify-center">
           <Button onClick={handleLoginClick}>
             Melden Sie sich an, um auf dieses Thema zu antworten.
           </Button>
-        </div>
+        </ChatItemFullWidth>
       )}
     </ChatContainer>
   );

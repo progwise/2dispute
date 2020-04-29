@@ -12,6 +12,7 @@ import {
 } from '../../graphql/generated/graphql';
 import ChatContainer from '../../components/Chat/components/ChatContainer';
 import ChatBubble from '../../components/Chat/components/ChatMessage/ChatBubble';
+import ChatItemFullWidth from '../../components/Chat/components/ChatItemFullWidth';
 
 interface FormValues {
   subject: string;
@@ -137,11 +138,11 @@ const CreateSubject = (): JSX.Element => {
             </ChatBubble>
           </ChatContainer>
         </div>
-        <div className="py-4">
+        <ChatItemFullWidth className="py-4 flex justify-center">
           <Button type="submit" disabled={formik.isSubmitting}>
             Veröffentlichen
           </Button>
-        </div>
+        </ChatItemFullWidth>
       </form>
     </>
   );
