@@ -30,6 +30,7 @@ const TextareaInput = ({
       onChange={onChange}
       placeholder={placeholder}
       value={value}
+      rows={3}
     />
     {error && <InputError error={error} />}
   </>
