@@ -29,6 +29,7 @@ const ChatMessage = ({
     >
       <TextboxWithAuthorPicture
         authorPicture={firstMessage.author.picture ?? ''}
+        authorId={firstMessage.author.id}
         position={position}
       >
         {messages.map(message => (
