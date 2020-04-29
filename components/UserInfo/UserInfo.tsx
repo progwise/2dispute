@@ -9,7 +9,7 @@ interface UserInfoProps {
 const UserInfo = ({ user }: UserInfoProps): JSX.Element => (
   <>
     <div className="grid md:grid-cols-2 gap-8">
-      <div className="col-span-2 flex flex-col items-center">
+      <div className="md:col-span-2 flex flex-col items-center">
         {user.picture && (
           <img src={user.picture} className="rounded-full mb-2" />
         )}
