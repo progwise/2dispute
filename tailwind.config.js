@@ -29,6 +29,5 @@ module.exports = {
   },
   variants: {
     opacity: ['disabled'],
-    padding: ['first'],
   },
 };
