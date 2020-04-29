@@ -6,7 +6,7 @@ interface NavBarProps {
 
 const NavBar = ({ children }: NavBarProps): JSX.Element => (
   <nav className="pt-8 pb-4 font-bold">
-    <ul className="flex justify-end">{children}</ul>
+    <ul className="flex flex-wrap justify-end">{children}</ul>
   </nav>
 );
 
