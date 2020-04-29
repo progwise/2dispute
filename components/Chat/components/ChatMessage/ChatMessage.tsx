@@ -33,7 +33,7 @@ const ChatMessage = ({
         position={position}
       >
         {messages.map(message => (
-          <div key={message.id} className="pt-8 first:pt-0">
+          <div key={message.id}>
             <p>{message.text}</p>
             <p>
               <DateTime dateTime={message.createdAt} />

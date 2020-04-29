@@ -8,7 +8,7 @@ interface NavBarItemProps {
 }
 
 const NavBarItem = ({ children, href, as }: NavBarItemProps): JSX.Element => (
-  <li className="pl-12 first:pl-0">
+  <li>
     <Link href={href} as={as}>
       <a>{children}</a>
     </Link>
