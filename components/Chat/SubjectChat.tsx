@@ -56,7 +56,7 @@ const SubjectChat = ({
         />
       )}
       {userState === UserState.Unauthenticated && (
-        <div className="col-start-1 col-span-3 py-4 flex justify-center">
+        <div className="col-start-1 md:col-span-3 py-4 flex justify-center">
           <Button onClick={handleLoginClick}>
             Melden Sie sich an, um auf dieses Thema zu antworten.
           </Button>

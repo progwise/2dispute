@@ -5,9 +5,9 @@ interface ChatContainerProps {
 }
 
 const ChatContainer = ({ children }: ChatContainerProps): JSX.Element => (
-  <div className="grid grid-cols-chat items-start">
+  <div className="grid grid-cols-1 md:grid-cols-chat items-start gap-4 md:row-gap-0">
     {children}
-    <div className="col-start-2 row-start-1 row-end-last self-stretch border-r-2 mt-16" />
+    <div className="hidden md:block col-start-2 row-start-1 row-end-last self-stretch border-r-2 mt-16" />
   </div>
 );
 
