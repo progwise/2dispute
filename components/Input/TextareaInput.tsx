@@ -1,4 +1,5 @@
 import React from 'react';
+import TextareaAutosize from 'react-autosize-textarea';
 import { InputError } from '.';
 
 interface TextareaInputProps {
@@ -21,7 +22,7 @@ const TextareaInput = ({
   value,
 }: TextareaInputProps): JSX.Element => (
   <>
-    <textarea
+    <TextareaAutosize
       className="w-full border-2 disabled:opacity-75"
       disabled={disabled}
       name={name}
