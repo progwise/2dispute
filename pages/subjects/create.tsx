@@ -140,7 +140,7 @@ const CreateSubject = (): JSX.Element => {
         </div>
         <ChatItemFullWidth className="py-4 flex justify-center">
           <Button type="submit" disabled={formik.isSubmitting}>
-            Veröffentlichen
+            Thema veröffentlichen
           </Button>
         </ChatItemFullWidth>
       </form>
