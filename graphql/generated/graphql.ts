@@ -142,10 +142,18 @@ export type ReplyOnDisputInput = {
 
 export type User = {
   __typename?: 'User';
+  allDisputes: DisputeConnection;
   allSubjects: SubjectConnection;
   id: Scalars['ID'];
   name: Scalars['String'];
   picture?: Maybe<Scalars['String']>;
+};
+
+export type UserAllDisputesArgs = {
+  first?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
 };
 
 export type UserAllSubjectsArgs = {
@@ -502,6 +510,12 @@ export type UserResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
 > = ResolversObject<{
+  allDisputes?: Resolver<
+    ResolversTypes['DisputeConnection'],
+    ParentType,
+    ContextType,
+    RequireFields<UserAllDisputesArgs, 'first' | 'last'>
+  >;
   allSubjects?: Resolver<
     ResolversTypes['SubjectConnection'],
     ParentType,
@@ -620,6 +634,41 @@ export type HeaderMeQueryVariables = {};
 
 export type HeaderMeQuery = { __typename?: 'Query' } & {
   me?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>;
+};
+
+export type UserInfoFragment = { __typename?: 'User' } & Pick<
+  User,
+  'id' | 'name' | 'picture'
+> & {
+    allDisputes: { __typename?: 'DisputeConnection' } & {
+      edges: Array<
+        { __typename?: 'DisputeEdge' } & {
+          node: { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
+              partnerA: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
+              partnerB: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
+              subject: { __typename?: 'Subject' } & Pick<
+                Subject,
+                'id' | 'subject'
+              >;
+            };
+        }
+      >;
+    };
+    allSubjects: { __typename?: 'SubjectConnection' } & {
+      edges: Array<
+        { __typename?: 'SubjectEdge' } & {
+          node: { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject'>;
+        }
+      >;
+    };
+  };
+
+export type GetUserInfoByIdQueryVariables = {
+  userId: Scalars['ID'];
+};
+
+export type GetUserInfoByIdQuery = { __typename?: 'Query' } & {
+  user?: Maybe<{ __typename?: 'User' } & UserInfoFragment>;
 };
 
 export type GetAllDisputesQueryVariables = {
@@ -844,6 +893,40 @@ export const ChatDisputeFragmentDoc = gql`
   ${ChatPersonFragmentDoc}
   ${ChatMessageFragmentDoc}
 `;
+export const UserInfoFragmentDoc = gql`
+  fragment UserInfo on User {
+    id
+    name
+    picture
+    allDisputes(first: 10) {
+      edges {
+        node {
+          id
+          partnerA {
+            id
+            name
+          }
+          partnerB {
+            id
+            name
+          }
+          subject {
+            id
+            subject
+          }
+        }
+      }
+    }
+    allSubjects(first: 10) {
+      edges {
+        node {
+          id
+          subject
+        }
+      }
+    }
+  }
+`;
 export const StartPageUserFragmentDoc = gql`
   fragment StartPageUser on User {
     id
@@ -903,6 +986,63 @@ export type HeaderMeLazyQueryHookResult = ReturnType<
 export type HeaderMeQueryResult = ApolloReactCommon.QueryResult<
   HeaderMeQuery,
   HeaderMeQueryVariables
+>;
+export const GetUserInfoByIdDocument = gql`
+  query getUserInfoById($userId: ID!) {
+    user(id: $userId) {
+      ...UserInfo
+    }
+  }
+  ${UserInfoFragmentDoc}
+`;
+
+/**
+ * __useGetUserInfoByIdQuery__
+ *
+ * To run a query within a React component, call `useGetUserInfoByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserInfoByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserInfoByIdQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetUserInfoByIdQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetUserInfoByIdQuery,
+    GetUserInfoByIdQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    GetUserInfoByIdQuery,
+    GetUserInfoByIdQueryVariables
+  >(GetUserInfoByIdDocument, baseOptions);
+}
+export function useGetUserInfoByIdLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetUserInfoByIdQuery,
+    GetUserInfoByIdQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    GetUserInfoByIdQuery,
+    GetUserInfoByIdQueryVariables
+  >(GetUserInfoByIdDocument, baseOptions);
+}
+export type GetUserInfoByIdQueryHookResult = ReturnType<
+  typeof useGetUserInfoByIdQuery
+>;
+export type GetUserInfoByIdLazyQueryHookResult = ReturnType<
+  typeof useGetUserInfoByIdLazyQuery
+>;
+export type GetUserInfoByIdQueryResult = ApolloReactCommon.QueryResult<
+  GetUserInfoByIdQuery,
+  GetUserInfoByIdQueryVariables
 >;
 export const GetAllDisputesDocument = gql`
   query getAllDisputes($cursor: String) {
@@ -1578,6 +1718,7 @@ input ReplyOnDisputInput {
 }
 
 type User {
+  allDisputes(first: Int = 10, after: String, last: Int = 10, before: String): DisputeConnection!
   allSubjects(first: Int = 10, after: String, last: Int = 10, before: String): SubjectConnection!
   id: ID!
   name: String!
