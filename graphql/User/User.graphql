@@ -1,4 +1,5 @@
 # import SubjectConnection from '../Subject/Subject.graphql'
+# import DisputeConnection from '../Dispute/Dispute.graphql'
 
 type User {
   id: ID!
@@ -11,4 +12,11 @@ type User {
     last: Int = 10
     before: String
   ): SubjectConnection!
+
+  allDisputes(
+    first: Int = 10
+    after: String
+    last: Int = 10
+    before: String
+  ): DisputeConnection!
 }

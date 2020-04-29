@@ -12,15 +12,18 @@ export default class AggregationConnectionResolver<
 > extends ConnectionResolver<T> {
   private mongooseModel: Model<any>;
   private unwind: string;
+  private filter: {};
 
   constructor(
     options: ConnectionResolverOptions,
     mongooseModel: Model<any>,
     unwind: string,
+    filter: {} = {},
   ) {
     super(options);
     this.mongooseModel = mongooseModel;
     this.unwind = unwind;
+    this.filter = filter;
   }
 
   protected async getAfter(
@@ -33,6 +36,7 @@ export default class AggregationConnectionResolver<
       .aggregate()
       .unwind(this.unwind)
       .match({ 'disputes._id': mongoose.Types.ObjectId(afterId) })
+      .match(this.filter)
       .exec();
     afterItem = afterItem[0];
 
@@ -43,6 +47,7 @@ export default class AggregationConnectionResolver<
       .unwind(this.unwind)
       .sort(sortString)
       .match(this.buildWhere(sortString, afterItem))
+      .match(this.filter)
       .limit(limit)
       .exec();
 
@@ -55,6 +60,7 @@ export default class AggregationConnectionResolver<
     const aggregationResult = await this.mongooseModel
       .aggregate()
       .unwind(this.unwind)
+      .match(this.filter)
       .sort(sortString)
       .limit(limit)
       .exec();
@@ -68,6 +74,7 @@ export default class AggregationConnectionResolver<
       .aggregate()
       .unwind(this.unwind)
       .match(this.buildWhere(sortString, { [this.unwind]: item }))
+      .match(this.filter)
       .count('count')
       .exec();
 
