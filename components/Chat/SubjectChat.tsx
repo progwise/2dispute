@@ -48,8 +48,9 @@ const SubjectChat = ({
   return (
     <ChatContainer>
       <ChatMessage position="left" message={subject.firstMessage} />
-      {userState === UserState.Visitor && (
+      {me && userState === UserState.Visitor && (
         <ChatMessageForm
+          user={me}
           position="right"
           submitButtonText="Disput Starten"
           onSubmit={onNewMessage}

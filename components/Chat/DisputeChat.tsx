@@ -89,9 +89,10 @@ const DisputeChat = ({
           }
         />
       ))}
-      {userState !== UserState.Visitor && (
+      {me && userState !== UserState.Visitor && (
         <ChatMessageForm
           position={userState === UserState.PartnerA ? 'left' : 'right'}
+          user={me}
           submitButtonText="Nachricht senden"
           onSubmit={onNewMessage}
         />

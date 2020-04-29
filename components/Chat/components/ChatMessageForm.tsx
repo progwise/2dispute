@@ -3,6 +3,8 @@ import { useFormik } from 'formik';
 import Yup from '../../../utils/yup';
 import Button from '../../Button/Button';
 import { TextareaInput } from '../../Input';
+import { ChatPersonFragment } from '../../../graphql/generated/graphql';
+import ChatBubble from './ChatMessage/ChatBubble';
 
 export interface ChatFormValues {
   message: string;
@@ -15,6 +17,7 @@ const chatFormSchema = Yup.object().shape<ChatFormValues>({
 interface ChatMessageFormProps {
   position: 'left' | 'right';
   submitButtonText: string;
+  user: ChatPersonFragment;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit?: (values: ChatFormValues) => any;
 }
@@ -22,6 +25,7 @@ interface ChatMessageFormProps {
 const ChatMessageForm = ({
   position,
   submitButtonText,
+  user,
   onSubmit,
 }: ChatMessageFormProps): JSX.Element => {
   const formik = useFormik<ChatFormValues>({
@@ -34,25 +38,25 @@ const ChatMessageForm = ({
   });
 
   return (
-    <form
-      className={`${
-        position === 'left' ? 'col-start-1' : 'col-start-2'
-      } md:col-span-3 flex flex-col items-start`}
-      onSubmit={formik.handleSubmit}
-    >
-      <TextareaInput
-        name="message"
-        placeholder="Deine Position *"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.message}
-        disabled={formik.isSubmitting}
-        error={(formik.touched.message && formik.errors.message) || undefined}
-      />
-      <Button type="submit" disabled={formik.isSubmitting}>
-        {submitButtonText}
-      </Button>
-    </form>
+    <ChatBubble position={position} author={user}>
+      <form
+        className="flex flex-col items-start space-y-2"
+        onSubmit={formik.handleSubmit}
+      >
+        <TextareaInput
+          name="message"
+          placeholder="Deine Position *"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.message}
+          disabled={formik.isSubmitting}
+          error={(formik.touched.message && formik.errors.message) || undefined}
+        />
+        <Button type="submit" disabled={formik.isSubmitting}>
+          {submitButtonText}
+        </Button>
+      </form>
+    </ChatBubble>
   );
 };
 
