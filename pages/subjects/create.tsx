@@ -10,6 +10,8 @@ import {
   useCreateSubjectMutation,
   useMeQuery,
 } from '../../graphql/generated/graphql';
+import ChatContainer from '../../components/Chat/components/ChatContainer';
+import ChatBubble from '../../components/Chat/components/ChatMessage/ChatBubble';
 
 interface FormValues {
   subject: string;
@@ -117,18 +119,8 @@ const CreateSubject = (): JSX.Element => {
               />
             </div>
           )}
-          <div className="grid grid-cols-4">
-            <div className="col-span-2 flex flex-col items-center py-4">
-              {data.me.picture && (
-                <img src={data.me.picture} className="rounded-full" />
-              )}
-              <span>{data.me.name}</span>
-            </div>
-            <div className="col-span-2 flex flex-col items-center py-4">
-              <span className="rounded-full h-32 w-32" />
-              <span>???</span>
-            </div>
-            <div className="col-start-1 col-span-3">
+          <ChatContainer>
+            <ChatBubble position="left" author={data.me}>
               <TextareaInput
                 name="firstMessage"
                 placeholder="Deine Position *"
@@ -142,8 +134,8 @@ const CreateSubject = (): JSX.Element => {
                 }
                 disabled={formik.isSubmitting}
               />
-            </div>
-          </div>
+            </ChatBubble>
+          </ChatContainer>
         </div>
         <div className="py-4">
           <Button type="submit" disabled={formik.isSubmitting}>
