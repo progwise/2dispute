@@ -671,6 +671,12 @@ export type GetUserInfoByIdQuery = { __typename?: 'Query' } & {
   user?: Maybe<{ __typename?: 'User' } & UserInfoFragment>;
 };
 
+export type MeUserInfoQueryVariables = {};
+
+export type MeUserInfoQuery = { __typename?: 'Query' } & {
+  me?: Maybe<{ __typename?: 'User' } & UserInfoFragment>;
+};
+
 export type GetAllDisputesQueryVariables = {
   cursor?: Maybe<Scalars['String']>;
 };
@@ -1043,6 +1049,60 @@ export type GetUserInfoByIdLazyQueryHookResult = ReturnType<
 export type GetUserInfoByIdQueryResult = ApolloReactCommon.QueryResult<
   GetUserInfoByIdQuery,
   GetUserInfoByIdQueryVariables
+>;
+export const MeUserInfoDocument = gql`
+  query meUserInfo {
+    me {
+      ...UserInfo
+    }
+  }
+  ${UserInfoFragmentDoc}
+`;
+
+/**
+ * __useMeUserInfoQuery__
+ *
+ * To run a query within a React component, call `useMeUserInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeUserInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeUserInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeUserInfoQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    MeUserInfoQuery,
+    MeUserInfoQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<MeUserInfoQuery, MeUserInfoQueryVariables>(
+    MeUserInfoDocument,
+    baseOptions,
+  );
+}
+export function useMeUserInfoLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    MeUserInfoQuery,
+    MeUserInfoQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    MeUserInfoQuery,
+    MeUserInfoQueryVariables
+  >(MeUserInfoDocument, baseOptions);
+}
+export type MeUserInfoQueryHookResult = ReturnType<typeof useMeUserInfoQuery>;
+export type MeUserInfoLazyQueryHookResult = ReturnType<
+  typeof useMeUserInfoLazyQuery
+>;
+export type MeUserInfoQueryResult = ApolloReactCommon.QueryResult<
+  MeUserInfoQuery,
+  MeUserInfoQueryVariables
 >;
 export const GetAllDisputesDocument = gql`
   query getAllDisputes($cursor: String) {
