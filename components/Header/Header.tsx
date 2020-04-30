@@ -19,7 +19,7 @@ const Header = (): JSX.Element => {
       <NavBar>
         {isAuthenticated ? (
           <>
-            <NavBarItem href="/me" as="me">
+            <NavBarItem href="/me" as="/me">
               Mein Profil
             </NavBarItem>
             <NavBarItem href={logoutPath}>Abmelden</NavBarItem>
