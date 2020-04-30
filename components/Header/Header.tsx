@@ -11,12 +11,23 @@ const Header = (): JSX.Element => {
 
   const isAuthenticated = data?.me ? true : false;
 
-  const loginPath = `/api/login?redirectTo=${router.asPath}`;
+  const getLoginPath = (redirectTo: string = router.asPath): string =>
+    `/api/login?redirectTo=${redirectTo}`;
   const logoutPath = '/api/logout';
+  const createSubjectPath = '/subjects/create';
 
   return (
     <header className="pb-8">
       <NavBar>
+        <NavBarItem
+          href={
+            isAuthenticated
+              ? createSubjectPath
+              : getLoginPath(createSubjectPath)
+          }
+        >
+          Neues Thema erstellen
+        </NavBarItem>
         {isAuthenticated ? (
           <>
             <NavBarItem href="/me" as="/me">
@@ -26,8 +37,8 @@ const Header = (): JSX.Element => {
           </>
         ) : (
           <>
-            <NavBarItem href={loginPath}>Anmelden</NavBarItem>
-            <NavBarItem href={loginPath}>Registrieren</NavBarItem>
+            <NavBarItem href={getLoginPath()}>Anmelden</NavBarItem>
+            <NavBarItem href={getLoginPath()}>Registrieren</NavBarItem>
           </>
         )}
       </NavBar>
