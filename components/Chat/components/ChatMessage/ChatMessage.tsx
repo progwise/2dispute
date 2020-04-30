@@ -22,7 +22,14 @@ const ChatMessage = ({
     <ChatBubble author={firstMessage.author} position={position}>
       {messages.map(message => (
         <div key={message.id}>
-          <p>{message.text}</p>
+          <p>
+            {message.text.split('\n').map((text, index) => (
+              <React.Fragment key={index}>
+                {text}
+                <br />
+              </React.Fragment>
+            ))}
+          </p>
           <p>
             <DateTime dateTime={message.createdAt} />
           </p>

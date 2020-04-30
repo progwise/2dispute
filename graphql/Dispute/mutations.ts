@@ -6,6 +6,7 @@ import {
 import * as mongoose from 'mongoose';
 import { MutationResolvers } from '../generated/graphql';
 import { MessageDocument } from '../Message/MessageSchema';
+import trim from '../../utils/trim';
 
 const mutations: MutationResolvers = {
   replyOnDispute: async (
@@ -44,7 +45,7 @@ const mutations: MutationResolvers = {
     const newMessage: MessageDocument = {
       _id: mongoose.Types.ObjectId(),
       authorId: userId,
-      text: message,
+      text: trim(message),
       createdAt: now,
     };
     selectedDispute.messages.push(newMessage);

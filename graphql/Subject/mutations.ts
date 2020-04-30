@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import { AuthenticationError, ApolloError } from 'apollo-server-micro';
 import { MutationResolvers } from '../generated/graphql';
 import { DisputeDocument } from '../Dispute/DisputeSchema';
+import trim from '../../utils/trim';
 
 const mutations: MutationResolvers = {
   createSubject: (_parent, { input }, context) => {
@@ -10,10 +11,10 @@ const mutations: MutationResolvers = {
     }
 
     const newSubject = new context.mongoose.models.Subject({
-      subject: input.subject,
+      subject: trim(input.subject),
       tweetId: input.tweetId,
       userId: context.user?.id,
-      firstMessage: input.firstMessage,
+      firstMessage: trim(input.firstMessage),
       disputes: [],
       createdAt: new Date(),
     });
