@@ -14,7 +14,7 @@ const TextboxWithAuthorPicture = ({
   children,
   position,
 }: TextboxWithAuthorPictureProps): JSX.Element => (
-  <div className={`w-full flex flex-col items-center`}>
+  <div className={`w-full flex flex-col items-center min-w-0`}>
     <Link
       className="-mb-8 z-10"
       href="/users/[userId]"
