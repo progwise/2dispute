@@ -2,6 +2,7 @@ import React from 'react';
 import { ChatMessageFragment } from '../../../../graphql/generated/graphql';
 import DateTime from './DateTime';
 import ChatBubble from './ChatBubble';
+import ChatMessageFormatter from './ChatMessageFormatter/ChatMessageFormatter';
 
 interface ChatMessageProps {
   message: ChatMessageFragment | ChatMessageFragment[];
@@ -22,14 +23,7 @@ const ChatMessage = ({
     <ChatBubble author={firstMessage.author} position={position}>
       {messages.map(message => (
         <div key={message.id}>
-          <p>
-            {message.text.split('\n').map((text, index) => (
-              <React.Fragment key={index}>
-                {text}
-                <br />
-              </React.Fragment>
-            ))}
-          </p>
+          <ChatMessageFormatter text={message.text} />
           <p>
             <DateTime dateTime={message.createdAt} />
           </p>
