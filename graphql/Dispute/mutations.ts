@@ -7,6 +7,31 @@ import * as mongoose from 'mongoose';
 import { MutationResolvers } from '../generated/graphql';
 import { MessageDocument } from '../Message/MessageSchema';
 import trim from '../../utils/trim';
+import { Context } from '../context';
+import { DisputeDocument } from './DisputeSchema';
+
+const notifyPartner = async (
+  dispute: DisputeDocument,
+  message: MessageDocument,
+  context: Context,
+): Promise<void> => {
+  const partnerIds = [dispute.partnerIdA, dispute.partnerIdB];
+
+  const partnerToNotifyId = partnerIds.find(
+    partnerId => partnerId !== message.authorId,
+  );
+
+  if (!partnerToNotifyId) {
+    return;
+  }
+
+  const notification = new context.mongoose.models.NewMessageNotification({
+    userId: partnerToNotifyId,
+    messageId: message._id,
+  });
+
+  await notification.save();
+};
 
 const mutations: MutationResolvers = {
   replyOnDispute: async (
@@ -52,6 +77,8 @@ const mutations: MutationResolvers = {
     selectedDispute.lastMessageAt = now;
 
     await subject.save();
+
+    await notifyPartner(selectedDispute, newMessage, context);
 
     return selectedDispute;
   },

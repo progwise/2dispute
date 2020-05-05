@@ -7,12 +7,16 @@ import schemaDirectives from './schemaDirectives';
 import { userQueries, userResolvers } from './User';
 import { disputeResolvers, disputeQueries, disputeMutations } from './Dispute';
 import { messageResolvers } from './Message';
+import { notificationQueries, notificationResolvers } from './Notification';
+import { newDisputeNotificationResolvers } from './Notification/NewDisputeNotification';
+import { newMessageNotificationResolvers } from './Notification/NewMessageNotification';
 
 const resolvers: Resolvers = {
   Query: {
     ...subjectQueries,
     ...userQueries,
     ...disputeQueries,
+    ...notificationQueries,
   },
   Mutation: {
     ...subjectMutations,
@@ -23,6 +27,9 @@ const resolvers: Resolvers = {
   Message: messageResolvers,
   User: userResolvers,
   DateTime: GraphQLDateTime,
+  Notification: notificationResolvers,
+  NewDisputeNotification: newDisputeNotificationResolvers,
+  NewMessageNotification: newMessageNotificationResolvers,
 };
 
 export default new ApolloServer({

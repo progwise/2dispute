@@ -1,6 +1,7 @@
 # import Subject, SubjectCreateInput, ReplyOnSubjectInput, SubjectConnection, SubjectFilter from './Subject/Subject.graphql'
 # import Dispute, ReplyOnDisputInput, DisputeConnection from './Dispute/Dispute.graphql'
 # import User from './User/User.graphql'
+# import Notification from './Notification/Notification.graphql'
 # import @auth from './schemaDirectives/auth.graphql'
 
 scalar DateTime
@@ -23,6 +24,7 @@ type Query {
   me: User
   dispute(id: ID!): Dispute
   user(id: ID!): User
+  meNotification: [Notification!]! @auth
 }
 
 type Mutation {

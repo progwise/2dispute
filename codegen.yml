@@ -21,6 +21,8 @@ generates:
         Subject: ../Subject/SubjectSchema#SubjectDocument
         Dispute: ../Dispute/DisputeSchema#DisputeDocument
         Message: ../Message/MessageSchema#MessageDocument
+        NewDisputeNotification: ../Notification/NotificationSchema#NewDisputeNotificationDocument
+        NewMessageNotification: ../Notification/NotificationSchema#NewMessageNotificationDocument
         User: ../User#UserMapper
       scalars:
         DateTime: string
