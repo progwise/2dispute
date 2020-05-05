@@ -125,7 +125,9 @@ const CreateSubject = (): JSX.Element => {
               <TextareaInput
                 name="firstMessage"
                 placeholder="Deine Position *"
-                onChange={formik.handleChange}
+                onChange={(newValue): void =>
+                  formik.setFieldValue('firstMessage', newValue)
+                }
                 onBlur={formik.handleBlur}
                 value={formik.values.firstMessage}
                 error={
