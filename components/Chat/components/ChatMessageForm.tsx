@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormik } from 'formik';
+import { Formik, Form, FormikHelpers } from 'formik';
 import Yup from '../../../utils/yup';
 import Button from '../../Button/Button';
 import { TextareaInput } from '../../Input';
@@ -28,36 +28,30 @@ const ChatMessageForm = ({
   user,
   onSubmit,
 }: ChatMessageFormProps): JSX.Element => {
-  const formik = useFormik<ChatFormValues>({
-    initialValues: { message: '' },
-    validationSchema: chatFormSchema,
-    onSubmit: async (values, formikHelpers) => {
-      onSubmit && (await onSubmit(values));
-      formikHelpers.resetForm();
-    },
-  });
+  const handleSubmit = async (
+    values: ChatFormValues,
+    formikHelpers: FormikHelpers<ChatFormValues>,
+  ): Promise<void> => {
+    onSubmit && (await onSubmit(values));
+    formikHelpers.resetForm();
+  };
 
   return (
     <ChatBubble position={position} author={user}>
-      <form
-        className="flex flex-col items-start space-y-2"
-        onSubmit={formik.handleSubmit}
+      <Formik<ChatFormValues>
+        initialValues={{ message: '' }}
+        validationSchema={chatFormSchema}
+        onSubmit={handleSubmit}
       >
-        <TextareaInput
-          name="message"
-          placeholder="Deine Position *"
-          onChange={(newValue): void =>
-            formik.setFieldValue('message', newValue)
-          }
-          onBlur={formik.handleBlur}
-          value={formik.values.message}
-          disabled={formik.isSubmitting}
-          error={(formik.touched.message && formik.errors.message) || undefined}
-        />
-        <Button type="submit" disabled={formik.isSubmitting}>
-          {submitButtonText}
-        </Button>
-      </form>
+        {(formik): JSX.Element => (
+          <Form className="flex flex-col items-start space-y-2">
+            <TextareaInput name="message" placeholder="Deine Position *" />
+            <Button type="submit" disabled={formik.isSubmitting}>
+              {submitButtonText}
+            </Button>
+          </Form>
+        )}
+      </Formik>
     </ChatBubble>
   );
 };

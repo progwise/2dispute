@@ -1,16 +1,12 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { createEditor, Node, Text, NodeEntry, Range } from 'slate';
 import { Slate, Editable, withReact, RenderLeafProps } from 'slate-react';
+import { useField, useFormikContext } from 'formik';
 import { InputError } from '.';
 
 interface TextareaInputProps {
-  disabled?: boolean;
-  error?: string;
   name?: string;
-  onBlur?: (event: React.FocusEvent<HTMLDivElement>) => void;
-  onChange?: (newValue: string) => void;
   placeholder: string;
-  value?: string;
 }
 
 const Leaf = ({ attributes, children, leaf }: RenderLeafProps): JSX.Element => (
@@ -27,16 +23,15 @@ const deserialize = (text: string): Node[] =>
 const tweetRegex = /(?:[\w.:/]+\.)?twitter\.com\/(?:\w+)\/status(?:es)?\/(\d+)/gi;
 
 const TextareaInput = ({
-  disabled = false,
-  error,
   name = '',
-  onBlur,
-  onChange,
   placeholder,
-  value: defaultValue,
 }: TextareaInputProps): JSX.Element => {
+  const [field, meta, helpers] = useField(name);
+  const { isSubmitting } = useFormikContext();
   const editor = useMemo(() => withReact(createEditor()), []);
-  const [value, setValue] = useState<Node[]>(deserialize(defaultValue ?? ''));
+  const [value, setValue] = useState<Node[]>(deserialize(field.value));
+
+  const error = meta.touched ? meta.error : undefined;
 
   const markTweetLinks = useCallback(
     ([node, path]: NodeEntry<Node>): Range[] => {
@@ -67,16 +62,16 @@ const TextareaInput = ({
         editor={editor}
         onChange={(newValue): void => {
           setValue(newValue);
-          onChange && onChange(serialize(newValue));
+          helpers.setValue(serialize(newValue));
         }}
         value={value}
       >
         <Editable
           id={name}
           className="w-full border-2 disabled:opacity-75 bg-white"
-          onBlur={onBlur}
+          onBlur={field.onBlur}
           placeholder={placeholder}
-          disabled={disabled}
+          disabled={isSubmitting}
           decorate={markTweetLinks}
           renderLeaf={(props): JSX.Element => <Leaf {...props} />}
         />
