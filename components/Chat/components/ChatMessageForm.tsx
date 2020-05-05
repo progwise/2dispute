@@ -46,7 +46,9 @@ const ChatMessageForm = ({
         <TextareaInput
           name="message"
           placeholder="Deine Position *"
-          onChange={formik.handleChange}
+          onChange={(newValue): void =>
+            formik.setFieldValue('message', newValue)
+          }
           onBlur={formik.handleBlur}
           value={formik.values.message}
           disabled={formik.isSubmitting}
