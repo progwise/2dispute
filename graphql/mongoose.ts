@@ -1,6 +1,14 @@
 import * as mongoose from 'mongoose';
 import { NextApiRequest, NextApiResponse, NextApiHandler } from 'next';
 import SubjectSchema, { SubjectDocument } from './Subject/SubjectSchema';
+import {
+  NotificationDocument,
+  notificationSchema,
+  NewDisputeNotificationDocument,
+  newDisputeNotificationSchema,
+  NewMessageNotificationDocument,
+  newMessageNotificationSchema,
+} from './Notification/NotificationSchema';
 
 mongoose.set('debug', process.env.NODE_ENV === 'development');
 
@@ -8,6 +16,9 @@ export interface MongooseHelper {
   connection: mongoose.Connection;
   models: {
     Subject: mongoose.Model<SubjectDocument, {}>;
+    Notification: mongoose.Model<NotificationDocument, {}>;
+    NewDisputeNotification: mongoose.Model<NewDisputeNotificationDocument, {}>;
+    NewMessageNotification: mongoose.Model<NewMessageNotificationDocument, {}>;
   };
 }
 
@@ -28,11 +39,35 @@ const connectToMongo = async (): Promise<MongooseHelper> => {
   const Subject: mongoose.Model<SubjectDocument, {}> =
     mongoose.models.Subject ??
     mongoose.model<SubjectDocument>('Subject', SubjectSchema);
+  const Notification: mongoose.Model<NotificationDocument, {}> =
+    mongoose.models.Notification ??
+    mongoose.model<NotificationDocument>('Notification', notificationSchema);
+  const NewDisputeNotification: mongoose.Model<
+    NewDisputeNotificationDocument,
+    {}
+  > =
+    mongoose.models.NewDisputeNotification ??
+    Notification.discriminator<NewDisputeNotificationDocument>(
+      'NewDisputeNotification',
+      newDisputeNotificationSchema,
+    );
+  const NewMessageNotification: mongoose.Model<
+    NewMessageNotificationDocument,
+    {}
+  > =
+    mongoose.models.NewMessageNotification ??
+    Notification.discriminator<NewMessageNotificationDocument>(
+      'NewMessageNotification',
+      newMessageNotificationSchema,
+    );
 
   return {
     connection: mongoose.connections[0],
     models: {
       Subject,
+      Notification,
+      NewDisputeNotification,
+      NewMessageNotification,
     },
   };
 };

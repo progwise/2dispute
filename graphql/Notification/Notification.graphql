@@ -1,0 +1,24 @@
+# import Dispute from '../Dispute/Dispute.graphql'
+# import Message from '../Message/Message.graphql'
+
+interface Notification {
+  id: ID!
+  read: Boolean!
+  createdAt: DateTime!
+}
+
+type NewDisputeNotification implements Notification {
+  id: ID!
+  read: Boolean!
+  createdAt: DateTime!
+
+  dispute: Dispute!
+}
+
+type NewMessageNotification implements Notification {
+  id: ID!
+  read: Boolean!
+  createdAt: DateTime!
+
+  message: Message!
+}
