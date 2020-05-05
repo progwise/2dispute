@@ -31,4 +31,5 @@ type Mutation {
   createSubject(input: SubjectCreateInput!): Subject! @auth
   replyOnSubject(input: ReplyOnSubjectInput!): Dispute! @auth
   replyOnDispute(input: ReplyOnDisputInput!): Dispute! @auth
+  markNotificationAsRead(id: ID!): Notification! @auth
 }
