@@ -6,7 +6,7 @@ interface ChatMessageFormatterProps {
 }
 
 const separateTweets = (paragraph: ChatMessageText): ChatMessage[] => {
-  const tweetRegex = /(?:[\w.:/]+)?twitter\.com\/(?:\w+)\/status(?:es)?\/(\d+)/gi;
+  const tweetRegex = /(?:[\w.:/]+\.)?twitter\.com\/(?:\w+)\/status(?:es)?\/(\d+)/gi;
   return paragraph.text.split(tweetRegex).map(
     (text, index): ChatMessage => {
       const isOdd = index % 2 === 0;
