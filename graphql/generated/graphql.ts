@@ -74,12 +74,17 @@ export type QueryUserArgs = {
 export type Mutation = {
   __typename?: 'Mutation';
   createSubject: Subject;
+  markNotificationAsRead: Notification;
   replyOnDispute: Dispute;
   replyOnSubject: Dispute;
 };
 
 export type MutationCreateSubjectArgs = {
   input: SubjectCreateInput;
+};
+
+export type MutationMarkNotificationAsReadArgs = {
+  id: Scalars['ID'];
 };
 
 export type MutationReplyOnDisputeArgs = {
@@ -471,6 +476,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationCreateSubjectArgs, 'input'>
+  >;
+  markNotificationAsRead?: Resolver<
+    ResolversTypes['Notification'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationMarkNotificationAsReadArgs, 'id'>
   >;
   replyOnDispute?: Resolver<
     ResolversTypes['Dispute'],
@@ -1806,6 +1817,7 @@ type Query {
 
 type Mutation {
   createSubject(input: SubjectCreateInput!): Subject!
+  markNotificationAsRead(id: ID!): Notification!
   replyOnDispute(input: ReplyOnDisputInput!): Dispute!
   replyOnSubject(input: ReplyOnSubjectInput!): Dispute!
 }
