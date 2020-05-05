@@ -178,6 +178,7 @@ export type Message = {
   __typename?: 'Message';
   author: User;
   createdAt: Scalars['DateTime'];
+  dispute: Dispute;
   id: Scalars['ID'];
   text: Scalars['String'];
 };
@@ -590,6 +591,7 @@ export type MessageResolvers<
 > = ResolversObject<{
   author?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  dispute?: Resolver<ResolversTypes['Dispute'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
@@ -1876,6 +1878,7 @@ interface Notification {
 type Message {
   author: User!
   createdAt: DateTime!
+  dispute: Dispute!
   id: ID!
   text: String!
 }
