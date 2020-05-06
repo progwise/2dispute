@@ -1,5 +1,18 @@
 # import Dispute from '../Dispute/Dispute.graphql'
 # import Message from '../Message/Message.graphql'
+# import PageInfo from '../PageInfo/PageInfo.graphql'
+
+type NotificationConnection {
+  totalCount: Int!
+  totalCountUnread: Int!
+  pageInfo: PageInfo!
+  edges: [NotificationEdge!]!
+}
+
+type NotificationEdge {
+  cursor: String!
+  node: Notification!
+}
 
 interface Notification {
   id: ID!
