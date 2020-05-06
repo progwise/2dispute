@@ -29,7 +29,7 @@ type Query {
     after: String
     last: Int = 10
     before: String
-  ): NotificationConnection! @auth
+  ): NotificationConnection
 }
 
 type Mutation {

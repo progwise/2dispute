@@ -1,4 +1,3 @@
-import { ApolloError } from 'apollo-server-micro';
 import { QueryResolvers } from '../generated/graphql';
 import DocumentConnectionResolver from '../helper/ConnectionResolver/DocumentConnectionResolver';
 import {
@@ -9,7 +8,7 @@ import {
 const queries: QueryResolvers = {
   allNotifications: async (_parent, args, context) => {
     if (!context.user) {
-      throw new ApolloError('User not found');
+      return null;
     }
 
     const connectionResolver = new DocumentConnectionResolver<

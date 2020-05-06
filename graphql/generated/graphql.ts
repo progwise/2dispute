@@ -36,7 +36,7 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   allDisputes: DisputeConnection;
-  allNotifications: NotificationConnection;
+  allNotifications?: Maybe<NotificationConnection>;
   allSubjects: SubjectConnection;
   dispute?: Maybe<Dispute>;
   me?: Maybe<User>;
@@ -461,7 +461,7 @@ export type QueryResolvers<
     RequireFields<QueryAllDisputesArgs, 'first' | 'last'>
   >;
   allNotifications?: Resolver<
-    ResolversTypes['NotificationConnection'],
+    Maybe<ResolversTypes['NotificationConnection']>,
     ParentType,
     ContextType,
     RequireFields<QueryAllNotificationsArgs, 'first' | 'last'>
@@ -1859,7 +1859,7 @@ scalar DateTime
 
 type Query {
   allDisputes(first: Int = 10, after: String, last: Int = 10, before: String): DisputeConnection!
-  allNotifications(first: Int = 10, after: String, last: Int = 10, before: String): NotificationConnection!
+  allNotifications(first: Int = 10, after: String, last: Int = 10, before: String): NotificationConnection
   allSubjects(first: Int = 10, after: String, last: Int = 10, before: String, filter: SubjectFilter): SubjectConnection!
   dispute(id: ID!): Dispute
   me: User
