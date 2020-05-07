@@ -4,6 +4,7 @@ import { useHeaderMeQuery } from '../../graphql/generated/graphql';
 import withApollo from '../../utils/withApollo';
 import NavBar, { NavBarItem } from './NavBar';
 import Logo from './Logo';
+import Notifications from './Notifcations';
 
 const Header = (): JSX.Element => {
   const { data } = useHeaderMeQuery();
@@ -34,6 +35,9 @@ const Header = (): JSX.Element => {
               Mein Profil
             </NavBarItem>
             <NavBarItem href={logoutPath}>Abmelden</NavBarItem>
+            <li>
+              <Notifications />
+            </li>
           </>
         ) : (
           <>

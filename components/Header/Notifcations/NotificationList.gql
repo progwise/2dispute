@@ -1,0 +1,36 @@
+query NotificationList($after: String) {
+  allNotifications(first: 10, after: $after) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        id
+        createdAt
+        read
+        __typename
+        ... on NewMessageNotification {
+          message {
+            id
+            author {
+              ...ChatPerson
+            }
+            dispute {
+              id
+            }
+          }
+        }
+        ... on NewDisputeNotification {
+          dispute {
+            id
+            partnerB {
+              ...ChatPerson
+            }
+          }
+        }
+      }
+    }
+  }
+}

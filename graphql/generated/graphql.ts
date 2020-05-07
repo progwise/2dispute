@@ -776,10 +776,65 @@ export type ChatPersonFragment = { __typename?: 'User' } & Pick<
   'id' | 'name' | 'picture'
 >;
 
+export type NotificationListQueryVariables = {
+  after?: Maybe<Scalars['String']>;
+};
+
+export type NotificationListQuery = { __typename?: 'Query' } & {
+  allNotifications?: Maybe<
+    { __typename?: 'NotificationConnection' } & Pick<
+      NotificationConnection,
+      'totalCount'
+    > & {
+        pageInfo: { __typename?: 'PageInfo' } & Pick<
+          PageInfo,
+          'hasNextPage' | 'endCursor'
+        >;
+        edges: Array<
+          { __typename?: 'NotificationEdge' } & {
+            node:
+              | ({ __typename: 'NewMessageNotification' } & Pick<
+                  NewMessageNotification,
+                  'id' | 'createdAt' | 'read'
+                > & {
+                    message: { __typename?: 'Message' } & Pick<
+                      Message,
+                      'id'
+                    > & {
+                        author: { __typename?: 'User' } & ChatPersonFragment;
+                        dispute: { __typename?: 'Dispute' } & Pick<
+                          Dispute,
+                          'id'
+                        >;
+                      };
+                  })
+              | ({ __typename: 'NewDisputeNotification' } & Pick<
+                  NewDisputeNotification,
+                  'id' | 'createdAt' | 'read'
+                > & {
+                    dispute: { __typename?: 'Dispute' } & Pick<
+                      Dispute,
+                      'id'
+                    > & {
+                        partnerB: { __typename?: 'User' } & ChatPersonFragment;
+                      };
+                  });
+          }
+        >;
+      }
+  >;
+};
+
 export type HeaderMeQueryVariables = {};
 
 export type HeaderMeQuery = { __typename?: 'Query' } & {
   me?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>;
+  allNotifications?: Maybe<
+    { __typename?: 'NotificationConnection' } & Pick<
+      NotificationConnection,
+      'totalCountUnread'
+    >
+  >;
 };
 
 export type UserInfoFragment = { __typename?: 'User' } & Pick<
@@ -1085,11 +1140,102 @@ export const StartPageUserFragmentDoc = gql`
     name
   }
 `;
+export const NotificationListDocument = gql`
+  query NotificationList($after: String) {
+    allNotifications(first: 10, after: $after) {
+      totalCount
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          id
+          createdAt
+          read
+          __typename
+          ... on NewMessageNotification {
+            message {
+              id
+              author {
+                ...ChatPerson
+              }
+              dispute {
+                id
+              }
+            }
+          }
+          ... on NewDisputeNotification {
+            dispute {
+              id
+              partnerB {
+                ...ChatPerson
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  ${ChatPersonFragmentDoc}
+`;
+
+/**
+ * __useNotificationListQuery__
+ *
+ * To run a query within a React component, call `useNotificationListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNotificationListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNotificationListQuery({
+ *   variables: {
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useNotificationListQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    NotificationListQuery,
+    NotificationListQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    NotificationListQuery,
+    NotificationListQueryVariables
+  >(NotificationListDocument, baseOptions);
+}
+export function useNotificationListLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    NotificationListQuery,
+    NotificationListQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    NotificationListQuery,
+    NotificationListQueryVariables
+  >(NotificationListDocument, baseOptions);
+}
+export type NotificationListQueryHookResult = ReturnType<
+  typeof useNotificationListQuery
+>;
+export type NotificationListLazyQueryHookResult = ReturnType<
+  typeof useNotificationListLazyQuery
+>;
+export type NotificationListQueryResult = ApolloReactCommon.QueryResult<
+  NotificationListQuery,
+  NotificationListQueryVariables
+>;
 export const HeaderMeDocument = gql`
   query headerMe {
     me {
       id
       name
+    }
+    allNotifications {
+      totalCountUnread
     }
   }
 `;
