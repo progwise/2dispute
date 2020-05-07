@@ -12,6 +12,7 @@ module.exports = {
     extend: {
       maxHeight: {
         '24': '6rem',
+        lg: '32rem',
       },
       minHeight: {
         '48': '12rem',

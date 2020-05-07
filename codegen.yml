@@ -26,6 +26,11 @@ generates:
         User: ../User#UserMapper
       scalars:
         DateTime: string
+  graphql/generated/introspection.ts:
+    plugins:
+      - fragment-matcher
+    config:
+      apolloClientVersion: 2
 hooks:
   afterOneFileWrite:
     - prettier --write

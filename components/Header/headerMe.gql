@@ -3,4 +3,7 @@ query headerMe {
     id
     name
   }
+  allNotifications {
+    totalCountUnread
+  }
 }

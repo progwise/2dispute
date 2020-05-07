@@ -2,9 +2,10 @@ import React from 'react';
 
 interface DateTimeProps {
   dateTime: string;
+  className?: string;
 }
 
-const DateTime = ({ dateTime }: DateTimeProps): JSX.Element => {
+const DateTime = ({ dateTime, className }: DateTimeProps): JSX.Element => {
   const date = new Date(dateTime);
   const timeString = new Intl.DateTimeFormat(undefined, {
     hour: 'numeric',
@@ -17,7 +18,7 @@ const DateTime = ({ dateTime }: DateTimeProps): JSX.Element => {
   }).format(date);
 
   return (
-    <span className="text-sm">
+    <span className={`text-sm ${className}`}>
       {timeString} - {dateString}
     </span>
   );
