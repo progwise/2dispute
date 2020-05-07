@@ -37,4 +37,5 @@ type Mutation {
   replyOnSubject(input: ReplyOnSubjectInput!): Dispute! @auth
   replyOnDispute(input: ReplyOnDisputInput!): Dispute! @auth
   markNotificationAsRead(id: ID!): Notification! @auth
+  markMultipleNotificationAsRead(latestId: ID!): [Notification!]! @auth
 }
