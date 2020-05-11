@@ -1,0 +1,6 @@
+mutation clearNotificationsForDispute($disputeId: ID!) {
+  markNotificationsAsReadForDispute(disputeId: $disputeId) {
+    id
+    read
+  }
+}

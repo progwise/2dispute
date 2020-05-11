@@ -798,6 +798,25 @@ export type ChatPersonFragment = { __typename?: 'User' } & Pick<
   'id' | 'name' | 'picture'
 >;
 
+export type ClearNotificationsForDisputeMutationVariables = {
+  disputeId: Scalars['ID'];
+};
+
+export type ClearNotificationsForDisputeMutation = {
+  __typename?: 'Mutation';
+} & {
+  markNotificationsAsReadForDispute: Array<
+    | ({ __typename?: 'NewMessageNotification' } & Pick<
+        NewMessageNotification,
+        'id' | 'read'
+      >)
+    | ({ __typename?: 'NewDisputeNotification' } & Pick<
+        NewDisputeNotification,
+        'id' | 'read'
+      >)
+  >;
+};
+
 export type GetDisputeQueryVariables = {
   disputeId: Scalars['ID'];
 };
@@ -1162,6 +1181,57 @@ export const StartPageUserFragmentDoc = gql`
     name
   }
 `;
+export const ClearNotificationsForDisputeDocument = gql`
+  mutation clearNotificationsForDispute($disputeId: ID!) {
+    markNotificationsAsReadForDispute(disputeId: $disputeId) {
+      id
+      read
+    }
+  }
+`;
+export type ClearNotificationsForDisputeMutationFn = ApolloReactCommon.MutationFunction<
+  ClearNotificationsForDisputeMutation,
+  ClearNotificationsForDisputeMutationVariables
+>;
+
+/**
+ * __useClearNotificationsForDisputeMutation__
+ *
+ * To run a mutation, you first call `useClearNotificationsForDisputeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useClearNotificationsForDisputeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [clearNotificationsForDisputeMutation, { data, loading, error }] = useClearNotificationsForDisputeMutation({
+ *   variables: {
+ *      disputeId: // value for 'disputeId'
+ *   },
+ * });
+ */
+export function useClearNotificationsForDisputeMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ClearNotificationsForDisputeMutation,
+    ClearNotificationsForDisputeMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ClearNotificationsForDisputeMutation,
+    ClearNotificationsForDisputeMutationVariables
+  >(ClearNotificationsForDisputeDocument, baseOptions);
+}
+export type ClearNotificationsForDisputeMutationHookResult = ReturnType<
+  typeof useClearNotificationsForDisputeMutation
+>;
+export type ClearNotificationsForDisputeMutationResult = ApolloReactCommon.MutationResult<
+  ClearNotificationsForDisputeMutation
+>;
+export type ClearNotificationsForDisputeMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ClearNotificationsForDisputeMutation,
+  ClearNotificationsForDisputeMutationVariables
+>;
 export const GetDisputeDocument = gql`
   query getDispute($disputeId: ID!) {
     dispute(id: $disputeId) {
