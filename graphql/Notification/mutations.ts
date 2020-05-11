@@ -1,3 +1,4 @@
+import * as mongoose from 'mongoose';
 import { ApolloError, AuthenticationError } from 'apollo-server-micro';
 import { MutationResolvers } from '../generated/graphql';
 
@@ -45,6 +46,58 @@ const notificationMutations: MutationResolvers = {
       .where('read', false)
       .where('createdAt', { $lte: latestNotification.createdAt })
       .exec();
+
+    const idsToUpdate: string[] = notificationsToUpdate.map(
+      notification => notification._id,
+    );
+
+    await context.mongoose.models.Notification.updateMany(
+      { _id: { $in: idsToUpdate } },
+      { read: true },
+    ).exec();
+
+    return context.mongoose.models.Notification.find()
+      .where({ _id: { $in: idsToUpdate } })
+      .exec();
+  },
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  markNotificationsAsReadForDispute: async (parent, { disputeId }, context) => {
+    if (!context.user) {
+      throw new AuthenticationError('not authenticated');
+    }
+
+    const messagesOfTheDispute: {
+      disputes: {
+        messages: {
+          _id: string;
+        };
+      };
+    }[] = await context.mongoose.models.Subject.aggregate()
+      .unwind('disputes')
+      .unwind('disputes.messages')
+      .match({ 'disputes._id': mongoose.Types.ObjectId(disputeId) })
+      .project('disputes.messages._id')
+      .exec();
+
+    const messageIdsOfTheDispute = messagesOfTheDispute.map(
+      subject => subject.disputes.messages._id,
+    );
+
+    const notificationsToUpdate = await context.mongoose.models.Notification.find()
+      .select('_id')
+      .or([
+        { messageId: { $in: messageIdsOfTheDispute } },
+        { disputeId: mongoose.Types.ObjectId(disputeId) },
+      ])
+      .where('read', false)
+      .where('userId', context.user.id)
+      .exec();
+
+    if (notificationsToUpdate.length === 0) {
+      return [];
+    }
 
     const idsToUpdate: string[] = notificationsToUpdate.map(
       notification => notification._id,
