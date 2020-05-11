@@ -904,6 +904,17 @@ export type NotificationListQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export type NotificationsQueryVariables = {};
+
+export type NotificationsQuery = { __typename?: 'Query' } & {
+  allNotifications?: Maybe<
+    { __typename?: 'NotificationConnection' } & Pick<
+      NotificationConnection,
+      'totalCountUnread'
+    >
+  >;
+};
+
 export type HeaderMeQueryVariables = {};
 
 export type HeaderMeQuery = { __typename?: 'Query' } & {
@@ -1453,6 +1464,61 @@ export type NotificationListLazyQueryHookResult = ReturnType<
 export type NotificationListQueryResult = ApolloReactCommon.QueryResult<
   NotificationListQuery,
   NotificationListQueryVariables
+>;
+export const NotificationsDocument = gql`
+  query Notifications {
+    allNotifications {
+      totalCountUnread
+    }
+  }
+`;
+
+/**
+ * __useNotificationsQuery__
+ *
+ * To run a query within a React component, call `useNotificationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNotificationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNotificationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNotificationsQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    NotificationsQuery,
+    NotificationsQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    NotificationsQuery,
+    NotificationsQueryVariables
+  >(NotificationsDocument, baseOptions);
+}
+export function useNotificationsLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    NotificationsQuery,
+    NotificationsQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    NotificationsQuery,
+    NotificationsQueryVariables
+  >(NotificationsDocument, baseOptions);
+}
+export type NotificationsQueryHookResult = ReturnType<
+  typeof useNotificationsQuery
+>;
+export type NotificationsLazyQueryHookResult = ReturnType<
+  typeof useNotificationsLazyQuery
+>;
+export type NotificationsQueryResult = ApolloReactCommon.QueryResult<
+  NotificationsQuery,
+  NotificationsQueryVariables
 >;
 export const HeaderMeDocument = gql`
   query headerMe {
