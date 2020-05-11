@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   useGetDisputeQuery,
   useReplyOnDisputeMutation,
+  useClearNotificationsForDisputeMutation,
 } from '../../graphql/generated/graphql';
 import { ChatFormValues, DisputeChat } from '../Chat';
 import SubjectHeader from '../Subject/SubjectHeader';
@@ -16,6 +17,16 @@ const Dispute = ({ disputeId }: DisputeProps): JSX.Element => {
     variables: { disputeId },
     pollInterval: 10 * 1000,
   });
+
+  const [clearNotifications] = useClearNotificationsForDisputeMutation({
+    variables: { disputeId },
+  });
+
+  useEffect(() => {
+    if (data) {
+      clearNotifications();
+    }
+  }, [data]);
 
   const [replyOnDispute] = useReplyOnDisputeMutation();
 
