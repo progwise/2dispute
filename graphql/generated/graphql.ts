@@ -840,6 +840,21 @@ export type GetDisputeQuery = { __typename?: 'Query' } & {
   me?: Maybe<{ __typename?: 'User' } & ChatPersonFragment>;
 };
 
+export type ReplyOnDisputeMutationVariables = {
+  disputeId: Scalars['ID'];
+  message: Scalars['String'];
+};
+
+export type ReplyOnDisputeMutation = { __typename?: 'Mutation' } & {
+  replyOnDispute: { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
+      messages: Array<
+        { __typename?: 'Message' } & Pick<Message, 'id' | 'text'> & {
+            author: { __typename?: 'User' } & Pick<User, 'id'>;
+          }
+      >;
+    };
+};
+
 export type NotificationListQueryVariables = {
   after?: Maybe<Scalars['String']>;
 };
@@ -968,21 +983,6 @@ export type GetAllDisputesQuery = { __typename?: 'Query' } & {
       'endCursor' | 'hasNextPage'
     >;
   };
-};
-
-export type ReplyOnDisputeMutationVariables = {
-  disputeId: Scalars['ID'];
-  message: Scalars['String'];
-};
-
-export type ReplyOnDisputeMutation = { __typename?: 'Mutation' } & {
-  replyOnDispute: { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
-      messages: Array<
-        { __typename?: 'Message' } & Pick<Message, 'id' | 'text'> & {
-            author: { __typename?: 'User' } & Pick<User, 'id'>;
-          }
-      >;
-    };
 };
 
 export type StartPageQueryVariables = {};
@@ -1307,6 +1307,64 @@ export type GetDisputeLazyQueryHookResult = ReturnType<
 export type GetDisputeQueryResult = ApolloReactCommon.QueryResult<
   GetDisputeQuery,
   GetDisputeQueryVariables
+>;
+export const ReplyOnDisputeDocument = gql`
+  mutation replyOnDispute($disputeId: ID!, $message: String!) {
+    replyOnDispute(input: { disputeId: $disputeId, message: $message }) {
+      id
+      messages {
+        id
+        author {
+          id
+        }
+        text
+      }
+    }
+  }
+`;
+export type ReplyOnDisputeMutationFn = ApolloReactCommon.MutationFunction<
+  ReplyOnDisputeMutation,
+  ReplyOnDisputeMutationVariables
+>;
+
+/**
+ * __useReplyOnDisputeMutation__
+ *
+ * To run a mutation, you first call `useReplyOnDisputeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReplyOnDisputeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [replyOnDisputeMutation, { data, loading, error }] = useReplyOnDisputeMutation({
+ *   variables: {
+ *      disputeId: // value for 'disputeId'
+ *      message: // value for 'message'
+ *   },
+ * });
+ */
+export function useReplyOnDisputeMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ReplyOnDisputeMutation,
+    ReplyOnDisputeMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ReplyOnDisputeMutation,
+    ReplyOnDisputeMutationVariables
+  >(ReplyOnDisputeDocument, baseOptions);
+}
+export type ReplyOnDisputeMutationHookResult = ReturnType<
+  typeof useReplyOnDisputeMutation
+>;
+export type ReplyOnDisputeMutationResult = ApolloReactCommon.MutationResult<
+  ReplyOnDisputeMutation
+>;
+export type ReplyOnDisputeMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ReplyOnDisputeMutation,
+  ReplyOnDisputeMutationVariables
 >;
 export const NotificationListDocument = gql`
   query NotificationList($after: String) {
@@ -1640,64 +1698,6 @@ export type GetAllDisputesLazyQueryHookResult = ReturnType<
 export type GetAllDisputesQueryResult = ApolloReactCommon.QueryResult<
   GetAllDisputesQuery,
   GetAllDisputesQueryVariables
->;
-export const ReplyOnDisputeDocument = gql`
-  mutation replyOnDispute($disputeId: ID!, $message: String!) {
-    replyOnDispute(input: { disputeId: $disputeId, message: $message }) {
-      id
-      messages {
-        id
-        author {
-          id
-        }
-        text
-      }
-    }
-  }
-`;
-export type ReplyOnDisputeMutationFn = ApolloReactCommon.MutationFunction<
-  ReplyOnDisputeMutation,
-  ReplyOnDisputeMutationVariables
->;
-
-/**
- * __useReplyOnDisputeMutation__
- *
- * To run a mutation, you first call `useReplyOnDisputeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useReplyOnDisputeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [replyOnDisputeMutation, { data, loading, error }] = useReplyOnDisputeMutation({
- *   variables: {
- *      disputeId: // value for 'disputeId'
- *      message: // value for 'message'
- *   },
- * });
- */
-export function useReplyOnDisputeMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    ReplyOnDisputeMutation,
-    ReplyOnDisputeMutationVariables
-  >,
-) {
-  return ApolloReactHooks.useMutation<
-    ReplyOnDisputeMutation,
-    ReplyOnDisputeMutationVariables
-  >(ReplyOnDisputeDocument, baseOptions);
-}
-export type ReplyOnDisputeMutationHookResult = ReturnType<
-  typeof useReplyOnDisputeMutation
->;
-export type ReplyOnDisputeMutationResult = ApolloReactCommon.MutationResult<
-  ReplyOnDisputeMutation
->;
-export type ReplyOnDisputeMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  ReplyOnDisputeMutation,
-  ReplyOnDisputeMutationVariables
 >;
 export const StartPageDocument = gql`
   query StartPage {
