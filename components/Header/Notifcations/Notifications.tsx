@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { FaBell } from 'react-icons/fa';
 import Layout from '../../Layout';
+import { useNotificationsQuery } from '../../../graphql/generated/graphql';
 import NotificationList from './NotificationList';
-
-const totalCountUnread = 1;
 
 const Notifications = (): JSX.Element => {
   const [open, setOpen] = useState(false);
-
   const toggleOpen = (): void => setOpen(open => !open);
+
+  const { data } = useNotificationsQuery();
+  const totalCountUnread = data?.allNotifications?.totalCountUnread ?? 0;
 
   return (
     <div className="">
