@@ -1,6 +1,11 @@
 mutation clearNotificationsForDispute($disputeId: ID!) {
   markNotificationsAsReadForDispute(disputeId: $disputeId) {
-    id
-    read
+    updatedNotification {
+      id
+      read
+    }
+    notificationStatus {
+      totalCountUnread
+    }
   }
 }

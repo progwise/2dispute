@@ -1,7 +1,7 @@
 # import Subject, SubjectCreateInput, ReplyOnSubjectInput, SubjectConnection, SubjectFilter from './Subject/Subject.graphql'
 # import Dispute, ReplyOnDisputInput, DisputeConnection from './Dispute/Dispute.graphql'
 # import User from './User/User.graphql'
-# import NotificationConnection from './Notification/Notification.graphql'
+# import NotificationConnection, NotificationsUpdate, NotificationStatus from './Notification/Notification.graphql'
 # import @auth from './schemaDirectives/auth.graphql'
 
 scalar DateTime
@@ -30,6 +30,7 @@ type Query {
     last: Int = 10
     before: String
   ): NotificationConnection
+  notificationStatus: NotificationStatus! @auth
 }
 
 type Mutation {
@@ -38,5 +39,5 @@ type Mutation {
   replyOnDispute(input: ReplyOnDisputInput!): Dispute! @auth
   markNotificationAsRead(id: ID!): Notification! @auth
   markMultipleNotificationAsRead(latestId: ID!): [Notification!]! @auth
-  markNotificationsAsReadForDispute(disputeId: ID!): [Notification!]! @auth
+  markNotificationsAsReadForDispute(disputeId: ID!): NotificationsUpdate! @auth
 }

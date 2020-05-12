@@ -1,3 +1,4 @@
+import { AuthenticationError } from 'apollo-server-micro';
 import { QueryResolvers } from '../generated/graphql';
 import DocumentConnectionResolver from '../helper/ConnectionResolver/DocumentConnectionResolver';
 import {
@@ -26,25 +27,30 @@ const queries: QueryResolvers = {
       .count()
       .exec();
 
-    const totalCountUnreadRequest = context.mongoose.models.Notification.find()
-      .where('userId', context.user.id)
-      .where('read', false)
-      .count()
-      .exec();
-
     const connectionRequest = connectionResolver.getConnection();
 
-    const [totalCount, totalCountUnread, connection] = await Promise.all([
+    const [totalCount, connection] = await Promise.all([
       totalCountRequest,
-      totalCountUnreadRequest,
       connectionRequest,
     ]);
 
     return {
       ...connection,
       totalCount,
-      totalCountUnread,
     };
+  },
+  notificationStatus: async (parent, args, context) => {
+    if (!context.user) {
+      throw new AuthenticationError('not authenticated');
+    }
+
+    const totalCountUnread = await context.mongoose.models.Notification.find()
+      .where('userId', context.user.id)
+      .where('read', false)
+      .count()
+      .exec();
+
+    return { totalCountUnread };
   },
 };
 

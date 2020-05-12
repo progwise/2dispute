@@ -1,12 +1,16 @@
 import React from 'react';
 import { Waypoint } from 'react-waypoint';
-import { useNotificationListQuery } from '../../../graphql/generated/graphql';
+import { NotificationListQueryResult } from '../../../graphql/generated/graphql';
 import NotificationListItem from './NotificationListItem';
 
-const NotificationList = (): JSX.Element => {
-  const { data, loading, error, fetchMore } = useNotificationListQuery({
-    notifyOnNetworkStatusChange: true,
-  });
+interface NotificationListProps {
+  notificationListQueryResult: NotificationListQueryResult;
+}
+
+const NotificationList = ({
+  notificationListQueryResult,
+}: NotificationListProps): JSX.Element => {
+  const { data, loading, error, fetchMore } = notificationListQueryResult;
 
   if (error) {
     return <div className="p-4">Fehler: {JSON.stringify(error)}</div>;
@@ -25,13 +29,18 @@ const NotificationList = (): JSX.Element => {
 
         return newEdges?.length
           ? {
+              notificationStatus: fetchMoreResult?.notificationStatus,
               allNotifications: {
                 ...prevResult.allNotifications,
                 edges: [
                   ...(prevResult.allNotifications?.edges ?? []),
                   ...newEdges,
                 ],
-                pageInfo,
+                pageInfo: {
+                  ...prevResult.allNotifications?.pageInfo,
+                  hasNextPage: pageInfo?.hasNextPage,
+                  endCursor: pageInfo?.endCursor,
+                },
               },
             }
           : prevResult;
