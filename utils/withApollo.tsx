@@ -7,6 +7,7 @@ import withApollo from 'next-with-apollo';
 import ApolloClient, {
   InMemoryCache,
   IntrospectionFragmentMatcher,
+  defaultDataIdFromObject,
 } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import introspectionQueryResultData from '../graphql/generated/introspection';
@@ -16,7 +17,17 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 });
 
 const createCache = (initialState: any): InMemoryCache =>
-  new InMemoryCache({ fragmentMatcher }).restore(initialState || {});
+  new InMemoryCache({
+    fragmentMatcher,
+    dataIdFromObject: (object): string | null => {
+      switch (object.__typename) {
+        case 'NotificationStatus':
+          return 'NotificationStatus';
+        default:
+          return defaultDataIdFromObject(object);
+      }
+    },
+  }).restore(initialState || {});
 
 export default withApollo(
   ({ initialState }) =>

@@ -14,6 +14,7 @@ import {
 } from './Notification';
 import { newDisputeNotificationResolvers } from './Notification/NewDisputeNotification';
 import { newMessageNotificationResolvers } from './Notification/NewMessageNotification';
+import { notificationsUpdateResolvers } from './Notification/NotificationsUpdate';
 
 const resolvers: Resolvers = {
   Query: {
@@ -35,6 +36,7 @@ const resolvers: Resolvers = {
   Notification: notificationResolvers,
   NewDisputeNotification: newDisputeNotificationResolvers,
   NewMessageNotification: newMessageNotificationResolvers,
+  NotificationsUpdate: notificationsUpdateResolvers,
 };
 
 export default new ApolloServer({

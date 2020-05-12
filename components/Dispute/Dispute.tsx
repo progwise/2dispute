@@ -20,7 +20,6 @@ const Dispute = ({ disputeId }: DisputeProps): JSX.Element => {
 
   const [clearNotifications] = useClearNotificationsForDisputeMutation({
     variables: { disputeId },
-    refetchQueries: ['Notifications'],
   });
 
   useEffect(() => {

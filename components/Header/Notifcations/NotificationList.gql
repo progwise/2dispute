@@ -1,8 +1,12 @@
-query NotificationList($after: String) {
-  allNotifications(first: 10, after: $after) {
+query NotificationList($after: String, $before: String) {
+  notificationStatus {
+    totalCountUnread
+  }
+  allNotifications(first: 10, last: 10, after: $after, before: $before) {
     totalCount
     pageInfo {
       hasNextPage
+      startCursor
       endCursor
     }
     edges {

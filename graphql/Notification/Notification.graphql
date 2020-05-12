@@ -2,9 +2,12 @@
 # import Message from '../Message/Message.graphql'
 # import PageInfo from '../PageInfo/PageInfo.graphql'
 
+type NotificationStatus {
+  totalCountUnread: Int!
+}
+
 type NotificationConnection {
   totalCount: Int!
-  totalCountUnread: Int!
   pageInfo: PageInfo!
   edges: [NotificationEdge!]!
 }
@@ -12,6 +15,11 @@ type NotificationConnection {
 type NotificationEdge {
   cursor: String!
   node: Notification!
+}
+
+type NotificationsUpdate {
+  updatedNotification: [Notification!]!
+  notificationStatus: NotificationStatus! @auth
 }
 
 interface Notification {

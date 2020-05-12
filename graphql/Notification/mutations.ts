@@ -1,6 +1,10 @@
 import * as mongoose from 'mongoose';
 import { ApolloError, AuthenticationError } from 'apollo-server-micro';
 import { MutationResolvers } from '../generated/graphql';
+import {
+  NewDisputeNotificationDocument,
+  NewMessageNotificationDocument,
+} from './NotificationSchema';
 
 const notificationMutations: MutationResolvers = {
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -61,8 +65,6 @@ const notificationMutations: MutationResolvers = {
       .exec();
   },
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore
   markNotificationsAsReadForDispute: async (parent, { disputeId }, context) => {
     if (!context.user) {
       throw new AuthenticationError('not authenticated');
@@ -96,7 +98,9 @@ const notificationMutations: MutationResolvers = {
       .exec();
 
     if (notificationsToUpdate.length === 0) {
-      return [];
+      return {
+        updatedNotifications: [],
+      };
     }
 
     const idsToUpdate: string[] = notificationsToUpdate.map(
@@ -108,9 +112,16 @@ const notificationMutations: MutationResolvers = {
       { read: true },
     ).exec();
 
-    return context.mongoose.models.Notification.find()
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    const updatedNotifications: (
+      | NewDisputeNotificationDocument
+      | NewMessageNotificationDocument
+    )[] = await context.mongoose.models.Notification.find()
       .where({ _id: { $in: idsToUpdate } })
       .exec();
+
+    return { updatedNotifications };
   },
 };
 

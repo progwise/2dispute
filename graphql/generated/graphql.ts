@@ -11,6 +11,7 @@ import {
   NewDisputeNotificationDocument,
   NewMessageNotificationDocument,
 } from '../Notification/NotificationSchema';
+import { NotificationsUpdateMapper } from '../Notification/NotificationsUpdateMapper';
 import { UserMapper } from '../User';
 import { Context } from '../context';
 import { gql } from 'apollo-boost';
@@ -40,6 +41,7 @@ export type Query = {
   allSubjects: SubjectConnection;
   dispute?: Maybe<Dispute>;
   me?: Maybe<User>;
+  notificationStatus: NotificationStatus;
   subject?: Maybe<Subject>;
   user?: Maybe<User>;
 };
@@ -83,7 +85,7 @@ export type Mutation = {
   createSubject: Subject;
   markMultipleNotificationAsRead: Array<Notification>;
   markNotificationAsRead: Notification;
-  markNotificationsAsReadForDispute: Array<Notification>;
+  markNotificationsAsReadForDispute: NotificationsUpdate;
   replyOnDispute: Dispute;
   replyOnSubject: Dispute;
 };
@@ -190,12 +192,22 @@ export type UserAllSubjectsArgs = {
   before?: Maybe<Scalars['String']>;
 };
 
+export type NotificationStatus = {
+  __typename?: 'NotificationStatus';
+  totalCountUnread: Scalars['Int'];
+};
+
 export type NotificationConnection = {
   __typename?: 'NotificationConnection';
   edges: Array<NotificationEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int'];
-  totalCountUnread: Scalars['Int'];
+};
+
+export type NotificationsUpdate = {
+  __typename?: 'NotificationsUpdate';
+  notificationStatus: NotificationStatus;
+  updatedNotification: Array<Notification>;
 };
 
 export type Message = {
@@ -390,7 +402,9 @@ export type ResolversTypes = ResolversObject<{
   >;
   ReplyOnDisputInput: ReplyOnDisputInput;
   User: ResolverTypeWrapper<UserMapper>;
+  NotificationStatus: ResolverTypeWrapper<NotificationStatus>;
   NotificationConnection: ResolverTypeWrapper<NotificationConnection>;
+  NotificationsUpdate: ResolverTypeWrapper<NotificationsUpdateMapper>;
   Message: ResolverTypeWrapper<MessageDocument>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Notification:
@@ -429,7 +443,9 @@ export type ResolversParentTypes = ResolversObject<{
   };
   ReplyOnDisputInput: ReplyOnDisputInput;
   User: UserMapper;
+  NotificationStatus: NotificationStatus;
   NotificationConnection: NotificationConnection;
+  NotificationsUpdate: NotificationsUpdateMapper;
   Message: MessageDocument;
   PageInfo: PageInfo;
   Notification:
@@ -489,6 +505,11 @@ export type QueryResolvers<
     RequireFields<QueryDisputeArgs, 'id'>
   >;
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  notificationStatus?: Resolver<
+    ResolversTypes['NotificationStatus'],
+    ParentType,
+    ContextType
+  >;
   subject?: Resolver<
     Maybe<ResolversTypes['Subject']>,
     ParentType,
@@ -526,7 +547,7 @@ export type MutationResolvers<
     RequireFields<MutationMarkNotificationAsReadArgs, 'id'>
   >;
   markNotificationsAsReadForDispute?: Resolver<
-    Array<ResolversTypes['Notification']>,
+    ResolversTypes['NotificationsUpdate'],
     ParentType,
     ContextType,
     RequireFields<MutationMarkNotificationsAsReadForDisputeArgs, 'disputeId'>
@@ -630,6 +651,14 @@ export type UserResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
+export type NotificationStatusResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['NotificationStatus'] = ResolversParentTypes['NotificationStatus']
+> = ResolversObject<{
+  totalCountUnread?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
 export type NotificationConnectionResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['NotificationConnection'] = ResolversParentTypes['NotificationConnection']
@@ -641,7 +670,23 @@ export type NotificationConnectionResolvers<
   >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  totalCountUnread?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
+export type NotificationsUpdateResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['NotificationsUpdate'] = ResolversParentTypes['NotificationsUpdate']
+> = ResolversObject<{
+  notificationStatus?: Resolver<
+    ResolversTypes['NotificationStatus'],
+    ParentType,
+    ContextType
+  >;
+  updatedNotification?: Resolver<
+    Array<ResolversTypes['Notification']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -744,7 +789,9 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   Dispute?: DisputeResolvers<ContextType>;
   DisputeConnection?: DisputeConnectionResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  NotificationStatus?: NotificationStatusResolvers<ContextType>;
   NotificationConnection?: NotificationConnectionResolvers<ContextType>;
+  NotificationsUpdate?: NotificationsUpdateResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
   Notification?: NotificationResolvers;
@@ -805,16 +852,22 @@ export type ClearNotificationsForDisputeMutationVariables = {
 export type ClearNotificationsForDisputeMutation = {
   __typename?: 'Mutation';
 } & {
-  markNotificationsAsReadForDispute: Array<
-    | ({ __typename?: 'NewMessageNotification' } & Pick<
-        NewMessageNotification,
-        'id' | 'read'
-      >)
-    | ({ __typename?: 'NewDisputeNotification' } & Pick<
-        NewDisputeNotification,
-        'id' | 'read'
-      >)
-  >;
+  markNotificationsAsReadForDispute: { __typename?: 'NotificationsUpdate' } & {
+    updatedNotification: Array<
+      | ({ __typename?: 'NewMessageNotification' } & Pick<
+          NewMessageNotification,
+          'id' | 'read'
+        >)
+      | ({ __typename?: 'NewDisputeNotification' } & Pick<
+          NewDisputeNotification,
+          'id' | 'read'
+        >)
+    >;
+    notificationStatus: { __typename?: 'NotificationStatus' } & Pick<
+      NotificationStatus,
+      'totalCountUnread'
+    >;
+  };
 };
 
 export type GetDisputeQueryVariables = {
@@ -857,9 +910,14 @@ export type ReplyOnDisputeMutation = { __typename?: 'Mutation' } & {
 
 export type NotificationListQueryVariables = {
   after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
 };
 
 export type NotificationListQuery = { __typename?: 'Query' } & {
+  notificationStatus: { __typename?: 'NotificationStatus' } & Pick<
+    NotificationStatus,
+    'totalCountUnread'
+  >;
   allNotifications?: Maybe<
     { __typename?: 'NotificationConnection' } & Pick<
       NotificationConnection,
@@ -867,7 +925,7 @@ export type NotificationListQuery = { __typename?: 'Query' } & {
     > & {
         pageInfo: { __typename?: 'PageInfo' } & Pick<
           PageInfo,
-          'hasNextPage' | 'endCursor'
+          'hasNextPage' | 'startCursor' | 'endCursor'
         >;
         edges: Array<
           { __typename?: 'NotificationEdge' } & {
@@ -904,27 +962,10 @@ export type NotificationListQuery = { __typename?: 'Query' } & {
   >;
 };
 
-export type NotificationsQueryVariables = {};
-
-export type NotificationsQuery = { __typename?: 'Query' } & {
-  allNotifications?: Maybe<
-    { __typename?: 'NotificationConnection' } & Pick<
-      NotificationConnection,
-      'totalCountUnread'
-    >
-  >;
-};
-
 export type HeaderMeQueryVariables = {};
 
 export type HeaderMeQuery = { __typename?: 'Query' } & {
   me?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>;
-  allNotifications?: Maybe<
-    { __typename?: 'NotificationConnection' } & Pick<
-      NotificationConnection,
-      'totalCountUnread'
-    >
-  >;
 };
 
 export type UserInfoFragment = { __typename?: 'User' } & Pick<
@@ -1195,8 +1236,13 @@ export const StartPageUserFragmentDoc = gql`
 export const ClearNotificationsForDisputeDocument = gql`
   mutation clearNotificationsForDispute($disputeId: ID!) {
     markNotificationsAsReadForDispute(disputeId: $disputeId) {
-      id
-      read
+      updatedNotification {
+        id
+        read
+      }
+      notificationStatus {
+        totalCountUnread
+      }
     }
   }
 `;
@@ -1378,11 +1424,15 @@ export type ReplyOnDisputeMutationOptions = ApolloReactCommon.BaseMutationOption
   ReplyOnDisputeMutationVariables
 >;
 export const NotificationListDocument = gql`
-  query NotificationList($after: String) {
-    allNotifications(first: 10, after: $after) {
+  query NotificationList($after: String, $before: String) {
+    notificationStatus {
+      totalCountUnread
+    }
+    allNotifications(first: 10, last: 10, after: $after, before: $before) {
       totalCount
       pageInfo {
         hasNextPage
+        startCursor
         endCursor
       }
       edges {
@@ -1430,6 +1480,7 @@ export const NotificationListDocument = gql`
  * const { data, loading, error } = useNotificationListQuery({
  *   variables: {
  *      after: // value for 'after'
+ *      before: // value for 'before'
  *   },
  * });
  */
@@ -1465,69 +1516,11 @@ export type NotificationListQueryResult = ApolloReactCommon.QueryResult<
   NotificationListQuery,
   NotificationListQueryVariables
 >;
-export const NotificationsDocument = gql`
-  query Notifications {
-    allNotifications {
-      totalCountUnread
-    }
-  }
-`;
-
-/**
- * __useNotificationsQuery__
- *
- * To run a query within a React component, call `useNotificationsQuery` and pass it any options that fit your needs.
- * When your component renders, `useNotificationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useNotificationsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useNotificationsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    NotificationsQuery,
-    NotificationsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<
-    NotificationsQuery,
-    NotificationsQueryVariables
-  >(NotificationsDocument, baseOptions);
-}
-export function useNotificationsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    NotificationsQuery,
-    NotificationsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    NotificationsQuery,
-    NotificationsQueryVariables
-  >(NotificationsDocument, baseOptions);
-}
-export type NotificationsQueryHookResult = ReturnType<
-  typeof useNotificationsQuery
->;
-export type NotificationsLazyQueryHookResult = ReturnType<
-  typeof useNotificationsLazyQuery
->;
-export type NotificationsQueryResult = ApolloReactCommon.QueryResult<
-  NotificationsQuery,
-  NotificationsQueryVariables
->;
 export const HeaderMeDocument = gql`
   query headerMe {
     me {
       id
       name
-    }
-    allNotifications {
-      totalCountUnread
     }
   }
 `;
@@ -2167,6 +2160,7 @@ type Query {
   allSubjects(first: Int = 10, after: String, last: Int = 10, before: String, filter: SubjectFilter): SubjectConnection!
   dispute(id: ID!): Dispute
   me: User
+  notificationStatus: NotificationStatus!
   subject(id: ID!): Subject
   user(id: ID!): User
 }
@@ -2175,7 +2169,7 @@ type Mutation {
   createSubject(input: SubjectCreateInput!): Subject!
   markMultipleNotificationAsRead(latestId: ID!): [Notification!]!
   markNotificationAsRead(id: ID!): Notification!
-  markNotificationsAsReadForDispute(disputeId: ID!): [Notification!]!
+  markNotificationsAsReadForDispute(disputeId: ID!): NotificationsUpdate!
   replyOnDispute(input: ReplyOnDisputInput!): Dispute!
   replyOnSubject(input: ReplyOnSubjectInput!): Dispute!
 }
@@ -2239,11 +2233,19 @@ type User {
   picture: String
 }
 
+type NotificationStatus {
+  totalCountUnread: Int!
+}
+
 type NotificationConnection {
   edges: [NotificationEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
-  totalCountUnread: Int!
+}
+
+type NotificationsUpdate {
+  notificationStatus: NotificationStatus!
+  updatedNotification: [Notification!]!
 }
 
 type Message {
