@@ -66,7 +66,7 @@ const Notifications = (): JSX.Element => {
       return;
     }
     fetchNewerNotification();
-  }, 10 * 1000);
+  }, 60 * 1000);
 
   const totalCountUnread =
     notificationListQuery.data?.notificationStatus.totalCountUnread ?? 0;
