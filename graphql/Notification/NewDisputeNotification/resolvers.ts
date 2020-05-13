@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { NewDisputeNotificationResolvers } from '../../generated/graphql';
+import { NewDisputeNotificationResolvers } from '../../generated/backend';
 
 const newDisputeNotificationResolvers: NewDisputeNotificationResolvers = {
   dispute: async (parent, _args, context) => {

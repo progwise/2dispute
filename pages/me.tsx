@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { useMeUserInfoQuery } from '../graphql/generated/graphql';
+import { useMeUserInfoQuery } from '../graphql/generated/frontend';
 import UserInfo from '../components/UserInfo';
 import withApollo from '../utils/withApollo';
 

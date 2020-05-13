@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { NewMessageNotificationResolvers } from '../../generated/graphql';
+import { NewMessageNotificationResolvers } from '../../generated/backend';
 
 const newMessageNotificationResolvers: NewMessageNotificationResolvers = {
   message: async (parent, _args, context) => {

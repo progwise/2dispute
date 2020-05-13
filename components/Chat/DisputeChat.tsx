@@ -3,7 +3,7 @@ import {
   ChatDisputeFragment,
   ChatPersonFragment,
   ChatMessageFragment,
-} from '../../graphql/generated/graphql';
+} from '../../graphql/generated/frontend';
 import ChatContainer from './components/ChatContainer';
 import ChatMessage from './components/ChatMessage';
 import ChatMessageForm, { ChatFormValues } from './components/ChatMessageForm';

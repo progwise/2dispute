@@ -1,6 +1,6 @@
 import React from 'react';
 import withApollo from '../../utils/withApollo';
-import { useGetAllSubjectsQuery } from '../../graphql/generated/graphql';
+import { useGetAllSubjectsQuery } from '../../graphql/generated/frontend';
 import Link from '../../components/Link/Link';
 import Button from '../../components/Button/Button';
 

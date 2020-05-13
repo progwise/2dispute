@@ -1,6 +1,6 @@
 import React from 'react';
 import { Waypoint } from 'react-waypoint';
-import { NotificationListQueryResult } from '../../../graphql/generated/graphql';
+import { NotificationListQueryResult } from '../../../graphql/generated/frontend';
 import NotificationListItem from './NotificationListItem';
 
 interface NotificationListProps {

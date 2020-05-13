@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { useHeaderMeQuery } from '../../graphql/generated/graphql';
+import { useHeaderMeQuery } from '../../graphql/generated/frontend';
 import withApollo from '../../utils/withApollo';
 import NavBar, { NavBarItem } from './NavBar';
 import Logo from './Logo';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGetAllDisputesQuery } from '../../graphql/generated/graphql';
+import { useGetAllDisputesQuery } from '../../graphql/generated/frontend';
 import withApollo from '../../utils/withApollo';
 import Button from '../../components/Button/Button';
 import Link from '../../components/Link/Link';

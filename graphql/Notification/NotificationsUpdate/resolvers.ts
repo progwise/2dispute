@@ -1,5 +1,5 @@
 import { AuthenticationError } from 'apollo-server-micro';
-import { NotificationsUpdateResolvers } from '../../generated/graphql';
+import { NotificationsUpdateResolvers } from '../../generated/backend';
 
 const notificationsUpdateResolvers: NotificationsUpdateResolvers = {
   updatedNotification: parent => parent.updatedNotifications,

@@ -3,7 +3,7 @@ import { Formik, Form, FormikHelpers } from 'formik';
 import Yup from '../../../utils/yup';
 import Button from '../../Button/Button';
 import { TextareaInput } from '../../Input';
-import { ChatPersonFragment } from '../../../graphql/generated/graphql';
+import { ChatPersonFragment } from '../../../graphql/generated/frontend';
 import ChatBubble from './ChatMessage/ChatBubble';
 
 export interface ChatFormValues {

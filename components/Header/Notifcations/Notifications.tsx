@@ -4,7 +4,7 @@ import Layout from '../../Layout';
 import {
   useNotificationListQuery,
   NotificationListQuery,
-} from '../../../graphql/generated/graphql';
+} from '../../../graphql/generated/frontend';
 import useInterval from '../../../utils/react-hooks/useInterval';
 import NotificationList from './NotificationList';
 

@@ -1,4 +1,4 @@
-import { MessageResolvers } from '../generated/graphql';
+import { MessageResolvers } from '../generated/backend';
 
 const resolvers: MessageResolvers = {
   id: parent => parent._id.toString(),

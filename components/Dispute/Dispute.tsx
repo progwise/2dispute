@@ -3,7 +3,7 @@ import {
   useGetDisputeQuery,
   useReplyOnDisputeMutation,
   useClearNotificationsForDisputeMutation,
-} from '../../graphql/generated/graphql';
+} from '../../graphql/generated/frontend';
 import { ChatFormValues, DisputeChat } from '../Chat';
 import SubjectHeader from '../Subject/SubjectHeader';
 import Link from '../Link/Link';

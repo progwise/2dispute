@@ -1,4 +1,4 @@
-import { SubjectResolvers } from '../generated/graphql';
+import { SubjectResolvers } from '../generated/backend';
 import { DisputeDocument } from '../Dispute/DisputeSchema';
 
 const compareDisputesByLastMessageAt = (

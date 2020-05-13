@@ -9,7 +9,7 @@ import withApollo from '../../utils/withApollo';
 import {
   useCreateSubjectMutation,
   useMeQuery,
-} from '../../graphql/generated/graphql';
+} from '../../graphql/generated/frontend';
 import ChatContainer from '../../components/Chat/components/ChatContainer';
 import ChatBubble from '../../components/Chat/components/ChatMessage/ChatBubble';
 import ChatItemFullWidth from '../../components/Chat/components/ChatItemFullWidth';

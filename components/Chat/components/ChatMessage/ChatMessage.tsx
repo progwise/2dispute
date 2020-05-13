@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChatMessageFragment } from '../../../../graphql/generated/graphql';
+import { ChatMessageFragment } from '../../../../graphql/generated/frontend';
 import DateTime from './DateTime';
 import ChatBubble from './ChatBubble';
 import ChatMessageFormatter from './ChatMessageFormatter/ChatMessageFormatter';

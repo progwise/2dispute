@@ -1,4 +1,4 @@
-import { QueryResolvers } from '../generated/graphql';
+import { QueryResolvers } from '../generated/backend';
 
 const queries: QueryResolvers = {
   me: (_parent, _args, context) =>

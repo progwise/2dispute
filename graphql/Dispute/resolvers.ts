@@ -1,5 +1,5 @@
 import { ApolloError } from 'apollo-server-micro';
-import { DisputeResolvers } from '../generated/graphql';
+import { DisputeResolvers } from '../generated/backend';
 
 const resolvers: DisputeResolvers = {
   id: partent => partent._id.toString(),

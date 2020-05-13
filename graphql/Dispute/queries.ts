@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { QueryResolvers } from '../generated/graphql';
+import { QueryResolvers } from '../generated/backend';
 import AggregationConnectionResolver from '../helper/ConnectionResolver/AggregationConnectionResolver';
 import { DisputeDocument } from './DisputeSchema';
 

@@ -4,7 +4,7 @@ import Link from '../../components/Link/Link';
 import {
   useGetSubjectLazyQuery,
   useReplyOnSubjectMutation,
-} from '../../graphql/generated/graphql';
+} from '../../graphql/generated/frontend';
 import withApollo from '../../utils/withApollo';
 import SubjectHeader from '../../components/Subject/SubjectHeader';
 import { SubjectChat, ChatFormValues } from '../../components/Chat';

@@ -1,4 +1,4 @@
-import { NotificationResolvers } from '../generated/graphql';
+import { NotificationResolvers } from '../generated/backend';
 
 const notificationResolvers: NotificationResolvers = {
   __resolveType: parent => parent.type,

@@ -1,4 +1,4 @@
-import { UserResolvers } from '../generated/graphql';
+import { UserResolvers } from '../generated/backend';
 import DocumentConnectionResolver from '../helper/ConnectionResolver/DocumentConnectionResolver';
 import { SubjectDocument } from '../Subject/SubjectSchema';
 import AggregationConnectionResolver from '../helper/ConnectionResolver/AggregationConnectionResolver';

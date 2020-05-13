@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserInfoFragment } from '../../graphql/generated/graphql';
+import { UserInfoFragment } from '../../graphql/generated/frontend';
 import Link from '../Link/Link';
 
 interface UserInfoProps {

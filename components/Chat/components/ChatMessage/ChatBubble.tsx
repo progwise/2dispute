@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChatPersonFragment } from '../../../../graphql/generated/graphql';
+import { ChatPersonFragment } from '../../../../graphql/generated/frontend';
 import TextboxWithAuthorPicture from './TextboxWithAuthorPicture';
 import Arrow from './Arrow';
 

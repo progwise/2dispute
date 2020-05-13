@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import { ApolloError, AuthenticationError } from 'apollo-server-micro';
-import { MutationResolvers } from '../generated/graphql';
+import { MutationResolvers } from '../generated/backend';
 import {
   NewDisputeNotificationDocument,
   NewMessageNotificationDocument,

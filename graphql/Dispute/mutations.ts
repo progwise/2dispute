@@ -4,7 +4,7 @@ import {
   ForbiddenError,
 } from 'apollo-server-micro';
 import * as mongoose from 'mongoose';
-import { MutationResolvers } from '../generated/graphql';
+import { MutationResolvers } from '../generated/backend';
 import { MessageDocument } from '../Message/MessageSchema';
 import trim from '../../utils/trim';
 import { Context } from '../context';

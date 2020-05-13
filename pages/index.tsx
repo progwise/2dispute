@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStartPageQuery } from '../graphql/generated/graphql';
+import { useStartPageQuery } from '../graphql/generated/frontend';
 import withApollo from '../utils/withApollo';
 import Link from '../components/Link/Link';
 

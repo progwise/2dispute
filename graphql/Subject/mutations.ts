@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import { AuthenticationError, ApolloError } from 'apollo-server-micro';
-import { MutationResolvers } from '../generated/graphql';
+import { MutationResolvers } from '../generated/backend';
 import { DisputeDocument } from '../Dispute/DisputeSchema';
 import trim from '../../utils/trim';
 import { Context } from '../context';

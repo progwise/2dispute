@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import {
   ChatSubjectFragment,
   ChatPersonFragment,
-} from '../../graphql/generated/graphql';
+} from '../../graphql/generated/frontend';
 import Button from '../Button/Button';
 import ChatContainer from './components/ChatContainer';
 import ChatMessage from './components/ChatMessage';

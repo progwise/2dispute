@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGetUserInfoByIdQuery } from '../../graphql/generated/graphql';
+import { useGetUserInfoByIdQuery } from '../../graphql/generated/frontend';
 import UserInfo from './UserInfo';
 
 interface UserInfoByIdProps {
