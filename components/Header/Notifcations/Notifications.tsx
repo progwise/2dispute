@@ -8,7 +8,11 @@ import {
 import useInterval from '../../../utils/react-hooks/useInterval';
 import NotificationList from './NotificationList';
 
-const Notifications = (): JSX.Element => {
+interface NotificationsProps {
+  className?: string;
+}
+
+const Notifications = ({ className }: NotificationsProps): JSX.Element => {
   const [open, setOpen] = useState(false);
   const toggleOpen = (): void => setOpen(open => !open);
 
@@ -72,13 +76,14 @@ const Notifications = (): JSX.Element => {
     notificationListQuery.data?.notificationStatus.totalCountUnread ?? 0;
 
   return (
-    <div className="">
-      <FaBell
-        onClick={toggleOpen}
-        className={`${
-          totalCountUnread > 0 ? 'text-blue-600 font-bold' : ''
-        } text-lg cursor-pointer`}
-      />
+    <div>
+      <div className={`py-4 cursor-pointer ${className}`} onClick={toggleOpen}>
+        <FaBell
+          className={`${
+            totalCountUnread > 0 ? 'text-blue-600 font-bold' : ''
+          } text-lg`}
+        />
+      </div>
       {open && (
         <>
           <div

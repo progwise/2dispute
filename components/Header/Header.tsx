@@ -18,8 +18,8 @@ const Header = (): JSX.Element => {
   const createSubjectPath = '/subjects/create';
 
   return (
-    <header className="pb-8">
-      <NavBar>
+    <>
+      <NavBar isAuthenticated={isAuthenticated}>
         <NavBarItem
           href={
             isAuthenticated
@@ -35,7 +35,7 @@ const Header = (): JSX.Element => {
               Mein Profil
             </NavBarItem>
             <NavBarItem href={logoutPath}>Abmelden</NavBarItem>
-            <li>
+            <li className="hidden md:block">
               <Notifications />
             </li>
           </>
@@ -45,8 +45,8 @@ const Header = (): JSX.Element => {
           </>
         )}
       </NavBar>
-      <Logo />
-    </header>
+      <Logo className="pb-8" />
+    </>
   );
 };
 

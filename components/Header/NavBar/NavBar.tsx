@@ -1,15 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { FaBars } from 'react-icons/fa';
+import Layout from '../../Layout';
+import LogoSVG from '../Logo/Logo.svg';
+import Link from '../../Link/Link';
+import Notifications from '../Notifcations';
 
 interface NavBarProps {
   children: React.ReactNode;
+  isAuthenticated?: boolean;
 }
 
-const NavBar = ({ children }: NavBarProps): JSX.Element => (
-  <nav className="pt-8 pb-4 font-bold">
-    <ul className="flex flex-wrap justify-end items-center space-x-12">
-      {children}
-    </ul>
-  </nav>
-);
+const NavBar = ({
+  children,
+  isAuthenticated = false,
+}: NavBarProps): JSX.Element => {
+  const [open, setOpen] = useState(true);
+  const toggle = (): void => setOpen(open => !open);
+
+  return (
+    <Layout className="sticky top-0 bg-white z-30 shadow-lg">
+      <nav className="pt-4 font-bold flex flex-wrap justify-between items-center">
+        <Link href="/">
+          <img src={LogoSVG} className="h-12" />
+        </Link>
+        <div className="md:hidden flex">
+          {isAuthenticated && <Notifications className="px-4" />}
+          <label
+            className="cursor-pointer block md:hidden p-4"
+            onClick={toggle}
+          >
+            <FaBars />
+          </label>
+        </div>
+
+        <ul
+          className={`${
+            open ? 'block' : 'hidden'
+          } md:flex md:flex-wrap md:justify-end md:items-center md:space-x-12 w-full md:w-auto`}
+        >
+          {children}
+        </ul>
+      </nav>
+    </Layout>
+  );
+};
 
 export default NavBar;
