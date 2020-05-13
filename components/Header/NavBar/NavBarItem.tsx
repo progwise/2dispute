@@ -10,7 +10,7 @@ interface NavBarItemProps {
 const NavBarItem = ({ children, href, as }: NavBarItemProps): JSX.Element => (
   <li>
     <Link href={href} as={as}>
-      <a>{children}</a>
+      <a className="block w-full py-4">{children}</a>
     </Link>
   </li>
 );

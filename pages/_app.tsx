@@ -13,8 +13,8 @@ interface MyAppProp {
 const MyApp = ({ Component, pageProps }: MyAppProp): JSX.Element => (
   <>
     <TokenManager />
+    <Header />
     <Layout>
-      <Header />
       <main>
         <Component {...pageProps} />
       </main>
