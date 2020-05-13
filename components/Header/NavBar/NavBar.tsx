@@ -14,7 +14,7 @@ const NavBar = ({
   children,
   isAuthenticated = false,
 }: NavBarProps): JSX.Element => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const toggle = (): void => setOpen(open => !open);
 
   return (
