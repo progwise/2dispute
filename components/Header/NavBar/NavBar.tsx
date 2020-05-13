@@ -8,11 +8,13 @@ import Notifications from '../Notifcations';
 interface NavBarProps {
   children: React.ReactNode;
   isAuthenticated?: boolean;
+  hideLogo?: boolean;
 }
 
 const NavBar = ({
   children,
   isAuthenticated = false,
+  hideLogo = false,
 }: NavBarProps): JSX.Element => {
   const [open, setOpen] = useState(false);
   const toggle = (): void => setOpen(open => !open);
@@ -21,7 +23,12 @@ const NavBar = ({
     <Layout className="sticky top-0 bg-white z-30 shadow-lg">
       <nav className="pt-4 font-bold flex flex-wrap justify-between items-center">
         <Link href="/">
-          <img src={LogoSVG} className="h-12" />
+          <img
+            src={LogoSVG}
+            className={`h-12 transition-opacity duration-100 ${
+              hideLogo && 'opacity-0'
+            }`}
+          />
         </Link>
         <div className="md:hidden flex">
           {isAuthenticated && <Notifications className="px-4" />}

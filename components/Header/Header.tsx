@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import { Waypoint } from 'react-waypoint';
 import { useHeaderMeQuery } from '../../graphql/generated/frontend';
 import withApollo from '../../utils/withApollo';
 import NavBar, { NavBarItem } from './NavBar';
@@ -7,6 +8,7 @@ import Logo from './Logo';
 import Notifications from './Notifcations';
 
 const Header = (): JSX.Element => {
+  const [logoVisible, setLogoVisible] = useState(true);
   const { data } = useHeaderMeQuery();
   const router = useRouter();
 
@@ -19,7 +21,7 @@ const Header = (): JSX.Element => {
 
   return (
     <>
-      <NavBar isAuthenticated={isAuthenticated}>
+      <NavBar isAuthenticated={isAuthenticated} hideLogo={logoVisible}>
         <NavBarItem
           href={
             isAuthenticated
@@ -45,7 +47,15 @@ const Header = (): JSX.Element => {
           </>
         )}
       </NavBar>
-      <Logo className="pb-8" />
+      <Waypoint
+        onEnter={(): void => setLogoVisible(true)}
+        onLeave={(): void => setLogoVisible(false)}
+        topOffset={66}
+      >
+        <div>
+          <Logo className="pb-8" />
+        </div>
+      </Waypoint>
     </>
   );
 };
