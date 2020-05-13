@@ -33,7 +33,7 @@ const NavBar = ({
         <div className="md:hidden flex">
           {isAuthenticated && <Notifications className="px-4" />}
           <label
-            className="cursor-pointer block md:hidden p-4"
+            className="cursor-pointer block md:hidden p-4 pr-0"
             onClick={toggle}
           >
             <FaBars />
