@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import { createEditor, Node, Text, NodeEntry, Range } from 'slate';
 import { Slate, Editable, withReact, RenderLeafProps } from 'slate-react';
 import { useField, useFormikContext } from 'formik';
@@ -55,6 +55,13 @@ const TextareaInput = ({
     },
     [],
   );
+
+  // When formik changes the value, update it here in state
+  useEffect(() => {
+    if (field.value !== value) {
+      setValue(deserialize(field.value));
+    }
+  }, [field.value]);
 
   return (
     <>
