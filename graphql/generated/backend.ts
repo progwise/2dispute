@@ -85,6 +85,7 @@ export type Mutation = {
   markNotificationsAsReadForDispute: NotificationsUpdate;
   replyOnDispute: Dispute;
   replyOnSubject: Dispute;
+  vote: Message;
 };
 
 export type MutationCreateSubjectArgs = {
@@ -109,6 +110,11 @@ export type MutationReplyOnDisputeArgs = {
 
 export type MutationReplyOnSubjectArgs = {
   input: ReplyOnSubjectInput;
+};
+
+export type MutationVoteArgs = {
+  messageId: Scalars['ID'];
+  voting: UserVoting;
 };
 
 export type Subject = {
@@ -217,6 +223,12 @@ export type Message = {
   votes: Votes;
 };
 
+export enum UserVoting {
+  Up = 'UP',
+  Down = 'DOWN',
+  None = 'NONE',
+}
+
 export type PageInfo = {
   __typename?: 'PageInfo';
   endCursor: Scalars['String'];
@@ -271,12 +283,6 @@ export type NewDisputeNotification = Notification & {
   createdAt: Scalars['DateTime'];
   dispute: Dispute;
 };
-
-export enum UserVoting {
-  Up = 'UP',
-  Down = 'DOWN',
-  None = 'NONE',
-}
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
@@ -417,6 +423,7 @@ export type ResolversTypes = ResolversObject<{
   NotificationConnection: ResolverTypeWrapper<NotificationConnection>;
   NotificationsUpdate: ResolverTypeWrapper<NotificationsUpdateMapper>;
   Message: ResolverTypeWrapper<MessageDocument>;
+  UserVoting: UserVoting;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Notification:
     | ResolversTypes['NewMessageNotification']
@@ -431,7 +438,6 @@ export type ResolversTypes = ResolversObject<{
   Votes: ResolverTypeWrapper<Votes>;
   NewMessageNotification: ResolverTypeWrapper<NewMessageNotificationDocument>;
   NewDisputeNotification: ResolverTypeWrapper<NewDisputeNotificationDocument>;
-  UserVoting: UserVoting;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -460,6 +466,7 @@ export type ResolversParentTypes = ResolversObject<{
   NotificationConnection: NotificationConnection;
   NotificationsUpdate: NotificationsUpdateMapper;
   Message: MessageDocument;
+  UserVoting: UserVoting;
   PageInfo: PageInfo;
   Notification:
     | ResolversParentTypes['NewMessageNotification']
@@ -474,7 +481,6 @@ export type ResolversParentTypes = ResolversObject<{
   Votes: Votes;
   NewMessageNotification: NewMessageNotificationDocument;
   NewDisputeNotification: NewDisputeNotificationDocument;
-  UserVoting: UserVoting;
 }>;
 
 export type AuthDirectiveArgs = {};
@@ -578,6 +584,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationReplyOnSubjectArgs, 'input'>
+  >;
+  vote?: Resolver<
+    ResolversTypes['Message'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationVoteArgs, 'messageId' | 'voting'>
   >;
 }>;
 
@@ -869,6 +881,7 @@ type Mutation {
   markNotificationsAsReadForDispute(disputeId: ID!): NotificationsUpdate!
   replyOnDispute(input: ReplyOnDisputInput!): Dispute!
   replyOnSubject(input: ReplyOnSubjectInput!): Dispute!
+  vote(messageId: ID!, voting: UserVoting!): Message!
 }
 
 type Subject {
@@ -954,6 +967,12 @@ type Message {
   votes: Votes!
 }
 
+enum UserVoting {
+  UP
+  DOWN
+  NONE
+}
+
 type PageInfo {
   endCursor: String!
   hasNextPage: Boolean!
@@ -1000,11 +1019,5 @@ type NewDisputeNotification implements Notification {
   read: Boolean!
   createdAt: DateTime!
   dispute: Dispute!
-}
-
-enum UserVoting {
-  UP
-  DOWN
-  NONE
 }
 `;
