@@ -1,4 +1,5 @@
-import { MessageResolvers, UserVoting } from '../generated/backend';
+import { MessageResolvers } from '../generated/backend';
+import getUserVoting from './helpers/getUserVoting';
 
 const resolvers: MessageResolvers = {
   id: parent => parent._id.toString(),
@@ -14,22 +15,11 @@ const resolvers: MessageResolvers = {
   },
   votes: (parent, _args, context) => {
     const userId = context.user?.id ?? '';
-    const isUpVoter = parent.upVoters.includes(userId);
-    const isDownVoter = parent.downVoters.includes(userId);
-
-    let userVoting: UserVoting;
-    if (isUpVoter) {
-      userVoting = UserVoting.Up;
-    } else if (isDownVoter) {
-      userVoting = UserVoting.Down;
-    } else {
-      userVoting = UserVoting.None;
-    }
 
     return {
       ups: parent.upVoters.length,
       downs: parent.downVoters.length,
-      userVoting,
+      userVoting: getUserVoting(parent, userId),
     };
   },
 };

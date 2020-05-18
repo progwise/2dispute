@@ -68,6 +68,7 @@ export type Mutation = {
   markNotificationsAsReadForDispute: NotificationsUpdate;
   replyOnDispute: Dispute;
   replyOnSubject: Dispute;
+  vote: Message;
 };
 
 export type MutationCreateSubjectArgs = {
@@ -92,6 +93,11 @@ export type MutationReplyOnDisputeArgs = {
 
 export type MutationReplyOnSubjectArgs = {
   input: ReplyOnSubjectInput;
+};
+
+export type MutationVoteArgs = {
+  messageId: Scalars['ID'];
+  voting: UserVoting;
 };
 
 export type Subject = {
@@ -200,6 +206,12 @@ export type Message = {
   votes: Votes;
 };
 
+export enum UserVoting {
+  Up = 'UP',
+  Down = 'DOWN',
+  None = 'NONE',
+}
+
 export type PageInfo = {
   __typename?: 'PageInfo';
   endCursor: Scalars['String'];
@@ -254,12 +266,6 @@ export type NewDisputeNotification = Notification & {
   createdAt: Scalars['DateTime'];
   dispute: Dispute;
 };
-
-export enum UserVoting {
-  Up = 'UP',
-  Down = 'DOWN',
-  None = 'NONE',
-}
 
 export type ChatSubjectFragment = { __typename?: 'Subject' } & Pick<
   Subject,

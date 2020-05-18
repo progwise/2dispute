@@ -2,6 +2,7 @@
 # import Dispute, ReplyOnDisputInput, DisputeConnection from './Dispute/Dispute.graphql'
 # import User from './User/User.graphql'
 # import NotificationConnection, NotificationsUpdate, NotificationStatus from './Notification/Notification.graphql'
+# import Message, UserVoting from './Message/Message.graphql'
 # import @auth from './schemaDirectives/auth.graphql'
 
 scalar DateTime
@@ -40,4 +41,5 @@ type Mutation {
   markNotificationAsRead(id: ID!): Notification! @auth
   markMultipleNotificationAsRead(latestId: ID!): [Notification!]! @auth
   markNotificationsAsReadForDispute(disputeId: ID!): NotificationsUpdate! @auth
+  vote(messageId: ID!, voting: UserVoting!): Message! @auth
 }
