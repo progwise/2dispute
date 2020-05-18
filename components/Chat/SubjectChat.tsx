@@ -48,7 +48,11 @@ const SubjectChat = ({
 
   return (
     <ChatContainer>
-      <ChatMessage position="left" message={subject.firstMessage} />
+      <ChatMessage
+        position="left"
+        message={subject.firstMessage}
+        isAuthenticated={!!me}
+      />
       {me && userState === UserState.Visitor && (
         <ChatMessageForm
           user={me}

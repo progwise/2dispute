@@ -8,12 +8,14 @@ import Votes from './Votes';
 interface ChatMessageProps {
   message: ChatMessageFragment | ChatMessageFragment[];
   position: 'left' | 'right';
+  isAuthenticated: boolean;
   showVotes?: boolean;
 }
 
 const ChatMessage = ({
   message,
   position,
+  isAuthenticated,
   showVotes = false,
 }: ChatMessageProps): JSX.Element | null => {
   const messages = Array.isArray(message) ? message : [message];
@@ -30,7 +32,13 @@ const ChatMessage = ({
           <p>
             <DateTime dateTime={message.createdAt} />
           </p>
-          {showVotes && <Votes votes={message.votes} messageId={message.id} />}
+          {showVotes && (
+            <Votes
+              votes={message.votes}
+              messageId={message.id}
+              isAuthenticated={isAuthenticated}
+            />
+          )}
         </div>
       ))}
     </ChatBubble>

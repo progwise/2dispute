@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import {
   MessageVotesFragment,
@@ -9,12 +10,23 @@ import {
 interface VotesProps {
   votes: MessageVotesFragment;
   messageId: string;
+  isAuthenticated: boolean;
 }
 
-const Votes = ({ votes, messageId }: VotesProps): JSX.Element => {
+const Votes = ({
+  votes,
+  messageId,
+  isAuthenticated,
+}: VotesProps): JSX.Element => {
   const [voteMutation] = useVoteMutation();
+  const router = useRouter();
 
   const vote = (newVoting: UserVoting): void => {
+    if (!isAuthenticated) {
+      router.push(`/api/login?redirectTo=${router.asPath}`);
+      return;
+    }
+
     const undoVoting = votes.userVoting === newVoting;
     const voting = undoVoting ? UserVoting.None : newVoting;
     voteMutation({
