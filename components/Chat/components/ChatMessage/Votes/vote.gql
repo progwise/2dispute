@@ -1,0 +1,8 @@
+mutation vote($messageId: ID!, $voting: UserVoting!) {
+  vote(messageId: $messageId, voting: $voting) {
+    id
+    votes {
+      ...MessageVotes
+    }
+  }
+}

@@ -28,7 +28,7 @@ const ChatMessage = ({
           <p>
             <DateTime dateTime={message.createdAt} />
           </p>
-          <Votes votes={message.votes} />
+          <Votes votes={message.votes} messageId={message.id} />
         </div>
       ))}
     </ChatBubble>
