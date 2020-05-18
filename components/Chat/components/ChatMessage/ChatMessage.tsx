@@ -3,6 +3,7 @@ import { ChatMessageFragment } from '../../../../graphql/generated/frontend';
 import DateTime from './DateTime';
 import ChatBubble from './ChatBubble';
 import ChatMessageFormatter from './ChatMessageFormatter/ChatMessageFormatter';
+import Votes from './Votes';
 
 interface ChatMessageProps {
   message: ChatMessageFragment | ChatMessageFragment[];
@@ -27,6 +28,7 @@ const ChatMessage = ({
           <p>
             <DateTime dateTime={message.createdAt} />
           </p>
+          <Votes votes={message.votes} />
         </div>
       ))}
     </ChatBubble>

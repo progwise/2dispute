@@ -287,11 +287,19 @@ export type ChatDisputeFragment = { __typename?: 'Dispute' } & Pick<
 export type ChatMessageFragment = { __typename?: 'Message' } & Pick<
   Message,
   'id' | 'text' | 'createdAt'
-> & { author: { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'picture'> };
+> & {
+    author: { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'picture'>;
+    votes: { __typename?: 'Votes' } & MessageVotesFragment;
+  };
 
 export type ChatPersonFragment = { __typename?: 'User' } & Pick<
   User,
   'id' | 'name' | 'picture'
+>;
+
+export type MessageVotesFragment = { __typename?: 'Votes' } & Pick<
+  Votes,
+  'ups' | 'downs' | 'userVoting'
 >;
 
 export type ClearNotificationsForDisputeMutationVariables = {
@@ -600,6 +608,13 @@ export const ChatPersonFragmentDoc = gql`
     picture
   }
 `;
+export const MessageVotesFragmentDoc = gql`
+  fragment MessageVotes on Votes {
+    ups
+    downs
+    userVoting
+  }
+`;
 export const ChatMessageFragmentDoc = gql`
   fragment ChatMessage on Message {
     id
@@ -610,7 +625,11 @@ export const ChatMessageFragmentDoc = gql`
       name
       picture
     }
+    votes {
+      ...MessageVotes
+    }
   }
+  ${MessageVotesFragmentDoc}
 `;
 export const ChatSubjectFragmentDoc = gql`
   fragment ChatSubject on Subject {
