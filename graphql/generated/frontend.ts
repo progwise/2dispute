@@ -267,6 +267,17 @@ export type NewDisputeNotification = Notification & {
   dispute: Dispute;
 };
 
+export type VoteMutationVariables = {
+  messageId: Scalars['ID'];
+  voting: UserVoting;
+};
+
+export type VoteMutation = { __typename?: 'Mutation' } & {
+  vote: { __typename?: 'Message' } & Pick<Message, 'id'> & {
+      votes: { __typename?: 'Votes' } & MessageVotesFragment;
+    };
+};
+
 export type ChatSubjectFragment = { __typename?: 'Subject' } & Pick<
   Subject,
   'id' | 'createdAt'
@@ -701,6 +712,53 @@ export const StartPageUserFragmentDoc = gql`
     name
   }
 `;
+export const VoteDocument = gql`
+  mutation vote($messageId: ID!, $voting: UserVoting!) {
+    vote(messageId: $messageId, voting: $voting) {
+      id
+      votes {
+        ...MessageVotes
+      }
+    }
+  }
+  ${MessageVotesFragmentDoc}
+`;
+
+/**
+ * __useVoteMutation__
+ *
+ * To run a mutation, you first call `useVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [voteMutation, { data, loading, error }] = useVoteMutation({
+ *   variables: {
+ *      messageId: // value for 'messageId'
+ *      voting: // value for 'voting'
+ *   },
+ * });
+ */
+export function useVoteMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    VoteMutation,
+    VoteMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<VoteMutation, VoteMutationVariables>(
+    VoteDocument,
+    baseOptions,
+  );
+}
+export type VoteMutationHookResult = ReturnType<typeof useVoteMutation>;
+export type VoteMutationResult = ApolloReactCommon.MutationResult<VoteMutation>;
+export type VoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  VoteMutation,
+  VoteMutationVariables
+>;
 export const ClearNotificationsForDisputeDocument = gql`
   mutation clearNotificationsForDispute($disputeId: ID!) {
     markNotificationsAsReadForDispute(disputeId: $disputeId) {
