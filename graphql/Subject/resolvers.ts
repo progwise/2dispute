@@ -16,6 +16,8 @@ const subjectResolvers: SubjectResolvers = {
     authorId: parent.userId,
     text: parent.firstMessage,
     createdAt: parent.createdAt,
+    upVoters: [],
+    downVoters: [],
   }),
   disputes: parent => parent.disputes.sort(compareDisputesByLastMessageAt),
   hasDisputes: parent => parent.disputes.length > 0,

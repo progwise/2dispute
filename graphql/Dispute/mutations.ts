@@ -72,6 +72,8 @@ const mutations: MutationResolvers = {
       authorId: userId,
       text: trim(message),
       createdAt: now,
+      upVoters: [],
+      downVoters: [],
     };
     selectedDispute.messages.push(newMessage);
     selectedDispute.lastMessageAt = now;
