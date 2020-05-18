@@ -87,6 +87,7 @@ const DisputeChat = ({
           position={
             combinedMessage.authorId === dispute.partnerA.id ? 'left' : 'right'
           }
+          showVotes
         />
       ))}
       {me && userState !== UserState.Visitor && (
