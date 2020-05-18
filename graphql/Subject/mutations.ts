@@ -66,12 +66,16 @@ const mutations: MutationResolvers = {
           authorId: subject.userId,
           text: subject.firstMessage,
           createdAt: subject.createdAt,
+          upVoters: [],
+          downVoters: [],
         },
         {
           _id: mongoose.Types.ObjectId(),
           authorId: context.user.id,
           text: message,
           createdAt: now,
+          upVoters: [],
+          downVoters: [],
         },
       ],
     };
