@@ -197,6 +197,7 @@ export type Message = {
   dispute: Dispute;
   id: Scalars['ID'];
   text: Scalars['String'];
+  votes: Votes;
 };
 
 export type PageInfo = {
@@ -231,6 +232,13 @@ export type NotificationEdge = {
   node: Notification;
 };
 
+export type Votes = {
+  __typename?: 'Votes';
+  ups: Scalars['Int'];
+  downs: Scalars['Int'];
+  userVoting: UserVoting;
+};
+
 export type NewMessageNotification = Notification & {
   __typename?: 'NewMessageNotification';
   id: Scalars['ID'];
@@ -246,6 +254,12 @@ export type NewDisputeNotification = Notification & {
   createdAt: Scalars['DateTime'];
   dispute: Dispute;
 };
+
+export enum UserVoting {
+  Up = 'UP',
+  Down = 'DOWN',
+  None = 'NONE',
+}
 
 export type ChatSubjectFragment = { __typename?: 'Subject' } & Pick<
   Subject,

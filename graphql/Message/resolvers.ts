@@ -1,4 +1,4 @@
-import { MessageResolvers } from '../generated/backend';
+import { MessageResolvers, UserVoting } from '../generated/backend';
 
 const resolvers: MessageResolvers = {
   id: parent => parent._id.toString(),
@@ -11,6 +11,26 @@ const resolvers: MessageResolvers = {
       .exec();
 
     return data[0].disputes || undefined;
+  },
+  votes: (parent, _args, context) => {
+    const userId = context.user?.id ?? '';
+    const isUpVoter = parent.upVoters.includes(userId);
+    const isDownVoter = parent.downVoters.includes(userId);
+
+    let userVoting: UserVoting;
+    if (isUpVoter) {
+      userVoting = UserVoting.Up;
+    } else if (isDownVoter) {
+      userVoting = UserVoting.Down;
+    } else {
+      userVoting = UserVoting.None;
+    }
+
+    return {
+      ups: parent.upVoters.length,
+      downs: parent.downVoters.length,
+      userVoting,
+    };
   },
 };
 

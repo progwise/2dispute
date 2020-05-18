@@ -4,4 +4,17 @@ type Message {
   author: User!
   createdAt: DateTime!
   dispute: Dispute!
+  votes: Votes!
+}
+
+type Votes {
+  ups: Int!
+  downs: Int!
+  userVoting: UserVoting!
+}
+
+enum UserVoting {
+  UP
+  DOWN
+  NONE
 }
