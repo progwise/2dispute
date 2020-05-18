@@ -31,10 +31,19 @@ fragment ChatMessage on Message {
     name
     picture
   }
+  votes {
+    ...MessageVotes
+  }
 }
 
 fragment ChatPerson on User {
   id
   name
   picture
+}
+
+fragment MessageVotes on Votes {
+  ups
+  downs
+  userVoting
 }
