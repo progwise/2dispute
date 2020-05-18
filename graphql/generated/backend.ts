@@ -214,6 +214,7 @@ export type Message = {
   dispute: Dispute;
   id: Scalars['ID'];
   text: Scalars['String'];
+  votes: Votes;
 };
 
 export type PageInfo = {
@@ -248,6 +249,13 @@ export type NotificationEdge = {
   node: Notification;
 };
 
+export type Votes = {
+  __typename?: 'Votes';
+  ups: Scalars['Int'];
+  downs: Scalars['Int'];
+  userVoting: UserVoting;
+};
+
 export type NewMessageNotification = Notification & {
   __typename?: 'NewMessageNotification';
   id: Scalars['ID'];
@@ -263,6 +271,12 @@ export type NewDisputeNotification = Notification & {
   createdAt: Scalars['DateTime'];
   dispute: Dispute;
 };
+
+export enum UserVoting {
+  Up = 'UP',
+  Down = 'DOWN',
+  None = 'NONE',
+}
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
@@ -414,8 +428,10 @@ export type ResolversTypes = ResolversObject<{
     Omit<DisputeEdge, 'node'> & { node: ResolversTypes['Dispute'] }
   >;
   NotificationEdge: ResolverTypeWrapper<NotificationEdge>;
+  Votes: ResolverTypeWrapper<Votes>;
   NewMessageNotification: ResolverTypeWrapper<NewMessageNotificationDocument>;
   NewDisputeNotification: ResolverTypeWrapper<NewDisputeNotificationDocument>;
+  UserVoting: UserVoting;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -455,8 +471,10 @@ export type ResolversParentTypes = ResolversObject<{
     node: ResolversParentTypes['Dispute'];
   };
   NotificationEdge: NotificationEdge;
+  Votes: Votes;
   NewMessageNotification: NewMessageNotificationDocument;
   NewDisputeNotification: NewDisputeNotificationDocument;
+  UserVoting: UserVoting;
 }>;
 
 export type AuthDirectiveArgs = {};
@@ -696,6 +714,7 @@ export type MessageResolvers<
   dispute?: Resolver<ResolversTypes['Dispute'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  votes?: Resolver<ResolversTypes['Votes'], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -755,6 +774,16 @@ export type NotificationEdgeResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
+export type VotesResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Votes'] = ResolversParentTypes['Votes']
+> = ResolversObject<{
+  ups?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  downs?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  userVoting?: Resolver<ResolversTypes['UserVoting'], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
 export type NewMessageNotificationResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['NewMessageNotification'] = ResolversParentTypes['NewMessageNotification']
@@ -795,6 +824,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   SubjectEdge?: SubjectEdgeResolvers<ContextType>;
   DisputeEdge?: DisputeEdgeResolvers<ContextType>;
   NotificationEdge?: NotificationEdgeResolvers<ContextType>;
+  Votes?: VotesResolvers<ContextType>;
   NewMessageNotification?: NewMessageNotificationResolvers<ContextType>;
   NewDisputeNotification?: NewDisputeNotificationResolvers<ContextType>;
 }>;
@@ -921,6 +951,7 @@ type Message {
   dispute: Dispute!
   id: ID!
   text: String!
+  votes: Votes!
 }
 
 type PageInfo {
@@ -951,6 +982,12 @@ type NotificationEdge {
   node: Notification!
 }
 
+type Votes {
+  ups: Int!
+  downs: Int!
+  userVoting: UserVoting!
+}
+
 type NewMessageNotification implements Notification {
   id: ID!
   read: Boolean!
@@ -963,5 +1000,11 @@ type NewDisputeNotification implements Notification {
   read: Boolean!
   createdAt: DateTime!
   dispute: Dispute!
+}
+
+enum UserVoting {
+  UP
+  DOWN
+  NONE
 }
 `;
