@@ -23,10 +23,10 @@ const Dispute = ({ disputeId }: DisputeProps): JSX.Element => {
   });
 
   useEffect(() => {
-    if (data) {
+    if (data?.dispute?.messages.length) {
       clearNotifications();
     }
-  }, [data]);
+  }, [data?.dispute?.messages.length]);
 
   const [replyOnDispute] = useReplyOnDisputeMutation();
 
