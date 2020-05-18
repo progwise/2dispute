@@ -17,7 +17,27 @@ const Votes = ({ votes, messageId }: VotesProps): JSX.Element => {
   const vote = (newVoting: UserVoting): void => {
     const undoVoting = votes.userVoting === newVoting;
     const voting = undoVoting ? UserVoting.None : newVoting;
-    voteMutation({ variables: { messageId, voting } });
+    voteMutation({
+      variables: { messageId, voting },
+      optimisticResponse: {
+        vote: {
+          id: messageId,
+          votes: {
+            ups:
+              votes.ups -
+              (votes.userVoting === UserVoting.Up ? 1 : 0) +
+              (voting === UserVoting.Up ? 1 : 0),
+            downs:
+              votes.downs -
+              (votes.userVoting === UserVoting.Down ? 1 : 0) +
+              (voting === UserVoting.Down ? 1 : 0),
+            userVoting: voting,
+            __typename: 'Votes',
+          },
+          __typename: 'Message',
+        },
+      },
+    });
   };
 
   return (
