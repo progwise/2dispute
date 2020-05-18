@@ -12,7 +12,7 @@ interface VotesProps {
 }
 
 const Votes = ({ votes, messageId }: VotesProps): JSX.Element => {
-  const [voteMutation, { loading }] = useVoteMutation();
+  const [voteMutation] = useVoteMutation();
 
   const vote = (newVoting: UserVoting): void => {
     const undoVoting = votes.userVoting === newVoting;
@@ -27,7 +27,6 @@ const Votes = ({ votes, messageId }: VotesProps): JSX.Element => {
           votes.userVoting === UserVoting.Up ? 'text-blue-600' : ''
         }`}
         onClick={(): void => vote(UserVoting.Up)}
-        disabled={loading}
       >
         <span>{votes.ups}</span>
         <FaThumbsUp />
@@ -37,7 +36,6 @@ const Votes = ({ votes, messageId }: VotesProps): JSX.Element => {
           votes.userVoting === UserVoting.Down ? 'text-blue-600' : ''
         }`}
         onClick={(): void => vote(UserVoting.Down)}
-        disabled={loading}
       >
         <span>{votes.downs}</span>
         <FaThumbsDown />
