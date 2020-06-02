@@ -1,5 +1,5 @@
 import Dataloader from 'dataloader';
-import auth0 from '../utils/auth0';
+import jwt from 'jsonwebtoken';
 import { getUserById, UserMapper } from './User';
 import { MyNextApiRequest, MongooseHelper } from './mongoose';
 
@@ -18,8 +18,13 @@ const context = async ({
 }: {
   req: MyNextApiRequest;
 }): Promise<Context> => {
-  const session = await auth0(req).getSession(req);
-  const userId: string | undefined = session?.user.sub;
+  const { token } = req.cookies;
+
+  let userId: string | undefined;
+  if (token) {
+    const verifyResult = jwt.verify(token, process.env.JWT_SECRET ?? '');
+    userId = verifyResult['id'];
+  }
 
   const userDataloader = new Dataloader<string, UserMapper>(userIds =>
     Promise.all(userIds.map(getUserById)),
