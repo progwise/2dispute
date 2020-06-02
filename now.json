@@ -6,6 +6,9 @@
     "AUTH0_MANAGEMENT_CLIENT_ID": "@auth0-management-client-id",
     "AUTH0_MANAGEMENT_CLIENT_SECRET": "@auth0-management-client-secret",
     "COOKIE_SECRET": "@cookie-secret",
-    "MONGODB_CONNECTION_STRING": "@mongodb-connection-string"
+    "MONGODB_CONNECTION_STRING": "@mongodb-connection-string",
+    "TWITTER_CONSUMER_KEY": "@twitter-consumer-key",
+    "TWITTER_CONSUMER_SECRET": "@twitter-consumer-secret",
+    "JWT_SECRET": "@jwt-secret"
   }
 }
