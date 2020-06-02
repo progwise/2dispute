@@ -9,8 +9,11 @@ import {
   NewMessageNotificationDocument,
   newMessageNotificationSchema,
 } from './Notification/NotificationSchema';
+import UserSchema, { UserDocument } from './User/UserSchema';
 
 mongoose.set('debug', process.env.NODE_ENV === 'development');
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
 export interface MongooseHelper {
   connection: mongoose.Connection;
@@ -19,6 +22,7 @@ export interface MongooseHelper {
     Notification: mongoose.Model<NotificationDocument, {}>;
     NewDisputeNotification: mongoose.Model<NewDisputeNotificationDocument, {}>;
     NewMessageNotification: mongoose.Model<NewMessageNotificationDocument, {}>;
+    User: mongoose.Model<UserDocument, {}>;
   };
 }
 
@@ -60,6 +64,8 @@ const connectToMongo = async (): Promise<MongooseHelper> => {
       'NewMessageNotification',
       newMessageNotificationSchema,
     );
+  const User: mongoose.Model<UserDocument, {}> =
+    mongoose.models.User ?? mongoose.model<UserDocument>('User', UserSchema);
 
   return {
     connection: mongoose.connections[0],
@@ -68,6 +74,7 @@ const connectToMongo = async (): Promise<MongooseHelper> => {
       Notification,
       NewDisputeNotification,
       NewMessageNotification,
+      User,
     },
   };
 };
