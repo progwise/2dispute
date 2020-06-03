@@ -1,6 +1,6 @@
 import Dataloader from 'dataloader';
 import jwt from 'jsonwebtoken';
-import { getUserById, UserMapper } from './User';
+import { getTwitterUserById, UserMapper } from './User';
 import { MyNextApiRequest, MongooseHelper } from './mongoose';
 
 export interface Context {
@@ -27,7 +27,7 @@ const context = async ({
   }
 
   const userDataloader = new Dataloader<string, UserMapper>(userIds =>
-    Promise.all(userIds.map(getUserById)),
+    Promise.all(userIds.map(getTwitterUserById)),
   );
 
   return {
