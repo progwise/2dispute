@@ -23,7 +23,7 @@ const context = async ({
   let userId: string | undefined;
   if (token) {
     const verifyResult = jwt.verify(token, process.env.JWT_SECRET ?? '');
-    userId = verifyResult['id'];
+    userId = verifyResult['twitterId'];
   }
 
   const userDataloader = new Dataloader<string, UserMapper>(userIds =>
