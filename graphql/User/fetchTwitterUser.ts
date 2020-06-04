@@ -27,10 +27,17 @@ const fetchTwitterUser = async (userId: string): Promise<UserMapper> => {
       user_id: userId,
       include_entities: false,
     });
+
+    // The normal picture has a size of 48x48. In 2 dispute we display profile
+    // pictures as 128x128. Therefore we are loading the next bigger available
+    // size, which is 200x200.
+    const pictureNormal: string = userResult.profile_image_url_https;
+    const picture200 = pictureNormal.replace('_normal.', '_200x200.');
+
     return {
       id: userId,
       name: userResult.name,
-      picture: userResult.profile_image_url_https,
+      picture: picture200,
     };
   } catch {
     return {
