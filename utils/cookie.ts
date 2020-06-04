@@ -1,10 +1,15 @@
 import { NextApiResponse } from 'next';
 import { serialize, CookieSerializeOptions } from 'cookie';
 
+const defaultCookieOptions: CookieSerializeOptions = {
+  path: '/',
+  sameSite: 'strict',
+};
+
 /**
  * This sets `cookie` on `res` object
  */
-const setCookie = (
+export const setCookie = (
   res: NextApiResponse,
   name: string,
   value: unknown,
@@ -18,7 +23,11 @@ const setCookie = (
     options.maxAge /= 1000;
   }
 
-  res.setHeader('Set-Cookie', serialize(name, stringValue, options));
+  res.setHeader(
+    'Set-Cookie',
+    serialize(name, stringValue, { ...defaultCookieOptions, ...options }),
+  );
 };
 
-export default setCookie;
+export const deleteCookie = (res: NextApiResponse, name: string): void =>
+  setCookie(res, name, undefined, { expires: new Date(0) });
