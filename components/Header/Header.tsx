@@ -13,7 +13,7 @@ const Header = (): JSX.Element => {
   const isAuthenticated = data?.me ? true : false;
 
   const getLoginPath = (redirectTo: string = router.asPath): string =>
-    `/api/login?redirectTo=${redirectTo}`;
+    `/api/auth/twitter?redirectTo=${redirectTo}`;
   const logoutPath = '/api/logout';
   const createSubjectPath = '/subjects/create';
 
@@ -41,8 +41,7 @@ const Header = (): JSX.Element => {
           </>
         ) : (
           <>
-            <NavBarItem href={getLoginPath()}>Anmelden</NavBarItem>
-            <NavBarItem href={getLoginPath()}>Registrieren</NavBarItem>
+            <NavBarItem href={getLoginPath()}>Mit Twitter Anmelden</NavBarItem>
           </>
         )}
       </NavBar>
