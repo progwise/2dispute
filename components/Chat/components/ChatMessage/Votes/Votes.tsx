@@ -23,7 +23,7 @@ const Votes = ({
 
   const vote = (newVoting: UserVoting): void => {
     if (!isAuthenticated) {
-      router.push(`/api/login?redirectTo=${router.asPath}`);
+      router.push(`/api/auth/twitter?redirectTo=${router.asPath}`);
       return;
     }
 

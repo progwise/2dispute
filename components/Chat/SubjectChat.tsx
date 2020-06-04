@@ -44,7 +44,7 @@ const SubjectChat = ({
   }
 
   const handleLoginClick = (): Promise<boolean> =>
-    router.push(`/api/login?redirectTo=${router.asPath}`);
+    router.push(`/api/auth/twitter?redirectTo=${router.asPath}`);
 
   return (
     <ChatContainer>

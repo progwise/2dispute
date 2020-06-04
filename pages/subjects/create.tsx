@@ -65,7 +65,7 @@ const CreateSubject = (): JSX.Element => {
   }
 
   if (!data.me) {
-    router.push(`/api/login?redirectTo=${router.asPath}`);
+    router.push(`/api/auth/twitter?redirectTo=${router.asPath}`);
     return <p>Loading...</p>;
   }
 
@@ -81,7 +81,7 @@ const CreateSubject = (): JSX.Element => {
           const tweetId = getTweetId(formik.values.tweetLink);
 
           if (!data.me) {
-            router.push(`/api/login?redirectTo=${router.asPath}`);
+            router.push(`/api/auth/twitter?redirectTo=${router.asPath}`);
             return <p>Loading...</p>;
           }
 

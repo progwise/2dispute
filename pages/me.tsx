@@ -23,7 +23,7 @@ const Me = (): JSX.Element | null => {
   }
 
   if (!data.me) {
-    router.push(`/api/login?redirectTo=${router.asPath}`);
+    router.push(`/api/auth/twitter?redirectTo=${router.asPath}`);
     return null;
   }
 
