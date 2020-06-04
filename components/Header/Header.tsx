@@ -14,7 +14,7 @@ const Header = (): JSX.Element => {
 
   const getLoginPath = (redirectTo: string = router.asPath): string =>
     `/api/auth/twitter?redirectTo=${redirectTo}`;
-  const logoutPath = '/api/logout';
+  const logoutPath = '/api/auth/logout';
   const createSubjectPath = '/subjects/create';
 
   return (
