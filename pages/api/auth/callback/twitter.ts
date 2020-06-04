@@ -2,7 +2,7 @@
 import { NextApiHandler } from 'next';
 import Twitter from 'twitter-lite';
 import jwt from 'jsonwebtoken';
-import setCookie from '../../../../utils/setCookie';
+import { setCookie } from '../../../../utils/cookie';
 import mongooseMiddleware, {
   MyNextApiRequest,
 } from '../../../../graphql/mongoose';
@@ -63,7 +63,7 @@ const handler: NextApiHandler = async (req: MyNextApiRequest, res) => {
     },
   );
 
-  setCookie(res, 'token', token, { path: '/', sameSite: 'strict' });
+  setCookie(res, 'token', token);
 
   const redirectUrl = createAbsoluteURL(req, redirectTo);
 

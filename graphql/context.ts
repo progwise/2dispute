@@ -1,5 +1,7 @@
+import { NextApiResponse } from 'next';
 import Dataloader from 'dataloader';
 import jwt from 'jsonwebtoken';
+import { deleteCookie } from '../utils/cookie';
 import { getTwitterUserById, UserMapper } from './User';
 import { MyNextApiRequest, MongooseHelper } from './mongoose';
 
@@ -15,15 +17,21 @@ export interface Context {
 
 const context = async ({
   req,
+  res,
 }: {
   req: MyNextApiRequest;
+  res: NextApiResponse;
 }): Promise<Context> => {
   const { token } = req.cookies;
 
   let userId: string | undefined;
   if (token) {
-    const verifyResult = jwt.verify(token, process.env.JWT_SECRET ?? '');
-    userId = verifyResult['twitterId'];
+    try {
+      const verifyResult = jwt.verify(token, process.env.JWT_SECRET ?? '');
+      userId = verifyResult['twitterId'];
+    } catch (err) {
+      deleteCookie(res, 'token');
+    }
   }
 
   const userDataloader = new Dataloader<string, UserMapper>(userIds =>
