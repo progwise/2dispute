@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { NextApiHandler } from 'next';
 import Twitter from 'twitter-lite';
-import jwt from 'jsonwebtoken';
 import { setCookie } from '../../../../utils/cookie';
 import mongooseMiddleware, {
   MyNextApiRequest,
 } from '../../../../graphql/mongoose';
 import createAbsoluteURL from '../../../../utils/createAbsoluteURL';
+import createJwt from '../../../../utils/createJwt';
 
 // TODO: handle error (try/catch)
 const handler: NextApiHandler = async (req: MyNextApiRequest, res) => {
@@ -27,41 +27,11 @@ const handler: NextApiHandler = async (req: MyNextApiRequest, res) => {
     oauth_verifier,
   });
 
-  const userClient = new Twitter({
-    consumer_key: process.env.TWITTER_CONSUMER_KEY ?? '',
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET ?? '',
-    access_token_key: accessToken.oauth_token,
-    access_token_secret: accessToken.oauth_token_secret,
+  const token = createJwt({
+    mongoose: req.mongoose,
+    oauth_token: accessToken.oauth_token,
+    oauth_token_secret: accessToken.oauth_token_secret,
   });
-
-  const verifyResponse = await userClient.get('account/verify_credentials', {
-    skip_status: true,
-    include_email: true,
-  });
-  const { id: twitterId, email } = verifyResponse;
-
-  const user = await req.mongoose.models.User.findOneAndUpdate(
-    { twitterId },
-    { twitterId, email },
-    { upsert: true, new: true },
-  ).exec();
-  if (!user) {
-    throw new Error();
-  }
-
-  const token = jwt.sign(
-    {
-      ...user.toObject(),
-      accessToken: {
-        oauth_token: accessToken.oauth_token,
-        oauth_token_secret: accessToken.oauth_token_secret,
-      },
-    },
-    process.env.JWT_SECRET ?? '',
-    {
-      expiresIn: '24h',
-    },
-  );
 
   setCookie(res, 'token', token);
 
