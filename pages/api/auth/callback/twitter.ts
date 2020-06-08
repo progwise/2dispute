@@ -27,7 +27,7 @@ const handler: NextApiHandler = async (req: MyNextApiRequest, res) => {
     oauth_verifier,
   });
 
-  const token = createJwt({
+  const token = await createJwt({
     mongoose: req.mongoose,
     oauth_token: accessToken.oauth_token,
     oauth_token_secret: accessToken.oauth_token_secret,
