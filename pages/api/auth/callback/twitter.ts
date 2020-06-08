@@ -7,6 +7,7 @@ import mongooseMiddleware, {
 } from '../../../../graphql/mongoose';
 import createAbsoluteURL from '../../../../utils/createAbsoluteURL';
 import createJwt from '../../../../utils/createJwt';
+import constants from '../../../../utils/constants';
 
 // TODO: handle error (try/catch)
 const handler: NextApiHandler = async (req: MyNextApiRequest, res) => {
@@ -33,7 +34,7 @@ const handler: NextApiHandler = async (req: MyNextApiRequest, res) => {
     oauth_token_secret: accessToken.oauth_token_secret,
   });
 
-  setCookie(res, 'token', token);
+  setCookie(res, constants.COOKIE_TOKEN_KEY, token);
 
   const redirectUrl = createAbsoluteURL(req, redirectTo);
 

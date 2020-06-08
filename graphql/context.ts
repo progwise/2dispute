@@ -2,6 +2,7 @@ import { NextApiResponse } from 'next';
 import Dataloader from 'dataloader';
 import jwt from 'jsonwebtoken';
 import { deleteCookie } from '../utils/cookie';
+import constants from '../utils/constants';
 import { getTwitterUserById, UserMapper } from './User';
 import { MyNextApiRequest, MongooseHelper } from './mongoose';
 
@@ -30,7 +31,7 @@ const context = async ({
       const verifyResult = jwt.verify(token, process.env.JWT_SECRET ?? '');
       userId = verifyResult['twitterId'];
     } catch (err) {
-      deleteCookie(res, 'token');
+      deleteCookie(res, constants.COOKIE_TOKEN_KEY);
     }
   }
 

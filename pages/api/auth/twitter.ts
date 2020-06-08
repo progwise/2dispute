@@ -9,6 +9,7 @@ import mongooseMiddleware, {
 } from '../../../graphql/mongoose';
 import createJwt from '../../../utils/createJwt';
 import { setCookie } from '../../../utils/cookie';
+import constants from '../../../utils/constants';
 
 const twitterHandler: NextApiHandler = async (req: MyNextApiRequest, res) => {
   const redirectTo = Array.isArray(req.query.redirectTo)
@@ -29,7 +30,7 @@ const twitterHandler: NextApiHandler = async (req: MyNextApiRequest, res) => {
       oauth_token,
       oauth_token_secret,
     });
-    setCookie(res, 'token', newToken);
+    setCookie(res, constants.COOKIE_TOKEN_KEY, newToken);
 
     res.statusCode = 302;
     res.setHeader('Location', redirectTo ?? '/');
