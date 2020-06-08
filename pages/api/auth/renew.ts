@@ -7,6 +7,7 @@ import mongooseMiddleware, {
 } from '../../../graphql/mongoose';
 import createJwt from '../../../utils/createJwt';
 import { setCookie } from '../../../utils/cookie';
+import constants from '../../../utils/constants';
 
 const renewHandler: NextApiHandler = async (req: MyNextApiRequest, res) => {
   const { token } = req.cookies;
@@ -21,7 +22,7 @@ const renewHandler: NextApiHandler = async (req: MyNextApiRequest, res) => {
     oauth_token,
     oauth_token_secret,
   });
-  setCookie(res, 'token', newToken);
+  setCookie(res, constants.COOKIE_TOKEN_KEY, newToken);
 
   res.send('ok');
 };

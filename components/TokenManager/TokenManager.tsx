@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import constants from '../../utils/constants';
 import getTokenCreationDate from './getTokenCreationDate';
 
 const ONE_HOUR_IN_MS = 1000 * 60 * 60;
 const FIVE_MINUTES_IN_MS = 1000 * 60 * 5;
 
 const TokenManager = (): JSX.Element => {
-  const [token, setToken] = useState(Cookies.get('token'));
+  const [token, setToken] = useState(Cookies.get(constants.COOKIE_TOKEN_KEY));
 
   const renewToken = async (): Promise<void> => {
     try {
       await fetch('/api/auth/renew');
-      const newToken = Cookies.get('token');
+      const newToken = Cookies.get(constants.COOKIE_TOKEN_KEY);
       if (token === newToken) {
         throw new Error('token not updated');
       }
