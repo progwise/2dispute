@@ -40,6 +40,7 @@ export type Query = {
   me?: Maybe<User>;
   notificationStatus: NotificationStatus;
   subject?: Maybe<Subject>;
+  twitterTimeline?: Maybe<Array<Tweet>>;
   user?: Maybe<User>;
 };
 
@@ -228,6 +229,11 @@ export enum UserVoting {
   Down = 'DOWN',
   None = 'NONE',
 }
+
+export type Tweet = {
+  __typename?: 'Tweet';
+  id: Scalars['ID'];
+};
 
 export type PageInfo = {
   __typename?: 'PageInfo';
@@ -424,6 +430,7 @@ export type ResolversTypes = ResolversObject<{
   NotificationsUpdate: ResolverTypeWrapper<NotificationsUpdateMapper>;
   Message: ResolverTypeWrapper<MessageDocument>;
   UserVoting: UserVoting;
+  Tweet: ResolverTypeWrapper<Tweet>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Notification:
     | ResolversTypes['NewMessageNotification']
@@ -467,6 +474,7 @@ export type ResolversParentTypes = ResolversObject<{
   NotificationsUpdate: NotificationsUpdateMapper;
   Message: MessageDocument;
   UserVoting: UserVoting;
+  Tweet: Tweet;
   PageInfo: PageInfo;
   Notification:
     | ResolversParentTypes['NewMessageNotification']
@@ -536,6 +544,11 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QuerySubjectArgs, 'id'>
+  >;
+  twitterTimeline?: Resolver<
+    Maybe<Array<ResolversTypes['Tweet']>>,
+    ParentType,
+    ContextType
   >;
   user?: Resolver<
     Maybe<ResolversTypes['User']>,
@@ -730,6 +743,14 @@ export type MessageResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
+export type TweetResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Tweet'] = ResolversParentTypes['Tweet']
+> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
 export type PageInfoResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']
@@ -831,6 +852,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   NotificationConnection?: NotificationConnectionResolvers<ContextType>;
   NotificationsUpdate?: NotificationsUpdateResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
+  Tweet?: TweetResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
   Notification?: NotificationResolvers;
   SubjectEdge?: SubjectEdgeResolvers<ContextType>;
@@ -871,6 +893,7 @@ type Query {
   me: User
   notificationStatus: NotificationStatus!
   subject(id: ID!): Subject
+  twitterTimeline: [Tweet!]
   user(id: ID!): User
 }
 
@@ -971,6 +994,10 @@ enum UserVoting {
   UP
   DOWN
   NONE
+}
+
+type Tweet {
+  id: ID!
 }
 
 type PageInfo {

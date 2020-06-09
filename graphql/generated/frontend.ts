@@ -23,6 +23,7 @@ export type Query = {
   me?: Maybe<User>;
   notificationStatus: NotificationStatus;
   subject?: Maybe<Subject>;
+  twitterTimeline?: Maybe<Array<Tweet>>;
   user?: Maybe<User>;
 };
 
@@ -211,6 +212,11 @@ export enum UserVoting {
   Down = 'DOWN',
   None = 'NONE',
 }
+
+export type Tweet = {
+  __typename?: 'Tweet';
+  id: Scalars['ID'];
+};
 
 export type PageInfo = {
   __typename?: 'PageInfo';
