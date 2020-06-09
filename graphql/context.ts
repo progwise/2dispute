@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/camelcase */
+
 import { NextApiResponse } from 'next';
 import Dataloader from 'dataloader';
 import jwt from 'jsonwebtoken';
@@ -6,10 +8,16 @@ import constants from '../utils/constants';
 import { getTwitterUserById, UserMapper } from './User';
 import { MyNextApiRequest, MongooseHelper } from './mongoose';
 
-export interface Context {
-  user?: {
-    id: string;
+interface User {
+  id: string;
+  twitter: {
+    oauth_token: string;
+    oauth_token_secret: string;
   };
+}
+
+export interface Context {
+  user?: User;
   dataloaders: {
     userDataloader: Dataloader<string, UserMapper>;
   };
@@ -25,11 +33,17 @@ const context = async ({
 }): Promise<Context> => {
   const { token } = req.cookies;
 
-  let userId: string | undefined;
+  let user: User | undefined;
   if (token) {
     try {
       const verifyResult = jwt.verify(token, process.env.JWT_SECRET ?? '');
-      userId = verifyResult['twitterId'];
+      user = {
+        id: verifyResult['twitterId'],
+        twitter: {
+          oauth_token: verifyResult['accessToken'].oauth_token,
+          oauth_token_secret: verifyResult['accessToken'].oauth_token_secret,
+        },
+      };
     } catch (err) {
       deleteCookie(res, constants.COOKIE_TOKEN_KEY);
     }
@@ -40,7 +54,7 @@ const context = async ({
   );
 
   return {
-    user: userId === undefined ? undefined : { id: userId },
+    user,
     dataloaders: {
       userDataloader,
     },

@@ -12,6 +12,7 @@ import {
   notificationResolvers,
   notificationMutations,
 } from './Notification';
+import { tweetQueries } from './Tweet';
 import { newDisputeNotificationResolvers } from './Notification/NewDisputeNotification';
 import { newMessageNotificationResolvers } from './Notification/NewMessageNotification';
 import { notificationsUpdateResolvers } from './Notification/NotificationsUpdate';
@@ -22,6 +23,7 @@ const resolvers: Resolvers = {
     ...userQueries,
     ...disputeQueries,
     ...notificationQueries,
+    ...tweetQueries,
   },
   Mutation: {
     ...subjectMutations,

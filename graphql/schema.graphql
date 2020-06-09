@@ -3,6 +3,7 @@
 # import User from './User/User.graphql'
 # import NotificationConnection, NotificationsUpdate, NotificationStatus from './Notification/Notification.graphql'
 # import Message, UserVoting from './Message/Message.graphql'
+# import Tweet from './Tweet/Tweet.graphql'
 # import @auth from './schemaDirectives/auth.graphql'
 
 scalar DateTime
@@ -32,6 +33,7 @@ type Query {
     before: String
   ): NotificationConnection
   notificationStatus: NotificationStatus! @auth
+  twitterTimeline: [Tweet!] @auth
 }
 
 type Mutation {
