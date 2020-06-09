@@ -6,11 +6,11 @@ import { QueryResolvers } from '../generated/backend';
 
 const tweetQueries: QueryResolvers = {
   twitterTimeline: async (parent, args, context) => {
-    if (!context.user) {
-      throw new AuthenticationError('not authenticated');
-    }
-
     try {
+      if (!context.user) {
+        throw new AuthenticationError('not authenticated');
+      }
+
       const twitterClient = new Twitter({
         consumer_key: process.env.TWITTER_CONSUMER_KEY ?? '',
         consumer_secret: process.env.TWITTER_CONSUMER_SECRET ?? '',
@@ -25,7 +25,7 @@ const tweetQueries: QueryResolvers = {
 
       return timeline.map(tweet => ({ id: tweet.id_str }));
     } catch (err) {
-      return [];
+      return null;
     }
   },
 };
