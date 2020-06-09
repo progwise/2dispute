@@ -233,6 +233,7 @@ export enum UserVoting {
 export type Tweet = {
   __typename?: 'Tweet';
   id: Scalars['ID'];
+  link: Scalars['String'];
 };
 
 export type PageInfo = {
@@ -748,6 +749,7 @@ export type TweetResolvers<
   ParentType extends ResolversParentTypes['Tweet'] = ResolversParentTypes['Tweet']
 > = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  link?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -998,6 +1000,7 @@ enum UserVoting {
 
 type Tweet {
   id: ID!
+  link: String!
 }
 
 type PageInfo {

@@ -216,6 +216,7 @@ export enum UserVoting {
 export type Tweet = {
   __typename?: 'Tweet';
   id: Scalars['ID'];
+  link: Scalars['String'];
 };
 
 export type PageInfo = {

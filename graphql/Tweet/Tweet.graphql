@@ -1,3 +1,4 @@
 type Tweet {
   id: ID!
+  link: String!
 }

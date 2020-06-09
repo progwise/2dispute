@@ -19,11 +19,16 @@ const tweetQueries: QueryResolvers = {
       });
 
       const timeline = await twitterClient.get('statuses/home_timeline', {
-        trim_user: true,
         include_entities: false,
       });
 
-      return timeline.map(tweet => ({ id: tweet.id_str }));
+      return timeline.map(tweet => {
+        const user = tweet.user.screen_name;
+        const id = tweet.id_str;
+        const link = `https://twitter.com/${user}/status/${id}`;
+
+        return { id, link };
+      });
     } catch (err) {
       return null;
     }
