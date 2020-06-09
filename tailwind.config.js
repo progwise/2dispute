@@ -19,6 +19,7 @@ module.exports = {
       },
       gridTemplateColumns: {
         chat: 'minmax(0, 1fr) 1px minmax(0, 1fr)',
+        selectTweet: 'auto 1fr',
       },
       gridRowEnd: {
         last: '100000000',
@@ -30,5 +31,6 @@ module.exports = {
   },
   variants: {
     opacity: ['disabled'],
+    display: ['responsive', 'group-hover'],
   },
 };

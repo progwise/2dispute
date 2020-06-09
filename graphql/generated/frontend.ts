@@ -443,6 +443,14 @@ export type HeaderMeQuery = { __typename?: 'Query' } & {
   me?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>;
 };
 
+export type TwitterTimelineQueryVariables = {};
+
+export type TwitterTimelineQuery = { __typename?: 'Query' } & {
+  twitterTimeline?: Maybe<
+    Array<{ __typename?: 'Tweet' } & Pick<Tweet, 'id' | 'link'>>
+  >;
+};
+
 export type UserInfoFragment = { __typename?: 'User' } & Pick<
   User,
   'id' | 'name' | 'picture'
@@ -1094,6 +1102,62 @@ export type HeaderMeLazyQueryHookResult = ReturnType<
 export type HeaderMeQueryResult = ApolloReactCommon.QueryResult<
   HeaderMeQuery,
   HeaderMeQueryVariables
+>;
+export const TwitterTimelineDocument = gql`
+  query TwitterTimeline {
+    twitterTimeline {
+      id
+      link
+    }
+  }
+`;
+
+/**
+ * __useTwitterTimelineQuery__
+ *
+ * To run a query within a React component, call `useTwitterTimelineQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTwitterTimelineQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTwitterTimelineQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTwitterTimelineQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    TwitterTimelineQuery,
+    TwitterTimelineQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    TwitterTimelineQuery,
+    TwitterTimelineQueryVariables
+  >(TwitterTimelineDocument, baseOptions);
+}
+export function useTwitterTimelineLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    TwitterTimelineQuery,
+    TwitterTimelineQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    TwitterTimelineQuery,
+    TwitterTimelineQueryVariables
+  >(TwitterTimelineDocument, baseOptions);
+}
+export type TwitterTimelineQueryHookResult = ReturnType<
+  typeof useTwitterTimelineQuery
+>;
+export type TwitterTimelineLazyQueryHookResult = ReturnType<
+  typeof useTwitterTimelineLazyQuery
+>;
+export type TwitterTimelineQueryResult = ApolloReactCommon.QueryResult<
+  TwitterTimelineQuery,
+  TwitterTimelineQueryVariables
 >;
 export const GetUserInfoByIdDocument = gql`
   query getUserInfoById($userId: ID!) {
