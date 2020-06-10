@@ -20,7 +20,7 @@ const SelectTweet = (props: SelectTweetProps): JSX.Element => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <h1>Tweet auswählen</h1>
       <p>
         <a
@@ -30,11 +30,11 @@ const SelectTweet = (props: SelectTweetProps): JSX.Element => {
           Abbrechen und zurück zum Formular
         </a>
       </p>
-      <div className="grid grid-cols-selectTweet">
+      <div className="grid grid-cols-1 sm:grid-cols-selectTweet max-w-full">
         {data.twitterTimeline.map(tweet => (
           <React.Fragment key={tweet.id}>
             <a
-              className="cursor-pointer group text-4xl flex items-center pr-8"
+              className="cursor-pointer group text-4xl flex items-center justify-center pr-0 sm:pr-8 pt-12 sm:pt-0"
               onClick={(): void => props.onSelect(tweet.link)}
             >
               <FaRegCircle className="group-hover:hidden" />
@@ -46,6 +46,7 @@ const SelectTweet = (props: SelectTweetProps): JSX.Element => {
                 placeholder="Lade Tweet..."
                 options={{
                   lang: 'de',
+                  width: '100%',
                 }}
               />
             </div>

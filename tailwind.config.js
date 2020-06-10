@@ -19,7 +19,7 @@ module.exports = {
       },
       gridTemplateColumns: {
         chat: 'minmax(0, 1fr) 1px minmax(0, 1fr)',
-        selectTweet: 'auto 1fr',
+        selectTweet: 'min-content 1fr',
       },
       gridRowEnd: {
         last: '100000000',
