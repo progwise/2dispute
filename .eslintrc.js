@@ -12,6 +12,7 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
+    'plugin:jest/recommended',
   ],
   globals: {
     Atomics: 'readonly',
@@ -25,7 +26,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['react', '@typescript-eslint', 'jest'],
   rules: {
     'arrow-body-style': ['error', 'as-needed'],
     'import/order': ['error'],
