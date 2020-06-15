@@ -27,3 +27,12 @@ export const subject1 = {
   disputes: [dispute1, dispute2],
   createdAt: new Date('2020-06-15T10:00:00.000Z'),
 };
+
+export const subject2 = {
+  _id: '81c408836fc2e528e7ed82f3',
+  subject: 'Subject 2',
+  userId: '1',
+  firstMessage: 'In my opinion',
+  disputes: [],
+  createdAt: new Date('2020-06-15T11:00:00.000Z'),
+};
