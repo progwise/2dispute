@@ -5,6 +5,7 @@ import request from 'supertest';
 import jwt from 'jsonwebtoken';
 import Twitter from 'twitter-lite';
 import createTestServer from '../../utils/testing/createTestServer';
+import { closeConnection } from '../mongoose';
 
 jest.mock('twitter-lite');
 const MockedTwitter = (Twitter as unknown) as jest.Mock;
@@ -13,7 +14,10 @@ let app: http.Server;
 
 beforeAll(() => (app = createTestServer()));
 
-afterAll(() => app.close());
+afterAll(async () => {
+  await closeConnection();
+  app.close();
+});
 
 const twitterTimelineQuery = `
   { 
