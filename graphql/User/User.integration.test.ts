@@ -15,6 +15,8 @@ beforeAll(() => (app = createTestServer()));
 
 afterAll(() => app.close());
 
+afterEach(() => jest.clearAllMocks());
+
 describe('me query', () => {
   const meQuery = `
   {
@@ -66,6 +68,57 @@ describe('me query', () => {
         "data": Object {
           "me": Object {
             "id": "twitterId",
+            "name": "User name",
+            "picture": "picture url",
+          },
+        },
+      }
+    `);
+  });
+});
+
+describe('user query', () => {
+  const userQuery = `
+  {
+    user(id: "userId") {
+      id
+      name
+      picture
+    }
+  }
+  `;
+
+  test('user query returns null when the user not exists', async () => {
+    mockedGetTwitterUserById.mockRejectedValue(new Error('user not found'));
+
+    const result = await request(app)
+      .post('')
+      .send({ query: userQuery })
+      .expect(200);
+
+    expect(mockedGetTwitterUserById).toHaveBeenCalledWith('userId');
+    expect(result.body.data.user).toBeNull();
+  });
+
+  test('user query returns user when the user exists', async () => {
+    mockedGetTwitterUserById.mockResolvedValue({
+      id: 'userId',
+      name: 'User name',
+      picture: 'picture url',
+    });
+
+    const result = await request(app)
+      .post('')
+      .send({ query: userQuery })
+      .expect(200);
+
+    expect(mockedGetTwitterUserById).toHaveBeenCalledWith('userId');
+
+    expect(result.body).toMatchInlineSnapshot(`
+      Object {
+        "data": Object {
+          "user": Object {
+            "id": "userId",
             "name": "User name",
             "picture": "picture url",
           },
