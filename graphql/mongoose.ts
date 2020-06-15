@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { NextApiRequest, NextApiResponse, NextApiHandler } from 'next';
 import SubjectSchema, { SubjectDocument } from './Subject/SubjectSchema';
 import {
@@ -30,7 +30,7 @@ export interface MyNextApiRequest extends NextApiRequest {
   mongoose: MongooseHelper;
 }
 
-const connectToMongo = async (): Promise<MongooseHelper> => {
+export const getMongooseHelper = async (): Promise<MongooseHelper> => {
   const isMongoConnected = mongoose.connections[0].readyState === 1;
 
   if (!isMongoConnected) {
@@ -79,11 +79,21 @@ const connectToMongo = async (): Promise<MongooseHelper> => {
   };
 };
 
+export const closeConnection = (): Promise<void> => {
+  const isMongoConnected = mongoose.connections[0].readyState === 1;
+
+  if (!isMongoConnected) {
+    return Promise.resolve();
+  }
+
+  return mongoose.connections[0].close();
+};
+
 const mongooseMiddleware = (handler: NextApiHandler) => async (
   req: NextApiRequest,
   res: NextApiResponse,
 ): Promise<void> => {
-  const mongoose = await connectToMongo();
+  const mongoose = await getMongooseHelper();
   const customReq: MyNextApiRequest = Object.assign(req, { mongoose });
 
   return handler(customReq, res);

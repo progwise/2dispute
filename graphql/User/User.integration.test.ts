@@ -4,6 +4,7 @@ import http from 'http';
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
 import createTestServer from '../../utils/testing/createTestServer';
+import { closeConnection } from '../mongoose';
 import getTwitterUserById from './getTwitterUserById';
 
 jest.mock('./getTwitterUserById');
@@ -13,7 +14,10 @@ let app: http.Server;
 
 beforeAll(() => (app = createTestServer()));
 
-afterAll(() => app.close());
+afterAll(async () => {
+  await closeConnection();
+  app.close();
+});
 
 afterEach(() => jest.clearAllMocks());
 
