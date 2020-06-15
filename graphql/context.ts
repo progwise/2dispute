@@ -50,7 +50,7 @@ const context = async ({
   }
 
   const userDataloader = new Dataloader<string, UserMapper>(userIds =>
-    Promise.all(userIds.map(getTwitterUserById)),
+    Promise.all(userIds.map(userId => getTwitterUserById(userId))),
   );
 
   return {

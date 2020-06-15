@@ -3,27 +3,17 @@
 import http from 'http';
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import Twitter from 'twitter-lite';
-import server from '../';
-import customCookieParser from '../../utils/customCookieParser';
+import createTestServer from '../../utils/testing/createTestServer';
 
 jest.mock('twitter-lite');
 const MockedTwitter = (Twitter as unknown) as jest.Mock;
 
 let app: http.Server;
 
-beforeAll(() => {
-  app = http.createServer(
-    customCookieParser(server.createHandler({ path: '/' })),
-  );
+beforeAll(() => (app = createTestServer()));
 
-  dotenv.config({ path: '.env.testing' });
-});
-
-afterAll(() => {
-  app.close();
-});
+afterAll(() => app.close());
 
 const twitterTimelineQuery = `
   { 
