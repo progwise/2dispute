@@ -6,7 +6,7 @@ import {
   getMongooseHelper,
   MongooseHelper,
 } from '../mongoose';
-import { subject1 } from '../../testing/fixtures/subjects';
+import { subject1, subject2 } from '../../testing/fixtures/subjects';
 import getTwitterUserById from '../User/getTwitterUserById';
 
 jest.mock('../User/getTwitterUserById');
@@ -102,5 +102,169 @@ describe('query subject', () => {
       }
     `);
     expect(mockedGetTwitterUserById).toHaveBeenCalledWith('1');
+  });
+});
+
+describe('query allSubjects', () => {
+  const allSubjectsQuery = `
+  {
+    allSubjects{
+      edges {
+        node {
+          id
+          hasDisputes
+        }
+        cursor
+      }
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+  `;
+
+  test('allSubjects when empty', async () => {
+    const result = await request(app)
+      .post('')
+      .send({ query: allSubjectsQuery })
+      .expect(200);
+
+    expect(result.body).toMatchInlineSnapshot(`
+      Object {
+        "data": Object {
+          "allSubjects": Object {
+            "edges": Array [],
+            "pageInfo": Object {
+              "endCursor": "",
+              "hasNextPage": false,
+              "hasPreviousPage": false,
+              "startCursor": "",
+            },
+          },
+        },
+      }
+    `);
+  });
+
+  describe('with subjects', () => {
+    beforeEach(async () => {
+      await new mongoose.models.Subject(subject1).save();
+      await new mongoose.models.Subject(subject2).save();
+    });
+
+    test('allSubjects with subjects', async () => {
+      const result = await request(app)
+        .post('')
+        .send({ query: allSubjectsQuery })
+        .expect(200);
+
+      expect(result.body).toMatchInlineSnapshot(`
+        Object {
+          "data": Object {
+            "allSubjects": Object {
+              "edges": Array [
+                Object {
+                  "cursor": "ODFjNDA4ODM2ZmMyZTUyOGU3ZWQ4MmYz",
+                  "node": Object {
+                    "hasDisputes": false,
+                    "id": "81c408836fc2e528e7ed82f3",
+                  },
+                },
+                Object {
+                  "cursor": "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0",
+                  "node": Object {
+                    "hasDisputes": true,
+                    "id": "123456789012345678901234",
+                  },
+                },
+              ],
+              "pageInfo": Object {
+                "endCursor": "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0",
+                "hasNextPage": false,
+                "hasPreviousPage": false,
+                "startCursor": "ODFjNDA4ODM2ZmMyZTUyOGU3ZWQ4MmYz",
+              },
+            },
+          },
+        }
+      `);
+    });
+
+    test('allSubjects with hasDisputes=true filter', async () => {
+      const allSubjectsHasDisputesFilterQuery = `
+      {
+        allSubjects(filter: { hasDisputes: true }){
+          edges {
+            node {
+              id
+              hasDisputes
+            }
+          }
+        }
+      }
+      `;
+
+      const result = await request(app)
+        .post('')
+        .send({ query: allSubjectsHasDisputesFilterQuery })
+        .expect(200);
+
+      expect(result.body).toMatchInlineSnapshot(`
+        Object {
+          "data": Object {
+            "allSubjects": Object {
+              "edges": Array [
+                Object {
+                  "node": Object {
+                    "hasDisputes": true,
+                    "id": "123456789012345678901234",
+                  },
+                },
+              ],
+            },
+          },
+        }
+      `);
+    });
+
+    test('allSubjects with hasDisputes=false filter', async () => {
+      const allSubjectsHasDisputesFilterQuery = `
+        {
+          allSubjects(filter: { hasDisputes: false }){
+            edges {
+              node {
+                id
+                hasDisputes
+              }
+            }
+          }
+        }
+        `;
+
+      const result = await request(app)
+        .post('')
+        .send({ query: allSubjectsHasDisputesFilterQuery })
+        .expect(200);
+
+      expect(result.body).toMatchInlineSnapshot(`
+          Object {
+            "data": Object {
+              "allSubjects": Object {
+                "edges": Array [
+                  Object {
+                    "node": Object {
+                      "hasDisputes": false,
+                      "id": "81c408836fc2e528e7ed82f3",
+                    },
+                  },
+                ],
+              },
+            },
+          }
+        `);
+    });
   });
 });
