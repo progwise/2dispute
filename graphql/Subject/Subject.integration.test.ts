@@ -83,11 +83,11 @@ describe('query subject', () => {
             },
             "disputes": Array [
               Object {
-                "createdAt": "2020-06-15T09:00:00.000Z",
+                "createdAt": "2020-06-15T11:00:00.000Z",
                 "id": "a17456a1410c7fb7ed325372",
               },
               Object {
-                "createdAt": "2020-06-15T08:00:00.000Z",
+                "createdAt": "2020-06-15T10:00:00.000Z",
                 "id": "bbaeec62fed1fe8eff4bc127",
               },
             ],
