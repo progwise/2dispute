@@ -52,7 +52,6 @@
     "@graphql-codegen/typescript-operations": "1.13.2",
     "@graphql-codegen/typescript-react-apollo": "1.13.2",
     "@graphql-codegen/typescript-resolvers": "1.13.2",
-    "@shelf/jest-mongodb": "^1.1.5",
     "@types/cache-manager": "^2.10.3",
     "@types/cookie": "^0.4.0",
     "@types/jest": "^26.0.0",
@@ -72,6 +71,7 @@
     "husky": "^4.2.3",
     "jest": "^26.0.1",
     "lint-staged": "^10.1.2",
+    "mongodb-memory-server": "^6.6.1",
     "prettier": "^2.0.4",
     "supertest": "^4.0.2",
     "typescript": "^3.8.3"
