@@ -4,7 +4,24 @@ import { DisputeDocument } from '../../graphql/Dispute/DisputeSchema';
 const dispute1: DisputeDocument = {
   _id: mongoose.Types.ObjectId('bbaeec62fed1fe8eff4bc127'),
   createdAt: new Date('2020-06-15T10:00:00.000Z'),
-  messages: [],
+  messages: [
+    {
+      _id: mongoose.Types.ObjectId('7b6429574939a24fde1b7cb0'),
+      authorId: '1',
+      createdAt: new Date('2020-06-15T10:00:00.000Z'),
+      downVoters: [],
+      upVoters: [],
+      text: 'In my opinion',
+    },
+    {
+      _id: mongoose.Types.ObjectId('33c6dd9d4571877fdb4baa0c'),
+      authorId: '1',
+      createdAt: new Date('2020-06-15T10:00:00.000Z'),
+      downVoters: [],
+      upVoters: [],
+      text: 'reply message',
+    },
+  ],
   lastMessageAt: new Date('2020-06-15T10:00:00.000Z'),
   partnerIdA: '1',
   partnerIdB: '2',
