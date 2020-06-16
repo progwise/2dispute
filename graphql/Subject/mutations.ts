@@ -1,16 +1,15 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { AuthenticationError, ApolloError } from 'apollo-server-micro';
 import { MutationResolvers } from '../generated/backend';
 import { DisputeDocument } from '../Dispute/DisputeSchema';
 import trim from '../../utils/trim';
 import { Context } from '../context';
+import { SubjectDocument } from './SubjectSchema';
 
 const notifySubjectAuthor = async (
   newDispute: DisputeDocument,
   context: Context,
 ): Promise<void> => {
-  console.log('userId', newDispute.partnerIdA);
-
   const newNotification = new context.mongoose.models.NewDisputeNotification({
     userId: newDispute.partnerIdA,
     disputeId: newDispute._id,
@@ -46,9 +45,14 @@ const mutations: MutationResolvers = {
       throw new AuthenticationError('not authenticated');
     }
 
-    const subject = await context.mongoose.models.Subject.findById(subjectId);
+    let subject: SubjectDocument | null;
+    try {
+      subject = await context.mongoose.models.Subject.findById(
+        subjectId,
+      ).exec();
 
-    if (subject === null) {
+      if (subject === null) throw Error();
+    } catch (err) {
       throw new ApolloError('Subject not found');
     }
 

@@ -10,9 +10,20 @@ import {
   MongooseHelper,
 } from '../mongoose';
 import getTwitterUserById from '../User/getTwitterUserById';
+import { subject2 } from '../../testing/fixtures/subjects';
+import { SubjectDocument } from './SubjectSchema';
 
 jest.mock('../User/getTwitterUserById');
 const mockedGetTwitterUserById = (getTwitterUserById as unknown) as jest.Mock;
+
+const user = {
+  twitterId: 'twitterId',
+  accessToken: {
+    oauth_token: 'oauth_token',
+    oauth_token_secret: 'oauth_token_secret',
+  },
+};
+const token = jwt.sign(user, process.env.JWT_SECRET ?? '');
 
 let app: http.Server;
 let mongoose: MongooseHelper;
@@ -71,15 +82,6 @@ describe('createSubject mutation', () => {
       name: 'User 1',
     });
 
-    const user = {
-      twitterId: 'twitterId',
-      accessToken: {
-        oauth_token: 'oauth_token',
-        oauth_token_secret: 'oauth_token_secret',
-      },
-    };
-    const token = jwt.sign(user, process.env.JWT_SECRET ?? '');
-
     const result = await request(app)
       .post('')
       .set('Cookie', [`token=${token}`])
@@ -103,5 +105,97 @@ describe('createSubject mutation', () => {
         },
       }
     `);
+  });
+});
+
+describe('replyOnSubject mutation', () => {
+  const replyOnSubjectMutation = `
+    mutation {
+      replyOnSubject(input: {subjectId: "81c408836fc2e528e7ed82f3", message: "reply message"}) {
+        subject {
+          id
+        }
+        messages {
+          text
+        }
+      }
+    }
+  `;
+
+  test('calling replyOnSubject on unauthorized fails', async () => {
+    const result = await request(app)
+      .post('')
+      .send({ query: replyOnSubjectMutation })
+      .expect(200);
+
+    expect(result.body.data).toBeNull();
+    expect(result.body.errors).toBeDefined();
+    expect(result.body.errors).toHaveLength(1);
+    expect(result.body.errors[0].message).toBe('not authenticated');
+  });
+
+  test('calling replyOnSubject on not existing subject fails', async () => {
+    const result = await request(app)
+      .post('')
+      .set('Cookie', [`token=${token}`])
+      .send({ query: replyOnSubjectMutation })
+      .expect(200);
+
+    expect(result.body.data).toBeNull();
+    expect(result.body.errors).toBeDefined();
+    expect(result.body.errors).toHaveLength(1);
+    expect(result.body.errors[0].message).toBe('Subject not found');
+  });
+
+  describe('calling replyOnSubject successful', () => {
+    let result: request.Response;
+    let updatedSubject: SubjectDocument | null;
+
+    beforeAll(async () => {
+      await new mongoose.models.Subject(subject2).save();
+
+      result = await request(app)
+        .post('')
+        .set('Cookie', [`token=${token}`])
+        .send({ query: replyOnSubjectMutation })
+        .expect(200);
+
+      updatedSubject = await mongoose.models.Subject.findById(
+        '81c408836fc2e528e7ed82f3',
+      ).exec();
+    });
+
+    test('response is correct', () => {
+      expect(result.body.errors).toBeUndefined();
+      expect(result.body.data).toMatchInlineSnapshot(`
+        Object {
+          "replyOnSubject": Object {
+            "messages": Array [
+              Object {
+                "text": "In my opinion",
+              },
+              Object {
+                "text": "reply message",
+              },
+            ],
+            "subject": Object {
+              "id": "81c408836fc2e528e7ed82f3",
+            },
+          },
+        }
+      `);
+    });
+
+    test('subject has a new dispute in database', () => {
+      expect(updatedSubject?.disputes).toHaveLength(1);
+      expect(updatedSubject?.disputes[0].messages[0]).toMatchObject({
+        authorId: '1',
+        text: 'In my opinion',
+      });
+      expect(updatedSubject?.disputes[0].messages[1]).toMatchObject({
+        authorId: 'twitterId',
+        text: 'reply message',
+      });
+    });
   });
 });
