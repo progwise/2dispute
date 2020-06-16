@@ -1,7 +1,9 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { AuthenticationError, ApolloError } from 'apollo-server-micro';
 import { MutationResolvers, UserVoting } from '../generated/backend';
+import { SubjectDocument } from '../Subject/SubjectSchema';
 import getUserVoting from './helpers/getUserVoting';
+import { MessageDocument } from './MessageSchema';
 
 const messageMutations: MutationResolvers = {
   vote: async (_parent, args, context) => {
@@ -10,16 +12,20 @@ const messageMutations: MutationResolvers = {
     }
     const userId = context.user.id;
 
-    const subject = await context.mongoose.models.Subject.findOne()
-      .where('disputes.messages._id', mongoose.Types.ObjectId(args.messageId))
-      .exec();
+    let subject: SubjectDocument | null;
+    let message: MessageDocument | undefined;
+    try {
+      subject = await context.mongoose.models.Subject.findOne()
+        .where('disputes.messages._id', mongoose.Types.ObjectId(args.messageId))
+        .exec();
 
-    const messages = subject?.disputes.map(dispute => dispute.messages).flat();
-    const message = messages?.find(message =>
-      message._id.equals(args.messageId),
-    );
+      const messages = subject?.disputes
+        .map(dispute => dispute.messages)
+        .flat();
+      message = messages?.find(message => message._id.equals(args.messageId));
 
-    if (!subject || !message) {
+      if (!subject || !message) throw Error();
+    } catch (err) {
       throw new ApolloError('message not found');
     }
 
