@@ -1,4 +1,5 @@
 module.exports = {
-  preset: '@shelf/jest-mongodb',
+  testEnvironment: './utils/testing/jest-environment/MongoDbEnvironment.js',
   setupFiles: ['./utils/testing/setupJest.ts'],
+  setupFilesAfterEnv: ['./utils/testing/setupJestFilesAfterEnv.ts'],
 };
