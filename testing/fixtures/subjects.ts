@@ -15,7 +15,7 @@ const dispute1: DisputeDocument = {
     },
     {
       _id: mongoose.Types.ObjectId('33c6dd9d4571877fdb4baa0c'),
-      authorId: '1',
+      authorId: '2',
       createdAt: new Date('2020-06-15T10:00:00.000Z'),
       downVoters: [],
       upVoters: [],
