@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { QueryResolvers } from '../generated/backend';
 import AggregationConnectionResolver from '../helper/ConnectionResolver/AggregationConnectionResolver';
 import { DisputeDocument } from './DisputeSchema';
@@ -16,12 +16,16 @@ const queries: QueryResolvers = {
     return connectionResolver.getConnection();
   },
   dispute: async (_parent, { id }, context) => {
-    const data = await context.mongoose.models.Subject.aggregate()
-      .unwind('disputes')
-      .match({ 'disputes._id': mongoose.Types.ObjectId(id) })
-      .exec();
+    try {
+      const data = await context.mongoose.models.Subject.aggregate()
+        .unwind('disputes')
+        .match({ 'disputes._id': mongoose.Types.ObjectId(id) })
+        .exec();
 
-    return data[0]?.disputes || null;
+      return data[0]?.disputes || null;
+    } catch (err) {
+      return null;
+    }
   },
 };
 
