@@ -3,7 +3,7 @@ import {
   ApolloError,
   ForbiddenError,
 } from 'apollo-server-micro';
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { MutationResolvers } from '../generated/backend';
 import { MessageDocument } from '../Message/MessageSchema';
 import trim from '../../utils/trim';
