@@ -10,7 +10,11 @@ import {
   MongooseHelper,
 } from '../mongoose';
 import { subject1 } from '../../testing/fixtures/subjects';
-import { newDisputeNotification } from '../../testing/fixtures/notifications';
+import {
+  newDisputeNotification1,
+  newDisputeNotification2,
+  newDisputeNotification3,
+} from '../../testing/fixtures/notifications';
 import { NotificationDocument } from './NotificationSchema';
 
 let app: http.Server;
@@ -83,7 +87,7 @@ describe('mutation markNotificationAsRead', () => {
       await Promise.all([
         new mongoose.models.Subject(subject1).save(),
         new mongoose.models.NewDisputeNotification(
-          newDisputeNotification,
+          newDisputeNotification1,
         ).save(),
       ]);
 
@@ -110,7 +114,7 @@ describe('mutation markNotificationAsRead', () => {
       `);
     });
 
-    test('updates notification in database correcly', () => {
+    test('updates notification in database correctly', () => {
       expect(updatedNotification).toMatchInlineSnapshot(`
         Object {
           "__v": 0,
@@ -121,6 +125,120 @@ describe('mutation markNotificationAsRead', () => {
           "type": "NewDisputeNotification",
           "userId": "twitterId",
         }
+      `);
+    });
+  });
+});
+
+describe('mutation markMultipleNotificationAsRead', () => {
+  const markMultipleNotificationAsReadMutation = `
+    mutation {
+      markMultipleNotificationAsRead(latestId: "7d668f7e0c27b5a7efb389d1") {
+        id
+        read
+      }
+    }
+  `;
+
+  test('fails when unauthenticated', async () => {
+    const result = await request(app)
+      .post('')
+      .send({ query: markMultipleNotificationAsReadMutation })
+      .expect(200);
+
+    expect(result.body.data).toBeNull();
+    expect(result.body.errors).toHaveLength(1);
+    expect(result.body.errors[0].message).toBe('not authenticated');
+  });
+
+  test('fails when notification not exists', async () => {
+    const result = await request(app)
+      .post('')
+      .set('Cookie', [`token=${token}`])
+      .send({ query: markMultipleNotificationAsReadMutation })
+      .expect(200);
+
+    expect(result.body.data).toBeNull();
+    expect(result.body.errors).toHaveLength(1);
+    expect(result.body.errors[0].message).toBe('notification not found');
+  });
+
+  describe('success', () => {
+    let result: request.Response;
+    let updatedNotifications: NotificationDocument[];
+
+    beforeAll(async () => {
+      await Promise.all([
+        new mongoose.models.Subject(subject1).save(),
+        new mongoose.models.NewDisputeNotification(
+          newDisputeNotification1,
+        ).save(),
+        new mongoose.models.NewDisputeNotification(
+          newDisputeNotification2,
+        ).save(),
+        new mongoose.models.NewDisputeNotification(
+          newDisputeNotification3,
+        ).save(),
+      ]);
+
+      result = await request(app)
+        .post('')
+        .set('Cookie', [`token=${token}`])
+        .send({ query: markMultipleNotificationAsReadMutation })
+        .expect(200);
+
+      updatedNotifications = await mongoose.models.Notification.find().exec();
+    });
+
+    test('response correctly', () => {
+      expect(result.body.errors).toBeUndefined();
+      expect(result.body.data).toMatchInlineSnapshot(`
+        Object {
+          "markMultipleNotificationAsRead": Array [
+            Object {
+              "id": "21e9e3abe71bfca0d079b28e",
+              "read": true,
+            },
+            Object {
+              "id": "7d668f7e0c27b5a7efb389d1",
+              "read": true,
+            },
+          ],
+        }
+      `);
+    });
+
+    test('updates notification in database correctly', () => {
+      expect(updatedNotifications).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "__v": 0,
+            "_id": "7d668f7e0c27b5a7efb389d1",
+            "createdAt": 2020-06-15T10:00:00.000Z,
+            "disputeId": "bbaeec62fed1fe8eff4bc127",
+            "read": true,
+            "type": "NewDisputeNotification",
+            "userId": "twitterId",
+          },
+          Object {
+            "__v": 0,
+            "_id": "21e9e3abe71bfca0d079b28e",
+            "createdAt": 2020-06-14T10:00:00.000Z,
+            "disputeId": "bbaeec62fed1fe8eff4bc127",
+            "read": true,
+            "type": "NewDisputeNotification",
+            "userId": "twitterId",
+          },
+          Object {
+            "__v": 0,
+            "_id": "c5371677b5fe86660b8c0399",
+            "createdAt": 2020-06-16T10:00:00.000Z,
+            "disputeId": "bbaeec62fed1fe8eff4bc127",
+            "read": false,
+            "type": "NewDisputeNotification",
+            "userId": "twitterId",
+          },
+        ]
       `);
     });
   });

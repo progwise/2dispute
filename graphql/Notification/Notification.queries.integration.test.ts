@@ -11,7 +11,7 @@ import {
 } from '../mongoose';
 import { subject1 } from '../../testing/fixtures/subjects';
 import {
-  newDisputeNotification,
+  newDisputeNotification1,
   newMessageNotification,
 } from '../../testing/fixtures/notifications';
 
@@ -115,7 +115,9 @@ describe('query allNotifications', () => {
   test('return array when notifications exist', async () => {
     await Promise.all([
       new mongoose.models.Subject(subject1).save(),
-      new mongoose.models.NewDisputeNotification(newDisputeNotification).save(),
+      new mongoose.models.NewDisputeNotification(
+        newDisputeNotification1,
+      ).save(),
       new mongoose.models.NewMessageNotification(newMessageNotification).save(),
     ]);
 
@@ -190,7 +192,9 @@ describe('query notificationStatus', () => {
   test('returns correctly when authenticated', async () => {
     await Promise.all([
       new mongoose.models.Subject(subject1).save(),
-      new mongoose.models.NewDisputeNotification(newDisputeNotification).save(),
+      new mongoose.models.NewDisputeNotification(
+        newDisputeNotification1,
+      ).save(),
       new mongoose.models.NewMessageNotification(newMessageNotification).save(),
     ]);
 

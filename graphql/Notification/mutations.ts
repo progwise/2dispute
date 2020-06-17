@@ -38,11 +38,15 @@ const notificationMutations: MutationResolvers = {
       throw new AuthenticationError('not authenticated');
     }
 
-    const latestNotification = await context.mongoose.models.Notification.findOne(
-      { _id: latestId, userId: context.user.id },
-    ).exec();
+    let latestNotification: NotificationDocument | null;
+    try {
+      latestNotification = await context.mongoose.models.Notification.findOne({
+        _id: latestId,
+        userId: context.user.id,
+      }).exec();
 
-    if (!latestNotification) {
+      if (!latestNotification) throw new Error();
+    } catch (err) {
       throw new ApolloError('notification not found');
     }
 
