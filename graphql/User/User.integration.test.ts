@@ -28,6 +28,20 @@ describe('me query', () => {
       id
       name
       picture
+      allSubjects {
+        edges {
+          node {
+            id
+          }
+        }
+      }
+      allDisputes {
+        edges {
+          node {
+            id
+          }
+        }
+      }
     }
   }
   `;
@@ -71,6 +85,12 @@ describe('me query', () => {
       Object {
         "data": Object {
           "me": Object {
+            "allDisputes": Object {
+              "edges": Array [],
+            },
+            "allSubjects": Object {
+              "edges": Array [],
+            },
             "id": "twitterId",
             "name": "User name",
             "picture": "picture url",
