@@ -5,7 +5,7 @@ import { UserMapper } from '.';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-const mongoCache = cacheManager.caching({
+export const mongoCache = cacheManager.caching({
   store: mongoStore,
   uri: process.env.MONGODB_CONNECTION_STRING,
   options: {
