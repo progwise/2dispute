@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { NewDisputeNotificationResolvers } from '../../generated/backend';
 
 const newDisputeNotificationResolvers: NewDisputeNotificationResolvers = {

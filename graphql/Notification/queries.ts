@@ -24,7 +24,7 @@ const queries: QueryResolvers = {
 
     const totalCountRequest = context.mongoose.models.Notification.find()
       .where('userId', context.user.id)
-      .count()
+      .countDocuments()
       .exec();
 
     const connectionRequest = connectionResolver.getConnection();

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { DisputeDocument } from '../../graphql/Dispute/DisputeSchema';
 
-const dispute1: DisputeDocument = {
+export const dispute1: DisputeDocument = {
   _id: mongoose.Types.ObjectId('bbaeec62fed1fe8eff4bc127'),
   createdAt: new Date('2020-06-15T10:00:00.000Z'),
   messages: [
