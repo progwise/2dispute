@@ -1,9 +1,10 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { ApolloError, AuthenticationError } from 'apollo-server-micro';
 import { MutationResolvers } from '../generated/backend';
 import {
   NewDisputeNotificationDocument,
   NewMessageNotificationDocument,
+  NotificationDocument,
 } from './NotificationSchema';
 
 const notificationMutations: MutationResolvers = {
@@ -14,12 +15,15 @@ const notificationMutations: MutationResolvers = {
       throw new AuthenticationError('not authenticated');
     }
 
-    const notification = await context.mongoose.models.Notification.findOne({
-      _id: id,
-      userId: context.user.id,
-    });
+    let notification: NotificationDocument | null;
+    try {
+      notification = await context.mongoose.models.Notification.findOne({
+        _id: id,
+        userId: context.user.id,
+      });
 
-    if (!notification) {
+      if (!notification) throw Error();
+    } catch (err) {
       throw new ApolloError('notification not found');
     }
 
