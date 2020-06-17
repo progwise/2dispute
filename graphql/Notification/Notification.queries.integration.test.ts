@@ -138,7 +138,7 @@ describe('query allNotifications', () => {
                 "message": Object {
                   "id": "33c6dd9d4571877fdb4baa0c",
                 },
-                "read": false,
+                "read": true,
               },
             },
             Object {
@@ -161,6 +161,49 @@ describe('query allNotifications', () => {
             "startCursor": "NzYyMjM4NzdjMGUzMzU4ODk5ZGUzNDM5",
           },
           "totalCount": 2,
+        },
+      }
+    `);
+    expect(result.body.errors).toBeUndefined();
+  });
+});
+
+describe('query notificationStatus', () => {
+  const notificationStatusQuery = `
+    {
+      notificationStatus {
+        totalCountUnread
+      }
+    }
+  `;
+
+  test('fails when unauthenticated', async () => {
+    const result = await request(app)
+      .post('')
+      .send({ query: notificationStatusQuery })
+      .expect(200);
+
+    expect(result.body.data).toBeNull();
+    expect(result.body.errors[0].message).toBe('not authenticated');
+  });
+
+  test('returns correctly when authenticated', async () => {
+    await Promise.all([
+      new mongoose.models.Subject(subject1).save(),
+      new mongoose.models.NewDisputeNotification(newDisputeNotification).save(),
+      new mongoose.models.NewMessageNotification(newMessageNotification).save(),
+    ]);
+
+    const result = await request(app)
+      .post('')
+      .set('Cookie', [`token=${token}`])
+      .send({ query: notificationStatusQuery })
+      .expect(200);
+
+    expect(result.body.data).toMatchInlineSnapshot(`
+      Object {
+        "notificationStatus": Object {
+          "totalCountUnread": 1,
         },
       }
     `);
