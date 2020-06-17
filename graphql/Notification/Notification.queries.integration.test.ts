@@ -13,7 +13,7 @@ import { subject1 } from '../../testing/fixtures/subjects';
 import {
   newDisputeNotification,
   newMessageNotification,
-} from '../../testing/fixtures/notificationts';
+} from '../../testing/fixtures/notifications';
 
 let app: http.Server;
 let mongoose: MongooseHelper;
