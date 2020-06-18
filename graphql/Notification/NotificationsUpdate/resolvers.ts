@@ -11,7 +11,7 @@ const notificationsUpdateResolvers: NotificationsUpdateResolvers = {
     const totalCountUnread = await context.mongoose.models.Notification.find()
       .where('userId', context.user.id)
       .where('read', false)
-      .count()
+      .countDocuments()
       .exec();
 
     return { totalCountUnread };

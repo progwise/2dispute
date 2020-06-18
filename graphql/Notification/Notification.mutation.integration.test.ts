@@ -255,6 +255,9 @@ describe('mutation markNotificationsAsReadForDispute', () => {
           read
           __typename
         }
+        notificationStatus {
+          totalCountUnread
+        }
       }
     }
   `;
@@ -299,6 +302,9 @@ describe('mutation markNotificationsAsReadForDispute', () => {
       expect(result.body.data).toMatchInlineSnapshot(`
         Object {
           "markNotificationsAsReadForDispute": Object {
+            "notificationStatus": Object {
+              "totalCountUnread": 0,
+            },
             "updatedNotification": Array [
               Object {
                 "__typename": "NewMessageNotification",
@@ -353,6 +359,9 @@ describe('mutation markNotificationsAsReadForDispute', () => {
     expect(result.body.data).toMatchInlineSnapshot(`
       Object {
         "markNotificationsAsReadForDispute": Object {
+          "notificationStatus": Object {
+            "totalCountUnread": 0,
+          },
           "updatedNotification": Array [],
         },
       }
