@@ -14,7 +14,6 @@ import {
   newDisputeNotification1,
   newDisputeNotification2,
   newDisputeNotification3,
-  newMessageNotification1,
   newMessageNotification2,
 } from '../../testing/fixtures/notifications';
 import { NotificationDocument } from './NotificationSchema';
