@@ -12,7 +12,7 @@ import {
 import { subject1 } from '../../testing/fixtures/subjects';
 import {
   newDisputeNotification1,
-  newMessageNotification,
+  newMessageNotification1,
 } from '../../testing/fixtures/notifications';
 
 let app: http.Server;
@@ -118,7 +118,9 @@ describe('query allNotifications', () => {
       new mongoose.models.NewDisputeNotification(
         newDisputeNotification1,
       ).save(),
-      new mongoose.models.NewMessageNotification(newMessageNotification).save(),
+      new mongoose.models.NewMessageNotification(
+        newMessageNotification1,
+      ).save(),
     ]);
 
     const result = await request(app)
@@ -195,7 +197,9 @@ describe('query notificationStatus', () => {
       new mongoose.models.NewDisputeNotification(
         newDisputeNotification1,
       ).save(),
-      new mongoose.models.NewMessageNotification(newMessageNotification).save(),
+      new mongoose.models.NewMessageNotification(
+        newMessageNotification1,
+      ).save(),
     ]);
 
     const result = await request(app)

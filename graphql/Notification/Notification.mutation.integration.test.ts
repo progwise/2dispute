@@ -14,6 +14,8 @@ import {
   newDisputeNotification1,
   newDisputeNotification2,
   newDisputeNotification3,
+  newMessageNotification1,
+  newMessageNotification2,
 } from '../../testing/fixtures/notifications';
 import { NotificationDocument } from './NotificationSchema';
 
@@ -241,5 +243,119 @@ describe('mutation markMultipleNotificationAsRead', () => {
         ]
       `);
     });
+  });
+});
+
+describe('mutation markNotificationsAsReadForDispute', () => {
+  const markNotificationsAsReadForDisputeMutation = `
+    mutation {
+      markNotificationsAsReadForDispute(disputeId: "bbaeec62fed1fe8eff4bc127") {
+        updatedNotification {
+          id
+          read
+          __typename
+        }
+      }
+    }
+  `;
+
+  test('fails when unauthorized', async () => {
+    const result = await request(app)
+      .post('')
+      .send({ query: markNotificationsAsReadForDisputeMutation })
+      .expect(200);
+
+    expect(result.body.data).toBeNull();
+    expect(result.body.errors).toHaveLength(1);
+    expect(result.body.errors[0].message).toBe('not authenticated');
+  });
+
+  describe('success', () => {
+    let result: request.Response;
+    let allNotifications: NotificationDocument[];
+
+    beforeAll(async () => {
+      await Promise.all([
+        new mongoose.models.Subject(subject1).save(),
+        new mongoose.models.NewDisputeNotification(
+          newDisputeNotification1,
+        ).save(),
+        new mongoose.models.NewMessageNotification(
+          newMessageNotification2,
+        ).save(),
+      ]);
+
+      result = await request(app)
+        .post('')
+        .set('Cookie', [`token=${token}`])
+        .send({ query: markNotificationsAsReadForDisputeMutation })
+        .expect(200);
+
+      allNotifications = await mongoose.models.Notification.find().exec();
+    });
+
+    test('response correctly', () => {
+      expect(result.body.errors).toBeUndefined();
+      expect(result.body.data).toMatchInlineSnapshot(`
+        Object {
+          "markNotificationsAsReadForDispute": Object {
+            "updatedNotification": Array [
+              Object {
+                "__typename": "NewMessageNotification",
+                "id": "76223877c0e3358899de3439",
+                "read": true,
+              },
+              Object {
+                "__typename": "NewDisputeNotification",
+                "id": "7d668f7e0c27b5a7efb389d1",
+                "read": true,
+              },
+            ],
+          },
+        }
+      `);
+    });
+
+    test('updates notifications in database correctly', () => {
+      expect(allNotifications).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "__v": 0,
+            "_id": "7d668f7e0c27b5a7efb389d1",
+            "createdAt": 2020-06-15T10:00:00.000Z,
+            "disputeId": "bbaeec62fed1fe8eff4bc127",
+            "read": true,
+            "type": "NewDisputeNotification",
+            "userId": "twitterId",
+          },
+          Object {
+            "__v": 0,
+            "_id": "76223877c0e3358899de3439",
+            "createdAt": 2020-06-15T10:00:00.000Z,
+            "messageId": "7b6429574939a24fde1b7cb0",
+            "read": true,
+            "type": "NewMessageNotification",
+            "userId": "twitterId",
+          },
+        ]
+      `);
+    });
+  });
+
+  test('success when no notification to update exists', async () => {
+    const result = await request(app)
+      .post('')
+      .set('Cookie', [`token=${token}`])
+      .send({ query: markNotificationsAsReadForDisputeMutation })
+      .expect(200);
+
+    expect(result.body.errors).toBeUndefined();
+    expect(result.body.data).toMatchInlineSnapshot(`
+      Object {
+        "markNotificationsAsReadForDispute": Object {
+          "updatedNotification": Array [],
+        },
+      }
+    `);
   });
 });
