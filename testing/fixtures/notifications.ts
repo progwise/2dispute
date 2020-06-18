@@ -28,11 +28,20 @@ export const newDisputeNotification3 = {
   userId: 'twitterId',
 };
 
-export const newMessageNotification = {
+export const newMessageNotification1 = {
   _id: mongoose.Types.ObjectId('76223877c0e3358899de3439'),
   createdAt: new Date('2020-06-15T10:00:00.000Z'),
   read: true,
   type: 'NewMessageNotification',
   messageId: dispute1.messages[1]._id.toHexString(),
+  userId: 'twitterId',
+};
+
+export const newMessageNotification2 = {
+  _id: mongoose.Types.ObjectId('76223877c0e3358899de3439'),
+  createdAt: new Date('2020-06-15T10:00:00.000Z'),
+  read: false,
+  type: 'NewMessageNotification',
+  messageId: dispute1.messages[0]._id.toHexString(),
   userId: 'twitterId',
 };
