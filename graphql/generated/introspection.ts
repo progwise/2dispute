@@ -17,10 +17,10 @@ const result: IntrospectionResultData = {
         name: 'Notification',
         possibleTypes: [
           {
-            name: 'NewMessageNotification',
+            name: 'NewDisputeNotification',
           },
           {
-            name: 'NewDisputeNotification',
+            name: 'NewMessageNotification',
           },
         ],
       },

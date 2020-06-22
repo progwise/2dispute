@@ -275,20 +275,20 @@ export type Votes = {
   userVoting: UserVoting;
 };
 
-export type NewMessageNotification = Notification & {
-  __typename?: 'NewMessageNotification';
-  id: Scalars['ID'];
-  read: Scalars['Boolean'];
-  createdAt: Scalars['DateTime'];
-  message: Message;
-};
-
 export type NewDisputeNotification = Notification & {
   __typename?: 'NewDisputeNotification';
   id: Scalars['ID'];
   read: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
   dispute: Dispute;
+};
+
+export type NewMessageNotification = Notification & {
+  __typename?: 'NewMessageNotification';
+  id: Scalars['ID'];
+  read: Scalars['Boolean'];
+  createdAt: Scalars['DateTime'];
+  message: Message;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -434,8 +434,8 @@ export type ResolversTypes = ResolversObject<{
   Tweet: ResolverTypeWrapper<Tweet>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Notification:
-    | ResolversTypes['NewMessageNotification']
-    | ResolversTypes['NewDisputeNotification'];
+    | ResolversTypes['NewDisputeNotification']
+    | ResolversTypes['NewMessageNotification'];
   SubjectEdge: ResolverTypeWrapper<
     Omit<SubjectEdge, 'node'> & { node: ResolversTypes['Subject'] }
   >;
@@ -444,8 +444,8 @@ export type ResolversTypes = ResolversObject<{
   >;
   NotificationEdge: ResolverTypeWrapper<NotificationEdge>;
   Votes: ResolverTypeWrapper<Votes>;
-  NewMessageNotification: ResolverTypeWrapper<NewMessageNotificationDocument>;
   NewDisputeNotification: ResolverTypeWrapper<NewDisputeNotificationDocument>;
+  NewMessageNotification: ResolverTypeWrapper<NewMessageNotificationDocument>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -478,8 +478,8 @@ export type ResolversParentTypes = ResolversObject<{
   Tweet: Tweet;
   PageInfo: PageInfo;
   Notification:
-    | ResolversParentTypes['NewMessageNotification']
-    | ResolversParentTypes['NewDisputeNotification'];
+    | ResolversParentTypes['NewDisputeNotification']
+    | ResolversParentTypes['NewMessageNotification'];
   SubjectEdge: Omit<SubjectEdge, 'node'> & {
     node: ResolversParentTypes['Subject'];
   };
@@ -488,8 +488,8 @@ export type ResolversParentTypes = ResolversObject<{
   };
   NotificationEdge: NotificationEdge;
   Votes: Votes;
-  NewMessageNotification: NewMessageNotificationDocument;
   NewDisputeNotification: NewDisputeNotificationDocument;
+  NewMessageNotification: NewMessageNotificationDocument;
 }>;
 
 export type AuthDirectiveArgs = {};
@@ -773,7 +773,7 @@ export type NotificationResolvers<
   ParentType extends ResolversParentTypes['Notification'] = ResolversParentTypes['Notification']
 > = ResolversObject<{
   __resolveType: TypeResolveFn<
-    'NewMessageNotification' | 'NewDisputeNotification',
+    'NewDisputeNotification' | 'NewMessageNotification',
     ParentType,
     ContextType
   >;
@@ -819,17 +819,6 @@ export type VotesResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
-export type NewMessageNotificationResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes['NewMessageNotification'] = ResolversParentTypes['NewMessageNotification']
-> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  read?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  message?: Resolver<ResolversTypes['Message'], ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn<ParentType>;
-}>;
-
 export type NewDisputeNotificationResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['NewDisputeNotification'] = ResolversParentTypes['NewDisputeNotification']
@@ -838,6 +827,17 @@ export type NewDisputeNotificationResolvers<
   read?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   dispute?: Resolver<ResolversTypes['Dispute'], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
+export type NewMessageNotificationResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['NewMessageNotification'] = ResolversParentTypes['NewMessageNotification']
+> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  read?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['Message'], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -861,8 +861,8 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   DisputeEdge?: DisputeEdgeResolvers<ContextType>;
   NotificationEdge?: NotificationEdgeResolvers<ContextType>;
   Votes?: VotesResolvers<ContextType>;
-  NewMessageNotification?: NewMessageNotificationResolvers<ContextType>;
   NewDisputeNotification?: NewDisputeNotificationResolvers<ContextType>;
+  NewMessageNotification?: NewMessageNotificationResolvers<ContextType>;
 }>;
 
 /**
@@ -893,20 +893,20 @@ type Query {
   allSubjects(first: Int = 10, after: String, last: Int = 10, before: String, filter: SubjectFilter): SubjectConnection!
   dispute(id: ID!): Dispute
   me: User
-  notificationStatus: NotificationStatus!
+  notificationStatus: NotificationStatus! @auth
   subject(id: ID!): Subject
   twitterTimeline: [Tweet!]
   user(id: ID!): User
 }
 
 type Mutation {
-  createSubject(input: SubjectCreateInput!): Subject!
-  markMultipleNotificationAsRead(latestId: ID!): [Notification!]!
-  markNotificationAsRead(id: ID!): Notification!
-  markNotificationsAsReadForDispute(disputeId: ID!): NotificationsUpdate!
-  replyOnDispute(input: ReplyOnDisputInput!): Dispute!
-  replyOnSubject(input: ReplyOnSubjectInput!): Dispute!
-  vote(messageId: ID!, voting: UserVoting!): Message!
+  createSubject(input: SubjectCreateInput!): Subject! @auth
+  markMultipleNotificationAsRead(latestId: ID!): [Notification!]! @auth
+  markNotificationAsRead(id: ID!): Notification! @auth
+  markNotificationsAsReadForDispute(disputeId: ID!): NotificationsUpdate! @auth
+  replyOnDispute(input: ReplyOnDisputInput!): Dispute! @auth
+  replyOnSubject(input: ReplyOnSubjectInput!): Dispute! @auth
+  vote(messageId: ID!, voting: UserVoting!): Message! @auth
 }
 
 type Subject {
@@ -979,7 +979,7 @@ type NotificationConnection {
 }
 
 type NotificationsUpdate {
-  notificationStatus: NotificationStatus!
+  notificationStatus: NotificationStatus! @auth
   updatedNotification: [Notification!]!
 }
 
@@ -1037,17 +1037,17 @@ type Votes {
   userVoting: UserVoting!
 }
 
-type NewMessageNotification implements Notification {
-  id: ID!
-  read: Boolean!
-  createdAt: DateTime!
-  message: Message!
-}
-
 type NewDisputeNotification implements Notification {
   id: ID!
   read: Boolean!
   createdAt: DateTime!
   dispute: Dispute!
+}
+
+type NewMessageNotification implements Notification {
+  id: ID!
+  read: Boolean!
+  createdAt: DateTime!
+  message: Message!
 }
 `;

@@ -258,20 +258,20 @@ export type Votes = {
   userVoting: UserVoting;
 };
 
-export type NewMessageNotification = Notification & {
-  __typename?: 'NewMessageNotification';
-  id: Scalars['ID'];
-  read: Scalars['Boolean'];
-  createdAt: Scalars['DateTime'];
-  message: Message;
-};
-
 export type NewDisputeNotification = Notification & {
   __typename?: 'NewDisputeNotification';
   id: Scalars['ID'];
   read: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
   dispute: Dispute;
+};
+
+export type NewMessageNotification = Notification & {
+  __typename?: 'NewMessageNotification';
+  id: Scalars['ID'];
+  read: Scalars['Boolean'];
+  createdAt: Scalars['DateTime'];
+  message: Message;
 };
 
 export type VoteMutationVariables = {
@@ -329,12 +329,12 @@ export type ClearNotificationsForDisputeMutation = {
 } & {
   markNotificationsAsReadForDispute: { __typename?: 'NotificationsUpdate' } & {
     updatedNotification: Array<
-      | ({ __typename?: 'NewMessageNotification' } & Pick<
-          NewMessageNotification,
-          'id' | 'read'
-        >)
       | ({ __typename?: 'NewDisputeNotification' } & Pick<
           NewDisputeNotification,
+          'id' | 'read'
+        >)
+      | ({ __typename?: 'NewMessageNotification' } & Pick<
+          NewMessageNotification,
           'id' | 'read'
         >)
     >;
@@ -405,6 +405,17 @@ export type NotificationListQuery = { __typename?: 'Query' } & {
         edges: Array<
           { __typename?: 'NotificationEdge' } & {
             node:
+              | ({ __typename: 'NewDisputeNotification' } & Pick<
+                  NewDisputeNotification,
+                  'id' | 'createdAt' | 'read'
+                > & {
+                    dispute: { __typename?: 'Dispute' } & Pick<
+                      Dispute,
+                      'id'
+                    > & {
+                        partnerB: { __typename?: 'User' } & ChatPersonFragment;
+                      };
+                  })
               | ({ __typename: 'NewMessageNotification' } & Pick<
                   NewMessageNotification,
                   'id' | 'createdAt' | 'read'
@@ -418,17 +429,6 @@ export type NotificationListQuery = { __typename?: 'Query' } & {
                           Dispute,
                           'id'
                         >;
-                      };
-                  })
-              | ({ __typename: 'NewDisputeNotification' } & Pick<
-                  NewDisputeNotification,
-                  'id' | 'createdAt' | 'read'
-                > & {
-                    dispute: { __typename?: 'Dispute' } & Pick<
-                      Dispute,
-                      'id'
-                    > & {
-                        partnerB: { __typename?: 'User' } & ChatPersonFragment;
                       };
                   });
           }

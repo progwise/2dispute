@@ -33,7 +33,7 @@ type Query {
     before: String
   ): NotificationConnection
   notificationStatus: NotificationStatus! @auth
-  twitterTimeline: [Tweet!] @auth
+  twitterTimeline: [Tweet!]
 }
 
 type Mutation {
