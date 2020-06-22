@@ -2,7 +2,7 @@ query NotificationList($after: String, $before: String) {
   notificationStatus {
     totalCountUnread
   }
-  allNotifications(first: 10, last: 10, after: $after, before: $before) {
+  allNotifications(limit: 10, after: $after, before: $before) {
     totalCount
     pageInfo {
       hasNextPage

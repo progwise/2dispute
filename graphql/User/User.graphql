@@ -7,16 +7,14 @@ type User {
   picture: String
 
   allSubjects(
-    first: Int = 10
+    limit: Int = 10
     after: String
-    last: Int = 10
     before: String
   ): SubjectConnection!
 
   allDisputes(
-    first: Int = 10
+    limit: Int = 10
     after: String
-    last: Int = 10
     before: String
   ): DisputeConnection!
 }

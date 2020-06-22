@@ -1,5 +1,5 @@
 query getAllDisputes($cursor: String) {
-  allDisputes(first: 20, after: $cursor) {
+  allDisputes(limit: 20, after: $cursor) {
     edges {
       node {
         id

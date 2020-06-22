@@ -2,7 +2,7 @@ fragment UserInfo on User {
   id
   name
   picture
-  allDisputes(first: 10) {
+  allDisputes(limit: 10) {
     edges {
       node {
         id
@@ -21,7 +21,7 @@ fragment UserInfo on User {
       }
     }
   }
-  allSubjects(first: 10) {
+  allSubjects(limit: 10) {
     edges {
       node {
         id

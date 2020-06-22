@@ -1,5 +1,5 @@
 query getAllSubjects($cursor: String) {
-  allSubjects(first: 20, after: $cursor) {
+  allSubjects(limit: 20, after: $cursor) {
     edges {
       node {
         id

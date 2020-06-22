@@ -28,23 +28,20 @@ export type Query = {
 };
 
 export type QueryAllDisputesArgs = {
-  first?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
 };
 
 export type QueryAllNotificationsArgs = {
-  first?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
 };
 
 export type QueryAllSubjectsArgs = {
-  first?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
   filter?: Maybe<SubjectFilter>;
 };
@@ -166,16 +163,14 @@ export type User = {
 };
 
 export type UserAllDisputesArgs = {
-  first?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
 };
 
 export type UserAllSubjectsArgs = {
-  first?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
 };
 
@@ -692,7 +687,7 @@ export const UserInfoFragmentDoc = gql`
     id
     name
     picture
-    allDisputes(first: 10) {
+    allDisputes(limit: 10) {
       edges {
         node {
           id
@@ -711,7 +706,7 @@ export const UserInfoFragmentDoc = gql`
         }
       }
     }
-    allSubjects(first: 10) {
+    allSubjects(limit: 10) {
       edges {
         node {
           id
@@ -961,7 +956,7 @@ export const NotificationListDocument = gql`
     notificationStatus {
       totalCountUnread
     }
-    allNotifications(first: 10, last: 10, after: $after, before: $before) {
+    allNotifications(limit: 10, after: $after, before: $before) {
       totalCount
       pageInfo {
         hasNextPage
@@ -1272,7 +1267,7 @@ export type MeUserInfoQueryResult = ApolloReactCommon.QueryResult<
 >;
 export const GetAllDisputesDocument = gql`
   query getAllDisputes($cursor: String) {
-    allDisputes(first: 20, after: $cursor) {
+    allDisputes(limit: 20, after: $cursor) {
       edges {
         node {
           id
@@ -1349,7 +1344,7 @@ export type GetAllDisputesQueryResult = ApolloReactCommon.QueryResult<
 >;
 export const StartPageDocument = gql`
   query StartPage {
-    latestActiveDisputes: allDisputes(first: 10) {
+    latestActiveDisputes: allDisputes(limit: 10) {
       edges {
         node {
           id
@@ -1367,7 +1362,7 @@ export const StartPageDocument = gql`
         }
       }
     }
-    unansweredSubjects: allSubjects(first: 10, filter: { hasDisputes: false }) {
+    unansweredSubjects: allSubjects(limit: 10, filter: { hasDisputes: false }) {
       edges {
         node {
           id
@@ -1541,7 +1536,7 @@ export type CreateSubjectMutationOptions = ApolloReactCommon.BaseMutationOptions
 >;
 export const GetAllSubjectsDocument = gql`
   query getAllSubjects($cursor: String) {
-    allSubjects(first: 20, after: $cursor) {
+    allSubjects(limit: 20, after: $cursor) {
       edges {
         node {
           id

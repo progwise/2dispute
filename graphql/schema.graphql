@@ -10,16 +10,14 @@ scalar DateTime
 
 type Query {
   allSubjects(
-    first: Int = 10
+    limit: Int = 10
     after: String
-    last: Int = 10
     before: String
     filter: SubjectFilter
   ): SubjectConnection!
   allDisputes(
-    first: Int = 10
+    limit: Int = 10
     after: String
-    last: Int = 10
     before: String
   ): DisputeConnection!
   subject(id: ID!): Subject
@@ -27,9 +25,8 @@ type Query {
   dispute(id: ID!): Dispute
   user(id: ID!): User
   allNotifications(
-    first: Int = 10
+    limit: Int = 10
     after: String
-    last: Int = 10
     before: String
   ): NotificationConnection
   notificationStatus: NotificationStatus! @auth

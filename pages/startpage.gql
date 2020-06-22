@@ -1,5 +1,5 @@
 query StartPage {
-  latestActiveDisputes: allDisputes(first: 10) {
+  latestActiveDisputes: allDisputes(limit: 10) {
     edges {
       node {
         id
@@ -17,7 +17,7 @@ query StartPage {
       }
     }
   }
-  unansweredSubjects: allSubjects(first: 10, filter: { hasDisputes: false }) {
+  unansweredSubjects: allSubjects(limit: 10, filter: { hasDisputes: false }) {
     edges {
       node {
         id
