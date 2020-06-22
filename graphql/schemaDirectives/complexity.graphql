@@ -1,0 +1,7 @@
+directive @complexity(
+  # The complexity value for the field
+  value: Int!
+
+  # Optional multipliers
+  multipliers: [String!]
+) on FIELD_DEFINITION

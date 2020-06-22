@@ -487,6 +487,18 @@ export type ResolversParentTypes = ResolversObject<{
   NewMessageNotification: NewMessageNotificationDocument;
 }>;
 
+export type ComplexityDirectiveArgs = {
+  value: Scalars['Int'];
+  multipliers?: Maybe<Array<Scalars['String']>>;
+};
+
+export type ComplexityDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = Context,
+  Args = ComplexityDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type AuthDirectiveArgs = {};
 
 export type AuthDirectiveResolver<
@@ -866,6 +878,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
  */
 export type IResolvers<ContextType = Context> = Resolvers<ContextType>;
 export type DirectiveResolvers<ContextType = Context> = ResolversObject<{
+  complexity?: ComplexityDirectiveResolver<any, any, ContextType>;
   auth?: AuthDirectiveResolver<any, any, ContextType>;
 }>;
 
@@ -878,14 +891,16 @@ export type IDirectiveResolvers<ContextType = Context> = DirectiveResolvers<
 >;
 
 export const typeDefs = `
+directive @complexity(value: Int!, multipliers: [String!]) on FIELD_DEFINITION
+
 directive @auth on FIELD_DEFINITION
 
 scalar DateTime
 
 type Query {
-  allDisputes(limit: Int = 10, after: String, before: String): DisputeConnection!
+  allDisputes(limit: Int = 10, after: String, before: String): DisputeConnection! @complexity(value: 1, multipliers: ["limit"])
   allNotifications(limit: Int = 10, after: String, before: String): NotificationConnection
-  allSubjects(limit: Int = 10, after: String, before: String, filter: SubjectFilter): SubjectConnection!
+  allSubjects(limit: Int = 10, after: String, before: String, filter: SubjectFilter): SubjectConnection! @complexity(value: 1, multipliers: ["limit"])
   dispute(id: ID!): Dispute
   me: User
   notificationStatus: NotificationStatus! @auth
@@ -956,8 +971,8 @@ input ReplyOnDisputInput {
 }
 
 type User {
-  allDisputes(limit: Int = 10, after: String, before: String): DisputeConnection!
-  allSubjects(limit: Int = 10, after: String, before: String): SubjectConnection!
+  allDisputes(limit: Int = 10, after: String, before: String): DisputeConnection! @complexity(value: 1, multipliers: ["limit"])
+  allSubjects(limit: Int = 10, after: String, before: String): SubjectConnection! @complexity(value: 1, multipliers: ["limit"])
   id: ID!
   name: String!
   picture: String
