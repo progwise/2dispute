@@ -45,23 +45,20 @@ export type Query = {
 };
 
 export type QueryAllDisputesArgs = {
-  first?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
 };
 
 export type QueryAllNotificationsArgs = {
-  first?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
 };
 
 export type QueryAllSubjectsArgs = {
-  first?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
   filter?: Maybe<SubjectFilter>;
 };
@@ -183,16 +180,14 @@ export type User = {
 };
 
 export type UserAllDisputesArgs = {
-  first?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
 };
 
 export type UserAllSubjectsArgs = {
-  first?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
 };
 
@@ -514,19 +509,19 @@ export type QueryResolvers<
     ResolversTypes['DisputeConnection'],
     ParentType,
     ContextType,
-    RequireFields<QueryAllDisputesArgs, 'first' | 'last'>
+    RequireFields<QueryAllDisputesArgs, 'limit'>
   >;
   allNotifications?: Resolver<
     Maybe<ResolversTypes['NotificationConnection']>,
     ParentType,
     ContextType,
-    RequireFields<QueryAllNotificationsArgs, 'first' | 'last'>
+    RequireFields<QueryAllNotificationsArgs, 'limit'>
   >;
   allSubjects?: Resolver<
     ResolversTypes['SubjectConnection'],
     ParentType,
     ContextType,
-    RequireFields<QueryAllSubjectsArgs, 'first' | 'last'>
+    RequireFields<QueryAllSubjectsArgs, 'limit'>
   >;
   dispute?: Resolver<
     Maybe<ResolversTypes['Dispute']>,
@@ -678,13 +673,13 @@ export type UserResolvers<
     ResolversTypes['DisputeConnection'],
     ParentType,
     ContextType,
-    RequireFields<UserAllDisputesArgs, 'first' | 'last'>
+    RequireFields<UserAllDisputesArgs, 'limit'>
   >;
   allSubjects?: Resolver<
     ResolversTypes['SubjectConnection'],
     ParentType,
     ContextType,
-    RequireFields<UserAllSubjectsArgs, 'first' | 'last'>
+    RequireFields<UserAllSubjectsArgs, 'limit'>
   >;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -888,9 +883,9 @@ directive @auth on FIELD_DEFINITION
 scalar DateTime
 
 type Query {
-  allDisputes(first: Int = 10, after: String, last: Int = 10, before: String): DisputeConnection!
-  allNotifications(first: Int = 10, after: String, last: Int = 10, before: String): NotificationConnection
-  allSubjects(first: Int = 10, after: String, last: Int = 10, before: String, filter: SubjectFilter): SubjectConnection!
+  allDisputes(limit: Int = 10, after: String, before: String): DisputeConnection!
+  allNotifications(limit: Int = 10, after: String, before: String): NotificationConnection
+  allSubjects(limit: Int = 10, after: String, before: String, filter: SubjectFilter): SubjectConnection!
   dispute(id: ID!): Dispute
   me: User
   notificationStatus: NotificationStatus! @auth
@@ -961,8 +956,8 @@ input ReplyOnDisputInput {
 }
 
 type User {
-  allDisputes(first: Int = 10, after: String, last: Int = 10, before: String): DisputeConnection!
-  allSubjects(first: Int = 10, after: String, last: Int = 10, before: String): SubjectConnection!
+  allDisputes(limit: Int = 10, after: String, before: String): DisputeConnection!
+  allSubjects(limit: Int = 10, after: String, before: String): SubjectConnection!
   id: ID!
   name: String!
   picture: String

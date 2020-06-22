@@ -4,8 +4,7 @@ export interface ConnectionResolverOptions {
   args: {
     after?: string;
     before?: string;
-    first: number;
-    last: number;
+    limit: number;
   };
   sortString: string;
 }
@@ -42,19 +41,19 @@ export default abstract class ConnectionResolver<T> {
       items = await this.getAfter(
         this.options.args.after,
         this.options.sortString,
-        this.options.args.first,
+        this.options.args.limit,
       );
     } else if (this.options.args.before) {
       items = await this.getAfter(
         this.options.args.before,
         reversedSortString,
-        this.options.args.last,
+        this.options.args.limit,
       );
       items = items.reverse();
     } else {
       items = await this.getAll(
         this.options.sortString,
-        this.options.args.first,
+        this.options.args.limit,
       );
     }
 
