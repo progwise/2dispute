@@ -10,11 +10,11 @@ type User {
     limit: Int = 10
     after: String
     before: String
-  ): SubjectConnection!
+  ): SubjectConnection! @complexity(value: 1, multipliers: ["limit"])
 
   allDisputes(
     limit: Int = 10
     after: String
     before: String
-  ): DisputeConnection!
+  ): DisputeConnection! @complexity(value: 1, multipliers: ["limit"])
 }

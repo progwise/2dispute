@@ -5,6 +5,7 @@
 # import Message, UserVoting from './Message/Message.graphql'
 # import Tweet from './Tweet/Tweet.graphql'
 # import @auth from './schemaDirectives/auth.graphql'
+# import @complexity from './schemaDirectives/complexity.graphql'
 
 scalar DateTime
 
@@ -14,12 +15,12 @@ type Query {
     after: String
     before: String
     filter: SubjectFilter
-  ): SubjectConnection!
+  ): SubjectConnection! @complexity(value: 1, multipliers: ["limit"])
   allDisputes(
     limit: Int = 10
     after: String
     before: String
-  ): DisputeConnection!
+  ): DisputeConnection! @complexity(value: 1, multipliers: ["limit"])
   subject(id: ID!): Subject
   me: User
   dispute(id: ID!): Dispute
