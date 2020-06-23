@@ -22,6 +22,7 @@ import { tweetQueries } from './Tweet';
 import { newDisputeNotificationResolvers } from './Notification/NewDisputeNotification';
 import { newMessageNotificationResolvers } from './Notification/NewMessageNotification';
 import { notificationsUpdateResolvers } from './Notification/NotificationsUpdate';
+import { chatQueries } from './Chat';
 
 const resolvers: Resolvers = {
   Query: {
@@ -30,6 +31,7 @@ const resolvers: Resolvers = {
     ...disputeQueries,
     ...notificationQueries,
     ...tweetQueries,
+    ...chatQueries,
   },
   Mutation: {
     ...subjectMutations,
