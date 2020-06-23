@@ -4,6 +4,7 @@
 # import NotificationConnection, NotificationsUpdate, NotificationStatus from './Notification/Notification.graphql'
 # import Message, UserVoting from './Message/Message.graphql'
 # import Tweet from './Tweet/Tweet.graphql'
+# import Chat from './Chat/Chat.graphql'
 # import @auth from './schemaDirectives/auth.graphql'
 # import @complexity from './schemaDirectives/complexity.graphql'
 
@@ -32,6 +33,7 @@ type Query {
   ): NotificationConnection
   notificationStatus: NotificationStatus! @auth
   twitterTimeline: [Tweet!]
+  chat: Chat
 }
 
 type Mutation {

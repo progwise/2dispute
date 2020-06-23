@@ -1,0 +1,5 @@
+# import Dispute from '../Dispute/Dispute.graphql'
+
+type Chat {
+  items: [Dispute!]!
+}
