@@ -37,12 +37,14 @@ const fetchTwitterUser = async (userId: string): Promise<UserMapper> => {
     return {
       id: userId,
       name: userResult.name,
+      twitterHandle: userResult.screen_name,
       picture: picture200,
     };
   } catch {
     return {
       id: userId,
       name: 'User not found',
+      twitterHandle: '',
     };
   }
 };
