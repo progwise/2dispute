@@ -5,5 +5,6 @@ export { default as userResolvers } from './resolvers';
 export interface UserMapper {
   id: string;
   name: string;
+  twitterHandle: string;
   picture?: string;
 }

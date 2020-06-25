@@ -36,6 +36,7 @@ beforeEach(() => {
     name: 'user name',
     profile_image_url_https:
       'https://pbs.twimg.com/profile_images/942858479592554497/BbazLO9L_normal.jpg',
+    screen_name: 'twitterHandle',
   });
   TwitterMock.mockReturnValue({ getBearerToken, get });
 });
@@ -55,6 +56,7 @@ test('load user from twitter when calling an id for the first time', async () =>
   expect(user).toEqual({
     id: 'userId',
     name: 'user name',
+    twitterHandle: 'twitterHandle',
     picture:
       'https://pbs.twimg.com/profile_images/942858479592554497/BbazLO9L_200x200.jpg',
   });
@@ -84,6 +86,7 @@ test('load user from cache when called a second time', async () => {
   const expectedResult = {
     id: 'userId',
     name: 'user name',
+    twitterHandle: 'twitterHandle',
     picture:
       'https://pbs.twimg.com/profile_images/942858479592554497/BbazLO9L_200x200.jpg',
   };

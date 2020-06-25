@@ -178,6 +178,7 @@ export type User = {
   id: Scalars['ID'];
   name: Scalars['String'];
   picture?: Maybe<Scalars['String']>;
+  twitterHandle: Scalars['String'];
 };
 
 export type UserAllDisputesArgs = {
@@ -707,6 +708,7 @@ export type UserResolvers<
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   picture?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  twitterHandle?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -997,6 +999,7 @@ type User {
   id: ID!
   name: String!
   picture: String
+  twitterHandle: String!
 }
 
 type NotificationStatus {

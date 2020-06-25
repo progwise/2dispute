@@ -161,6 +161,7 @@ export type User = {
   id: Scalars['ID'];
   name: Scalars['String'];
   picture?: Maybe<Scalars['String']>;
+  twitterHandle: Scalars['String'];
 };
 
 export type UserAllDisputesArgs = {
