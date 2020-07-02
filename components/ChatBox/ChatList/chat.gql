@@ -1,0 +1,23 @@
+query ChatList {
+  chat {
+    items {
+      ...ChatListItem
+    }
+  }
+}
+
+fragment ChatListItem on Dispute {
+  id
+  createdAt
+  lastMessageAt
+  subject {
+    id
+    subject
+  }
+  partnerA {
+    ...ChatPerson
+  }
+  partnerB {
+    ...ChatPerson
+  }
+}

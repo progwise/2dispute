@@ -8,5 +8,6 @@ mutation replyOnDispute($disputeId: ID!, $message: String!) {
       }
       text
     }
+    lastMessageAt
   }
 }

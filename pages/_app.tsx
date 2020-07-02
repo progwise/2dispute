@@ -1,26 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+import React, { useContext } from 'react';
 import Header from '../components/Header';
 import '../css/tailwind.css';
 import Layout from '../components/Layout';
 import TokenManager from '../components/TokenManager';
+import { FullPageProvider, FullPageContext } from '../components/FullPage';
 
 interface MyAppProp {
   Component: new (props: any) => React.Component;
   pageProps: any;
 }
 
-const MyApp = ({ Component, pageProps }: MyAppProp): JSX.Element => (
-  <>
-    <TokenManager />
-    <Header />
-    <Layout>
-      <main>
-        <Component {...pageProps} />
-      </main>
-      <footer />
-    </Layout>
-  </>
+const MyApp = ({ Component, pageProps }: MyAppProp): JSX.Element => {
+  const isFullPage = useContext(FullPageContext).fullPage;
+
+  const className = isFullPage ? 'grid h-screen grid-rows-fullPage' : undefined;
+
+  return (
+    <div className={className}>
+      <TokenManager />
+      <Header />
+      <Layout className="h-full">
+        <main className="h-full">
+          <Component {...pageProps} />
+        </main>
+        <footer />
+      </Layout>
+    </div>
+  );
+};
+
+const MyAppWithProvider = (props): JSX.Element => (
+  <FullPageProvider>
+    <MyApp {...props} />
+  </FullPageProvider>
 );
 
-export default MyApp;
+export default MyAppWithProvider;
