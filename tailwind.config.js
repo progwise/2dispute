@@ -18,8 +18,11 @@ module.exports = {
         '48': '12rem',
       },
       gridTemplateColumns: {
-        chat: 'minmax(0, 1fr) 1px minmax(0, 1fr)',
         selectTweet: 'min-content 1fr',
+        chatBox: 'minmax(0, 1fr) minmax(0, 2fr)',
+      },
+      gridTemplateRows: {
+        fullPage: 'auto minmax(0, 1fr)',
       },
       gridRowEnd: {
         last: '100000000',
@@ -32,5 +35,6 @@ module.exports = {
   variants: {
     opacity: ['disabled'],
     display: ['responsive', 'group-hover'],
+    backgroundColor: ['responsive', 'hover', 'focus', 'odd'],
   },
 };

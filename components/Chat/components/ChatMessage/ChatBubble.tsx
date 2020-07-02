@@ -1,7 +1,8 @@
 import React from 'react';
 import { ChatPersonFragment } from '../../../../graphql/generated/frontend';
-import TextboxWithAuthorPicture from './TextboxWithAuthorPicture';
+import TextBox from './TextBox';
 import Arrow from './Arrow';
+import ChatBubbleAuthor from './ChatBubbleAuthor';
 
 interface ChatBubbleProps {
   position: 'left' | 'right';
@@ -15,20 +16,23 @@ const ChatBubble = ({
   children,
 }: ChatBubbleProps): JSX.Element => (
   <div
-    className={`${
+    className={
       position === 'left'
-        ? 'md:col-start-1 md:mb-24 sm:pr-12 md:pr-0 flex-row-reverse md:flex-row'
-        : 'md:col-start-3 md:mt-24 sm:pl-12 md:pl-0 flex-row md:flex-row-reverse'
-    } flex text-xl text-gray-800 font-text-message break-words`}
+        ? 'md:col-start-1 md:mb-24 sm:px-12 md:px-0 md:pr-0'
+        : 'md:col-start-2 md:mt-24 sm:px-12 md:px-0 md:pl-0'
+    }
   >
-    <TextboxWithAuthorPicture
-      authorPicture={author.picture ?? ''}
-      authorId={author.id}
-      position={position}
+    <ChatBubbleAuthor author={author} />
+    <div
+      className={`flex text-gray-800 font-text-message break-words ${
+        position === 'left'
+          ? 'flex-row-reverse md:flex-row'
+          : 'flex-row md:flex-row-reverse'
+      }`}
     >
-      {children}
-    </TextboxWithAuthorPicture>
-    <Arrow position={position} />
+      <TextBox position={position}>{children}</TextBox>
+      <Arrow position={position} />
+    </div>
   </div>
 );
 

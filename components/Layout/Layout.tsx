@@ -6,8 +6,8 @@ interface LayoutProps {
 }
 
 const Layout = ({ children, className }: LayoutProps): JSX.Element => (
-  <div className={`px-8 ${className}`}>
-    <div className="max-w-screen-lg mx-auto">{children}</div>
+  <div className={`px-8 ${className ?? ''}`}>
+    <div className="max-w-screen-lg mx-auto h-full">{children}</div>
   </div>
 );
 

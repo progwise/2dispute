@@ -27,9 +27,7 @@ fragment ChatMessage on Message {
   text
   createdAt
   author {
-    id
-    name
-    picture
+    ...ChatPerson
   }
   votes {
     ...MessageVotes
@@ -39,6 +37,7 @@ fragment ChatMessage on Message {
 fragment ChatPerson on User {
   id
   name
+  twitterHandle
   picture
 }
 

@@ -29,7 +29,7 @@ const ChatMessage = ({
       {messages.map(message => (
         <div key={message.id}>
           <ChatMessageFormatter text={message.text} />
-          <p>
+          <p className="mt-1">
             <DateTime dateTime={message.createdAt} />
           </p>
           {showVotes && (

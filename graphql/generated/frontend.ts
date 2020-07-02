@@ -308,19 +308,38 @@ export type ChatMessageFragment = { __typename?: 'Message' } & Pick<
   Message,
   'id' | 'text' | 'createdAt'
 > & {
-    author: { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'picture'>;
+    author: { __typename?: 'User' } & ChatPersonFragment;
     votes: { __typename?: 'Votes' } & MessageVotesFragment;
   };
 
 export type ChatPersonFragment = { __typename?: 'User' } & Pick<
   User,
-  'id' | 'name' | 'picture'
+  'id' | 'name' | 'twitterHandle' | 'picture'
 >;
 
 export type MessageVotesFragment = { __typename?: 'Votes' } & Pick<
   Votes,
   'ups' | 'downs' | 'userVoting'
 >;
+
+export type ChatListQueryVariables = {};
+
+export type ChatListQuery = { __typename?: 'Query' } & {
+  chat?: Maybe<
+    { __typename?: 'Chat' } & {
+      items: Array<{ __typename?: 'Dispute' } & ChatListItemFragment>;
+    }
+  >;
+};
+
+export type ChatListItemFragment = { __typename?: 'Dispute' } & Pick<
+  Dispute,
+  'id' | 'createdAt' | 'lastMessageAt'
+> & {
+    subject: { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject'>;
+    partnerA: { __typename?: 'User' } & ChatPersonFragment;
+    partnerB: { __typename?: 'User' } & ChatPersonFragment;
+  };
 
 export type ClearNotificationsForDisputeMutationVariables = {
   disputeId: Scalars['ID'];
@@ -376,7 +395,10 @@ export type ReplyOnDisputeMutationVariables = {
 };
 
 export type ReplyOnDisputeMutation = { __typename?: 'Mutation' } & {
-  replyOnDispute: { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
+  replyOnDispute: { __typename?: 'Dispute' } & Pick<
+    Dispute,
+    'id' | 'lastMessageAt'
+  > & {
       messages: Array<
         { __typename?: 'Message' } & Pick<Message, 'id' | 'text'> & {
             author: { __typename?: 'User' } & Pick<User, 'id'>;
@@ -562,7 +584,7 @@ export type StartPageUserFragment = { __typename?: 'User' } & Pick<
 export type MeQueryVariables = {};
 
 export type MeQuery = { __typename?: 'Query' } & {
-  me?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name' | 'picture'>>;
+  me?: Maybe<{ __typename?: 'User' } & ChatPersonFragment>;
 };
 
 export type CreateSubjectMutationVariables = {
@@ -633,6 +655,7 @@ export const ChatPersonFragmentDoc = gql`
   fragment ChatPerson on User {
     id
     name
+    twitterHandle
     picture
   }
 `;
@@ -649,14 +672,13 @@ export const ChatMessageFragmentDoc = gql`
     text
     createdAt
     author {
-      id
-      name
-      picture
+      ...ChatPerson
     }
     votes {
       ...MessageVotes
     }
   }
+  ${ChatPersonFragmentDoc}
   ${MessageVotesFragmentDoc}
 `;
 export const ChatSubjectFragmentDoc = gql`
@@ -688,6 +710,24 @@ export const ChatDisputeFragmentDoc = gql`
   }
   ${ChatPersonFragmentDoc}
   ${ChatMessageFragmentDoc}
+`;
+export const ChatListItemFragmentDoc = gql`
+  fragment ChatListItem on Dispute {
+    id
+    createdAt
+    lastMessageAt
+    subject {
+      id
+      subject
+    }
+    partnerA {
+      ...ChatPerson
+    }
+    partnerB {
+      ...ChatPerson
+    }
+  }
+  ${ChatPersonFragmentDoc}
 `;
 export const UserInfoFragmentDoc = gql`
   fragment UserInfo on User {
@@ -775,6 +815,62 @@ export type VoteMutationResult = ApolloReactCommon.MutationResult<VoteMutation>;
 export type VoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
   VoteMutation,
   VoteMutationVariables
+>;
+export const ChatListDocument = gql`
+  query ChatList {
+    chat {
+      items {
+        ...ChatListItem
+      }
+    }
+  }
+  ${ChatListItemFragmentDoc}
+`;
+
+/**
+ * __useChatListQuery__
+ *
+ * To run a query within a React component, call `useChatListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChatListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChatListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useChatListQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    ChatListQuery,
+    ChatListQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<ChatListQuery, ChatListQueryVariables>(
+    ChatListDocument,
+    baseOptions,
+  );
+}
+export function useChatListLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    ChatListQuery,
+    ChatListQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<ChatListQuery, ChatListQueryVariables>(
+    ChatListDocument,
+    baseOptions,
+  );
+}
+export type ChatListQueryHookResult = ReturnType<typeof useChatListQuery>;
+export type ChatListLazyQueryHookResult = ReturnType<
+  typeof useChatListLazyQuery
+>;
+export type ChatListQueryResult = ApolloReactCommon.QueryResult<
+  ChatListQuery,
+  ChatListQueryVariables
 >;
 export const ClearNotificationsForDisputeDocument = gql`
   mutation clearNotificationsForDispute($disputeId: ID!) {
@@ -915,6 +1011,7 @@ export const ReplyOnDisputeDocument = gql`
         }
         text
       }
+      lastMessageAt
     }
   }
 `;
@@ -1434,11 +1531,10 @@ export type StartPageQueryResult = ApolloReactCommon.QueryResult<
 export const MeDocument = gql`
   query me {
     me {
-      id
-      name
-      picture
+      ...ChatPerson
     }
   }
+  ${ChatPersonFragmentDoc}
 `;
 
 /**
