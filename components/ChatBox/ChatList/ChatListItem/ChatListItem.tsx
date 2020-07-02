@@ -26,7 +26,7 @@ const ChatListItem = ({
           </div>
           <DateTimeDistance
             dateTime={dispute.lastMessageAt}
-            className="text-xs whitespace-no-wrap"
+            className="text-xs font-light whitespace-no-wrap"
           />
         </div>
         <ChatListItemUser user={dispute.partnerA} />
