@@ -14,7 +14,7 @@ const ChatBox = ({ selectedDisputeId }: ChatBoxProps): JSX.Element => {
   const isDisputeSelected = selectedDisputeId !== undefined;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-chatBox col-gap-8 h-full">
+    <div className="grid grid-cols-1 md:grid-cols-chatBox col-gap-8 h-full text-gray-900">
       <div
         className={`bg-gray-100 overflow-y-auto ${
           isDisputeSelected && 'hidden md:block'
