@@ -1,8 +1,9 @@
-query ChatList {
-  chat {
+query ChatList($before: DateTime) {
+  chat(before: $before) {
     items {
       ...ChatListItem
     }
+    newestLastMessageAt
   }
 }
 
