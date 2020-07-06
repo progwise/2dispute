@@ -34,6 +34,8 @@ const queries: QueryResolvers = {
     const items = reverse ? disputes.reverse() : disputes;
     const newestLastMessageAt =
       items.length > 0 ? items[0].lastMessageAt : null;
+    const oldestLastMessageAt =
+      items.length > 0 ? items[items.length - 1].lastMessageAt : null;
 
     const hasNextPage = async (): Promise<boolean> => {
       const result: [
@@ -53,7 +55,7 @@ const queries: QueryResolvers = {
       return (result[0]?.count ?? 0) > args.limit;
     };
 
-    return { items, newestLastMessageAt, hasNextPage };
+    return { items, newestLastMessageAt, oldestLastMessageAt, hasNextPage };
   },
 };
 

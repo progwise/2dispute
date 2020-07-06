@@ -3,5 +3,6 @@
 type Chat {
   items: [Dispute!]!
   newestLastMessageAt: DateTime
+  oldestLastMessageAt: DateTime
   hasNextPage: Boolean!
 }
