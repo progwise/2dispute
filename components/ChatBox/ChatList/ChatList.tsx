@@ -1,4 +1,5 @@
 import React from 'react';
+import { Waypoint } from 'react-waypoint';
 import { useChatListQuery } from '../../../graphql/generated/frontend';
 import useInterval from '../../../utils/react-hooks/useInterval';
 import ChatListItem from './ChatListItem';
@@ -16,7 +17,7 @@ const ChatList = ({ selectedDisputeId }: ChatListProps): JSX.Element => {
     }
 
     await fetchMore({
-      variables: { before: data?.chat?.newestLastMessageAt },
+      variables: { before: data.chat.newestLastMessageAt },
       updateQuery: (prevResult, { fetchMoreResult }) => {
         if (!prevResult.chat) {
           return {
@@ -25,7 +26,7 @@ const ChatList = ({ selectedDisputeId }: ChatListProps): JSX.Element => {
           };
         }
 
-        if (!fetchMoreResult?.chat) {
+        if (!fetchMoreResult?.chat || fetchMoreResult.chat.items.length === 0) {
           return prevResult;
         }
 
@@ -45,7 +46,39 @@ const ChatList = ({ selectedDisputeId }: ChatListProps): JSX.Element => {
             newestLastMessageAt:
               fetchMoreResult.chat.newestLastMessageAt ??
               prevResult.chat.newestLastMessageAt,
+            hasNextPage: fetchMoreResult.chat.hasNextPage,
             items: newItems,
+          },
+        };
+      },
+    });
+  };
+
+  const handleFetchMore = async (): Promise<void> => {
+    if (!data?.chat) {
+      return;
+    }
+
+    await fetchMore({
+      variables: { after: data.chat.oldestLastMessageAt },
+      updateQuery: (prevResult, { fetchMoreResult }) => {
+        if (!prevResult.chat) {
+          return {
+            ...prevResult,
+            chat: fetchMoreResult?.chat,
+          };
+        }
+
+        if (!fetchMoreResult?.chat || fetchMoreResult.chat.items.length === 0) {
+          return prevResult;
+        }
+
+        return {
+          ...prevResult,
+          chat: {
+            ...prevResult.chat,
+            items: [...prevResult.chat.items, ...fetchMoreResult.chat.items],
+            oldestLastMessageAt: fetchMoreResult.chat.oldestLastMessageAt,
           },
         };
       },
@@ -75,6 +108,9 @@ const ChatList = ({ selectedDisputeId }: ChatListProps): JSX.Element => {
             isSelected={dispute.id === selectedDisputeId}
           />
         ))}
+      {data.chat.hasNextPage && !loading && (
+        <Waypoint onEnter={handleFetchMore} bottomOffset="-100px" />
+      )}
     </ul>
   );
 };
