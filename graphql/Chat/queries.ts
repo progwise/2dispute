@@ -31,8 +31,11 @@ const queries: QueryResolvers = {
       .limit(args.limit)
       .exec();
     const disputes = unwindSubjects.map(subject => subject.disputes);
+    const items = reverse ? disputes.reverse() : disputes;
+    const newestLastMessageAt =
+      items.length > 0 ? items[0].lastMessageAt : null;
 
-    return { items: reverse ? disputes.reverse() : disputes };
+    return { items, newestLastMessageAt };
   },
 };
 

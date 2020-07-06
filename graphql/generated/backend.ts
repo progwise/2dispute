@@ -242,6 +242,7 @@ export type Tweet = {
 export type Chat = {
   __typename?: 'Chat';
   items: Array<Dispute>;
+  newestLastMessageAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type PageInfo = {
@@ -789,6 +790,11 @@ export type ChatResolvers<
   ParentType extends ResolversParentTypes['Chat'] = ResolversParentTypes['Chat']
 > = ResolversObject<{
   items?: Resolver<Array<ResolversTypes['Dispute']>, ParentType, ContextType>;
+  newestLastMessageAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1050,6 +1056,7 @@ type Tweet {
 
 type Chat {
   items: [Dispute!]!
+  newestLastMessageAt: DateTime
 }
 
 type PageInfo {

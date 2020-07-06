@@ -42,6 +42,7 @@ describe('query chat', () => {
           id
           lastMessageAt
         }
+        newestLastMessageAt
       }
     }
   `;
@@ -73,6 +74,7 @@ describe('query chat', () => {
         "data": Object {
           "chat": Object {
             "items": Array [],
+            "newestLastMessageAt": null,
           },
         },
       }
@@ -98,6 +100,7 @@ describe('query chat', () => {
                 "lastMessageAt": "2020-06-17T11:00:00.000Z",
               },
             ],
+            "newestLastMessageAt": "2020-06-17T11:00:00.000Z",
           },
         },
       }
@@ -132,6 +135,7 @@ describe('query chat', () => {
                 "lastMessageAt": "2020-06-15T10:00:00.000Z",
               },
             ],
+            "newestLastMessageAt": "2020-06-17T11:00:00.000Z",
           },
         },
       }
@@ -149,6 +153,7 @@ describe('query chat', () => {
             items {
               id
             }
+            newestLastMessageAt
           }
         }
       `;
@@ -173,6 +178,7 @@ describe('query chat', () => {
               id
               lastMessageAt
             }
+            newestLastMessageAt
           }
         }
       `;
@@ -197,6 +203,7 @@ describe('query chat', () => {
                   "lastMessageAt": "2020-06-15T11:00:00.000Z",
                 },
               ],
+              "newestLastMessageAt": "2020-06-17T11:00:00.000Z",
             },
           },
         }
@@ -214,6 +221,7 @@ describe('query chat', () => {
               id
               lastMessageAt
             }
+            newestLastMessageAt
           }
         }
       `;
@@ -234,6 +242,7 @@ describe('query chat', () => {
                   "lastMessageAt": "2020-06-15T10:00:00.000Z",
                 },
               ],
+              "newestLastMessageAt": "2020-06-15T10:00:00.000Z",
             },
           },
         }
