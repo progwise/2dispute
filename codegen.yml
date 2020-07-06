@@ -35,6 +35,8 @@ generates:
         User: ../User#UserMapper
       scalars:
         DateTime: string
+      wrapFieldDefinitions: true
+      fieldWrapperValue: T | Promise<T> | (() => T | Promise<T>)
   graphql/generated/introspection.ts:
     plugins:
       - fragment-matcher

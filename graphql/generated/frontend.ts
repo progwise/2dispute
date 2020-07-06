@@ -224,6 +224,7 @@ export type Tweet = {
 
 export type Chat = {
   __typename?: 'Chat';
+  hasNextPage: Scalars['Boolean'];
   items: Array<Dispute>;
   newestLastMessageAt?: Maybe<Scalars['DateTime']>;
 };

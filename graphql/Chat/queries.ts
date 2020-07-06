@@ -35,7 +35,25 @@ const queries: QueryResolvers = {
     const newestLastMessageAt =
       items.length > 0 ? items[0].lastMessageAt : null;
 
-    return { items, newestLastMessageAt };
+    const hasNextPage = async (): Promise<boolean> => {
+      const result: [
+        { count: number } | undefined,
+      ] = await context.mongoose.models.Subject.aggregate()
+        .unwind('disputes')
+        .match({
+          $or: [
+            { 'disputes.partnerIdA': userId },
+            { 'disputes.partnerIdB': userId },
+          ],
+        })
+        .match(where)
+        .count('count')
+        .exec();
+
+      return (result[0]?.count ?? 0) > args.limit;
+    };
+
+    return { items, newestLastMessageAt, hasNextPage };
   },
 };
 
