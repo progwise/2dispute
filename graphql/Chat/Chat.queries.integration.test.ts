@@ -137,4 +137,107 @@ describe('query chat', () => {
       }
     `);
   });
+
+  describe('arguments', () => {
+    test('limit argument', async () => {
+      await new mongoose.models.Subject(subject1).save();
+      await new mongoose.models.Subject(subject3).save();
+
+      const chatQueryWithLimit = `
+        {
+          chat(limit: 1) {
+            items {
+              id
+            }
+          }
+        }
+      `;
+
+      const result = await request(app)
+        .post('')
+        .set('Cookie', [`token=${token}`])
+        .send({ query: chatQueryWithLimit })
+        .expect(200);
+
+      expect(result.body.data.chat.items).toHaveLength(1);
+    });
+
+    test('before argument', async () => {
+      await new mongoose.models.Subject(subject1).save();
+      await new mongoose.models.Subject(subject3).save();
+
+      const chatQueryWithBefore = `
+        {
+          chat(before: "2020-06-15T10:00:00.000Z") {
+            items {
+              id
+              lastMessageAt
+            }
+          }
+        }
+      `;
+
+      const result = await request(app)
+        .post('')
+        .set('Cookie', [`token=${token}`])
+        .send({ query: chatQueryWithBefore })
+        .expect(200);
+
+      expect(result.body).toMatchInlineSnapshot(`
+        Object {
+          "data": Object {
+            "chat": Object {
+              "items": Array [
+                Object {
+                  "id": "dc938ae30aab50b2e75c70e6",
+                  "lastMessageAt": "2020-06-17T11:00:00.000Z",
+                },
+                Object {
+                  "id": "a17456a1410c7fb7ed325372",
+                  "lastMessageAt": "2020-06-15T11:00:00.000Z",
+                },
+              ],
+            },
+          },
+        }
+      `);
+    });
+
+    test('after argument', async () => {
+      await new mongoose.models.Subject(subject1).save();
+      await new mongoose.models.Subject(subject3).save();
+
+      const chatQueryWithAfter = `
+        {
+          chat(after: "2020-06-15T11:00:00.000Z") {
+            items {
+              id
+              lastMessageAt
+            }
+          }
+        }
+      `;
+
+      const result = await request(app)
+        .post('')
+        .set('Cookie', [`token=${token}`])
+        .send({ query: chatQueryWithAfter })
+        .expect(200);
+
+      expect(result.body).toMatchInlineSnapshot(`
+        Object {
+          "data": Object {
+            "chat": Object {
+              "items": Array [
+                Object {
+                  "id": "bbaeec62fed1fe8eff4bc127",
+                  "lastMessageAt": "2020-06-15T10:00:00.000Z",
+                },
+              ],
+            },
+          },
+        }
+      `);
+    });
+  });
 });

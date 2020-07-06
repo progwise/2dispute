@@ -7,6 +7,17 @@ const queries: QueryResolvers = {
       return null;
     }
 
+    let where: object = {};
+    let sort = '-disputes.lastMessageAt id';
+    let reverse = false;
+    if (args.before) {
+      where = { 'disputes.lastMessageAt': { $gt: args.before } };
+      sort = 'disputes.lastMessageAt -id';
+      reverse = true;
+    } else if (args.after) {
+      where = { 'disputes.lastMessageAt': { $lt: args.after } };
+    }
+
     const unwindSubjects = await context.mongoose.models.Subject.aggregate()
       .unwind('disputes')
       .match({
@@ -15,11 +26,13 @@ const queries: QueryResolvers = {
           { 'disputes.partnerIdB': userId },
         ],
       })
-      .sort('-disputes.lastMessageAt id')
+      .match(where)
+      .sort(sort)
+      .limit(args.limit)
       .exec();
     const disputes = unwindSubjects.map(subject => subject.disputes);
 
-    return { items: disputes };
+    return { items: reverse ? disputes.reverse() : disputes };
   },
 };
 

@@ -47,6 +47,12 @@ export type QueryAllSubjectsArgs = {
   filter?: Maybe<SubjectFilter>;
 };
 
+export type QueryChatArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['DateTime']>;
+  before?: Maybe<Scalars['DateTime']>;
+};
+
 export type QueryDisputeArgs = {
   id: Scalars['ID'];
 };
