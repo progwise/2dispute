@@ -64,6 +64,12 @@ export type QueryAllSubjectsArgs = {
   filter?: Maybe<SubjectFilter>;
 };
 
+export type QueryChatArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['DateTime']>;
+  before?: Maybe<Scalars['DateTime']>;
+};
+
 export type QueryDisputeArgs = {
   id: Scalars['ID'];
 };
@@ -546,7 +552,12 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryAllSubjectsArgs, 'limit'>
   >;
-  chat?: Resolver<Maybe<ResolversTypes['Chat']>, ParentType, ContextType>;
+  chat?: Resolver<
+    Maybe<ResolversTypes['Chat']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryChatArgs, 'limit'>
+  >;
   dispute?: Resolver<
     Maybe<ResolversTypes['Dispute']>,
     ParentType,
@@ -923,7 +934,7 @@ type Query {
   allDisputes(limit: Int = 10, after: String, before: String): DisputeConnection! @complexity(value: 1, multipliers: ["limit"])
   allNotifications(limit: Int = 10, after: String, before: String): NotificationConnection
   allSubjects(limit: Int = 10, after: String, before: String, filter: SubjectFilter): SubjectConnection! @complexity(value: 1, multipliers: ["limit"])
-  chat: Chat
+  chat(limit: Int = 10, after: DateTime, before: DateTime): Chat
   dispute(id: ID!): Dispute
   me: User
   notificationStatus: NotificationStatus! @auth
