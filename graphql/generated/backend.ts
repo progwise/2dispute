@@ -15,6 +15,7 @@ import { NotificationsUpdateMapper } from '../Notification/NotificationsUpdateMa
 import { UserMapper } from '../User';
 import { Context } from '../context';
 export type Maybe<T> = T | null;
+export type FieldWrapper<T> = T | Promise<T> | (() => T | Promise<T>);
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X];
@@ -33,16 +34,16 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  allDisputes: DisputeConnection;
-  allNotifications?: Maybe<NotificationConnection>;
-  allSubjects: SubjectConnection;
-  chat?: Maybe<Chat>;
-  dispute?: Maybe<Dispute>;
-  me?: Maybe<User>;
-  notificationStatus: NotificationStatus;
-  subject?: Maybe<Subject>;
-  twitterTimeline?: Maybe<Array<Tweet>>;
-  user?: Maybe<User>;
+  allDisputes: FieldWrapper<DisputeConnection>;
+  allNotifications?: FieldWrapper<Maybe<NotificationConnection>>;
+  allSubjects: FieldWrapper<SubjectConnection>;
+  chat?: FieldWrapper<Maybe<Chat>>;
+  dispute?: FieldWrapper<Maybe<Dispute>>;
+  me?: FieldWrapper<Maybe<User>>;
+  notificationStatus: FieldWrapper<NotificationStatus>;
+  subject?: FieldWrapper<Maybe<Subject>>;
+  twitterTimeline?: FieldWrapper<Maybe<Array<Tweet>>>;
+  user?: FieldWrapper<Maybe<User>>;
 };
 
 export type QueryAllDisputesArgs = {
@@ -84,13 +85,13 @@ export type QueryUserArgs = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createSubject: Subject;
-  markMultipleNotificationAsRead: Array<Notification>;
-  markNotificationAsRead: Notification;
-  markNotificationsAsReadForDispute: NotificationsUpdate;
-  replyOnDispute: Dispute;
-  replyOnSubject: Dispute;
-  vote: Message;
+  createSubject: FieldWrapper<Subject>;
+  markMultipleNotificationAsRead: FieldWrapper<Array<Notification>>;
+  markNotificationAsRead: FieldWrapper<Notification>;
+  markNotificationsAsReadForDispute: FieldWrapper<NotificationsUpdate>;
+  replyOnDispute: FieldWrapper<Dispute>;
+  replyOnSubject: FieldWrapper<Dispute>;
+  vote: FieldWrapper<Message>;
 };
 
 export type MutationCreateSubjectArgs = {
@@ -124,14 +125,14 @@ export type MutationVoteArgs = {
 
 export type Subject = {
   __typename?: 'Subject';
-  author: User;
-  createdAt: Scalars['DateTime'];
-  disputes: Array<Dispute>;
-  firstMessage: Message;
-  hasDisputes: Scalars['Boolean'];
-  id: Scalars['ID'];
-  subject: Scalars['String'];
-  tweetId?: Maybe<Scalars['String']>;
+  author: FieldWrapper<User>;
+  createdAt: FieldWrapper<Scalars['DateTime']>;
+  disputes: FieldWrapper<Array<Dispute>>;
+  firstMessage: FieldWrapper<Message>;
+  hasDisputes: FieldWrapper<Scalars['Boolean']>;
+  id: FieldWrapper<Scalars['ID']>;
+  subject: FieldWrapper<Scalars['String']>;
+  tweetId?: FieldWrapper<Maybe<Scalars['String']>>;
 };
 
 export type SubjectCreateInput = {
@@ -147,8 +148,8 @@ export type ReplyOnSubjectInput = {
 
 export type SubjectConnection = {
   __typename?: 'SubjectConnection';
-  edges: Array<SubjectEdge>;
-  pageInfo: PageInfo;
+  edges: FieldWrapper<Array<SubjectEdge>>;
+  pageInfo: FieldWrapper<PageInfo>;
 };
 
 export type SubjectFilter = {
@@ -157,19 +158,19 @@ export type SubjectFilter = {
 
 export type Dispute = {
   __typename?: 'Dispute';
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
-  lastMessageAt: Scalars['DateTime'];
-  messages: Array<Message>;
-  partnerA: User;
-  partnerB: User;
-  subject: Subject;
+  createdAt: FieldWrapper<Scalars['DateTime']>;
+  id: FieldWrapper<Scalars['ID']>;
+  lastMessageAt: FieldWrapper<Scalars['DateTime']>;
+  messages: FieldWrapper<Array<Message>>;
+  partnerA: FieldWrapper<User>;
+  partnerB: FieldWrapper<User>;
+  subject: FieldWrapper<Subject>;
 };
 
 export type DisputeConnection = {
   __typename?: 'DisputeConnection';
-  edges: Array<DisputeEdge>;
-  pageInfo: PageInfo;
+  edges: FieldWrapper<Array<DisputeEdge>>;
+  pageInfo: FieldWrapper<PageInfo>;
 };
 
 export type ReplyOnDisputInput = {
@@ -179,12 +180,12 @@ export type ReplyOnDisputInput = {
 
 export type User = {
   __typename?: 'User';
-  allDisputes: DisputeConnection;
-  allSubjects: SubjectConnection;
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  picture?: Maybe<Scalars['String']>;
-  twitterHandle: Scalars['String'];
+  allDisputes: FieldWrapper<DisputeConnection>;
+  allSubjects: FieldWrapper<SubjectConnection>;
+  id: FieldWrapper<Scalars['ID']>;
+  name: FieldWrapper<Scalars['String']>;
+  picture?: FieldWrapper<Maybe<Scalars['String']>>;
+  twitterHandle: FieldWrapper<Scalars['String']>;
 };
 
 export type UserAllDisputesArgs = {
@@ -201,30 +202,30 @@ export type UserAllSubjectsArgs = {
 
 export type NotificationStatus = {
   __typename?: 'NotificationStatus';
-  totalCountUnread: Scalars['Int'];
+  totalCountUnread: FieldWrapper<Scalars['Int']>;
 };
 
 export type NotificationConnection = {
   __typename?: 'NotificationConnection';
-  edges: Array<NotificationEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int'];
+  edges: FieldWrapper<Array<NotificationEdge>>;
+  pageInfo: FieldWrapper<PageInfo>;
+  totalCount: FieldWrapper<Scalars['Int']>;
 };
 
 export type NotificationsUpdate = {
   __typename?: 'NotificationsUpdate';
-  notificationStatus: NotificationStatus;
-  updatedNotification: Array<Notification>;
+  notificationStatus: FieldWrapper<NotificationStatus>;
+  updatedNotification: FieldWrapper<Array<Notification>>;
 };
 
 export type Message = {
   __typename?: 'Message';
-  author: User;
-  createdAt: Scalars['DateTime'];
-  dispute: Dispute;
-  id: Scalars['ID'];
-  text: Scalars['String'];
-  votes: Votes;
+  author: FieldWrapper<User>;
+  createdAt: FieldWrapper<Scalars['DateTime']>;
+  dispute: FieldWrapper<Dispute>;
+  id: FieldWrapper<Scalars['ID']>;
+  text: FieldWrapper<Scalars['String']>;
+  votes: FieldWrapper<Votes>;
 };
 
 export enum UserVoting {
@@ -235,69 +236,70 @@ export enum UserVoting {
 
 export type Tweet = {
   __typename?: 'Tweet';
-  id: Scalars['ID'];
-  link: Scalars['String'];
+  id: FieldWrapper<Scalars['ID']>;
+  link: FieldWrapper<Scalars['String']>;
 };
 
 export type Chat = {
   __typename?: 'Chat';
-  items: Array<Dispute>;
-  newestLastMessageAt?: Maybe<Scalars['DateTime']>;
+  hasNextPage: FieldWrapper<Scalars['Boolean']>;
+  items: FieldWrapper<Array<Dispute>>;
+  newestLastMessageAt?: FieldWrapper<Maybe<Scalars['DateTime']>>;
 };
 
 export type PageInfo = {
   __typename?: 'PageInfo';
-  endCursor: Scalars['String'];
-  hasNextPage: Scalars['Boolean'];
-  hasPreviousPage: Scalars['Boolean'];
-  startCursor: Scalars['String'];
+  endCursor: FieldWrapper<Scalars['String']>;
+  hasNextPage: FieldWrapper<Scalars['Boolean']>;
+  hasPreviousPage: FieldWrapper<Scalars['Boolean']>;
+  startCursor: FieldWrapper<Scalars['String']>;
 };
 
 export type Notification = {
-  id: Scalars['ID'];
-  read: Scalars['Boolean'];
-  createdAt: Scalars['DateTime'];
+  id: FieldWrapper<Scalars['ID']>;
+  read: FieldWrapper<Scalars['Boolean']>;
+  createdAt: FieldWrapper<Scalars['DateTime']>;
 };
 
 export type SubjectEdge = {
   __typename?: 'SubjectEdge';
-  cursor: Scalars['String'];
-  node: Subject;
+  cursor: FieldWrapper<Scalars['String']>;
+  node: FieldWrapper<Subject>;
 };
 
 export type DisputeEdge = {
   __typename?: 'DisputeEdge';
-  cursor: Scalars['String'];
-  node: Dispute;
+  cursor: FieldWrapper<Scalars['String']>;
+  node: FieldWrapper<Dispute>;
 };
 
 export type NotificationEdge = {
   __typename?: 'NotificationEdge';
-  cursor: Scalars['String'];
-  node: Notification;
+  cursor: FieldWrapper<Scalars['String']>;
+  node: FieldWrapper<Notification>;
 };
 
 export type Votes = {
   __typename?: 'Votes';
-  ups: Scalars['Int'];
-  downs: Scalars['Int'];
-  userVoting: UserVoting;
+  ups: FieldWrapper<Scalars['Int']>;
+  downs: FieldWrapper<Scalars['Int']>;
+  userVoting: FieldWrapper<UserVoting>;
 };
 
 export type NewMessageNotification = Notification & {
   __typename?: 'NewMessageNotification';
-  id: Scalars['ID'];
-  read: Scalars['Boolean'];
-  createdAt: Scalars['DateTime'];
-  message: Message;
+  id: FieldWrapper<Scalars['ID']>;
+  read: FieldWrapper<Scalars['Boolean']>;
+  createdAt: FieldWrapper<Scalars['DateTime']>;
+  message: FieldWrapper<Message>;
 };
 
 export type NewDisputeNotification = Notification & {
   __typename?: 'NewDisputeNotification';
-  id: Scalars['ID'];
-  read: Scalars['Boolean'];
-  createdAt: Scalars['DateTime'];
-  dispute: Dispute;
+  id: FieldWrapper<Scalars['ID']>;
+  read: FieldWrapper<Scalars['Boolean']>;
+  createdAt: FieldWrapper<Scalars['DateTime']>;
+  dispute: FieldWrapper<Dispute>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -789,6 +791,7 @@ export type ChatResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Chat'] = ResolversParentTypes['Chat']
 > = ResolversObject<{
+  hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['Dispute']>, ParentType, ContextType>;
   newestLastMessageAt?: Resolver<
     Maybe<ResolversTypes['DateTime']>,
@@ -1055,6 +1058,7 @@ type Tweet {
 }
 
 type Chat {
+  hasNextPage: Boolean!
   items: [Dispute!]!
   newestLastMessageAt: DateTime
 }

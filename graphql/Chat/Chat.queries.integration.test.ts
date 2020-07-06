@@ -43,6 +43,7 @@ describe('query chat', () => {
           lastMessageAt
         }
         newestLastMessageAt
+        hasNextPage
       }
     }
   `;
@@ -73,6 +74,7 @@ describe('query chat', () => {
       Object {
         "data": Object {
           "chat": Object {
+            "hasNextPage": false,
             "items": Array [],
             "newestLastMessageAt": null,
           },
@@ -94,6 +96,7 @@ describe('query chat', () => {
       Object {
         "data": Object {
           "chat": Object {
+            "hasNextPage": false,
             "items": Array [
               Object {
                 "id": "dc938ae30aab50b2e75c70e6",
@@ -121,6 +124,7 @@ describe('query chat', () => {
       Object {
         "data": Object {
           "chat": Object {
+            "hasNextPage": false,
             "items": Array [
               Object {
                 "id": "dc938ae30aab50b2e75c70e6",
@@ -150,6 +154,7 @@ describe('query chat', () => {
       const chatQueryWithLimit = `
         {
           chat(limit: 1) {
+            hasNextPage
             items {
               id
             }
@@ -165,6 +170,7 @@ describe('query chat', () => {
         .expect(200);
 
       expect(result.body.data.chat.items).toHaveLength(1);
+      expect(result.body.data.chat.hasNextPage).toBeTruthy();
     });
 
     test('before argument', async () => {
@@ -179,6 +185,7 @@ describe('query chat', () => {
               lastMessageAt
             }
             newestLastMessageAt
+            hasNextPage
           }
         }
       `;
@@ -193,6 +200,7 @@ describe('query chat', () => {
         Object {
           "data": Object {
             "chat": Object {
+              "hasNextPage": false,
               "items": Array [
                 Object {
                   "id": "dc938ae30aab50b2e75c70e6",
@@ -222,6 +230,7 @@ describe('query chat', () => {
               lastMessageAt
             }
             newestLastMessageAt
+            hasNextPage
           }
         }
       `;
@@ -236,6 +245,7 @@ describe('query chat', () => {
         Object {
           "data": Object {
             "chat": Object {
+              "hasNextPage": false,
               "items": Array [
                 Object {
                   "id": "bbaeec62fed1fe8eff4bc127",
