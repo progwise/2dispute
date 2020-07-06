@@ -329,13 +329,15 @@ export type MessageVotesFragment = { __typename?: 'Votes' } & Pick<
   'ups' | 'downs' | 'userVoting'
 >;
 
-export type ChatListQueryVariables = {};
+export type ChatListQueryVariables = {
+  before?: Maybe<Scalars['DateTime']>;
+};
 
 export type ChatListQuery = { __typename?: 'Query' } & {
   chat?: Maybe<
-    { __typename?: 'Chat' } & {
-      items: Array<{ __typename?: 'Dispute' } & ChatListItemFragment>;
-    }
+    { __typename?: 'Chat' } & Pick<Chat, 'newestLastMessageAt'> & {
+        items: Array<{ __typename?: 'Dispute' } & ChatListItemFragment>;
+      }
   >;
 };
 
@@ -824,11 +826,12 @@ export type VoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
   VoteMutationVariables
 >;
 export const ChatListDocument = gql`
-  query ChatList {
-    chat {
+  query ChatList($before: DateTime) {
+    chat(before: $before) {
       items {
         ...ChatListItem
       }
+      newestLastMessageAt
     }
   }
   ${ChatListItemFragmentDoc}
@@ -846,6 +849,7 @@ export const ChatListDocument = gql`
  * @example
  * const { data, loading, error } = useChatListQuery({
  *   variables: {
+ *      before: // value for 'before'
  *   },
  * });
  */
