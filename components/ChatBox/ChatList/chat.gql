@@ -1,9 +1,11 @@
-query ChatList($before: DateTime) {
-  chat(before: $before) {
+query ChatList($after: DateTime, $before: DateTime) {
+  chat(after: $after, before: $before) {
     items {
       ...ChatListItem
     }
     newestLastMessageAt
+    oldestLastMessageAt
+    hasNextPage
   }
 }
 
