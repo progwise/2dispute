@@ -43,6 +43,7 @@ describe('query chat', () => {
           lastMessageAt
         }
         newestLastMessageAt
+        oldestLastMessageAt
         hasNextPage
       }
     }
@@ -77,6 +78,7 @@ describe('query chat', () => {
             "hasNextPage": false,
             "items": Array [],
             "newestLastMessageAt": null,
+            "oldestLastMessageAt": null,
           },
         },
       }
@@ -104,6 +106,7 @@ describe('query chat', () => {
               },
             ],
             "newestLastMessageAt": "2020-06-17T11:00:00.000Z",
+            "oldestLastMessageAt": "2020-06-17T11:00:00.000Z",
           },
         },
       }
@@ -140,6 +143,7 @@ describe('query chat', () => {
               },
             ],
             "newestLastMessageAt": "2020-06-17T11:00:00.000Z",
+            "oldestLastMessageAt": "2020-06-15T10:00:00.000Z",
           },
         },
       }
@@ -159,6 +163,7 @@ describe('query chat', () => {
               id
             }
             newestLastMessageAt
+            oldestLastMessageAt
           }
         }
       `;
@@ -185,6 +190,7 @@ describe('query chat', () => {
               lastMessageAt
             }
             newestLastMessageAt
+            oldestLastMessageAt
             hasNextPage
           }
         }
@@ -212,6 +218,7 @@ describe('query chat', () => {
                 },
               ],
               "newestLastMessageAt": "2020-06-17T11:00:00.000Z",
+              "oldestLastMessageAt": "2020-06-15T11:00:00.000Z",
             },
           },
         }
@@ -230,6 +237,7 @@ describe('query chat', () => {
               lastMessageAt
             }
             newestLastMessageAt
+            oldestLastMessageAt
             hasNextPage
           }
         }
@@ -253,6 +261,7 @@ describe('query chat', () => {
                 },
               ],
               "newestLastMessageAt": "2020-06-15T10:00:00.000Z",
+              "oldestLastMessageAt": "2020-06-15T10:00:00.000Z",
             },
           },
         }

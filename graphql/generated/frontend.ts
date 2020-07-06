@@ -227,6 +227,7 @@ export type Chat = {
   hasNextPage: Scalars['Boolean'];
   items: Array<Dispute>;
   newestLastMessageAt?: Maybe<Scalars['DateTime']>;
+  oldestLastMessageAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type PageInfo = {

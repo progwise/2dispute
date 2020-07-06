@@ -245,6 +245,7 @@ export type Chat = {
   hasNextPage: FieldWrapper<Scalars['Boolean']>;
   items: FieldWrapper<Array<Dispute>>;
   newestLastMessageAt?: FieldWrapper<Maybe<Scalars['DateTime']>>;
+  oldestLastMessageAt?: FieldWrapper<Maybe<Scalars['DateTime']>>;
 };
 
 export type PageInfo = {
@@ -798,6 +799,11 @@ export type ChatResolvers<
     ParentType,
     ContextType
   >;
+  oldestLastMessageAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1061,6 +1067,7 @@ type Chat {
   hasNextPage: Boolean!
   items: [Dispute!]!
   newestLastMessageAt: DateTime
+  oldestLastMessageAt: DateTime
 }
 
 type PageInfo {
