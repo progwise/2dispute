@@ -109,7 +109,11 @@ const ChatList = ({ selectedDisputeId }: ChatListProps): JSX.Element => {
           />
         ))}
       {data.chat.hasNextPage && !loading && (
-        <Waypoint onEnter={handleFetchMore} bottomOffset="-100px" />
+        <Waypoint
+          key={data.chat.oldestLastMessageAt ?? ''}
+          onEnter={handleFetchMore}
+          bottomOffset="-100px"
+        />
       )}
     </ul>
   );
