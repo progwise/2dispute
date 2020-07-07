@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/default
+import escapeStringRegexp from 'escape-string-regexp';
 import { QueryResolvers } from '../generated/backend';
 
 const queries: QueryResolvers = {
@@ -7,16 +9,22 @@ const queries: QueryResolvers = {
       return null;
     }
 
-    let where: object = {};
+    let beforeAfterMatch: object = {};
     let sort = '-disputes.lastMessageAt id';
     let reverse = false;
     if (args.before) {
-      where = { 'disputes.lastMessageAt': { $gt: args.before } };
+      beforeAfterMatch = { 'disputes.lastMessageAt': { $gt: args.before } };
       sort = 'disputes.lastMessageAt -id';
       reverse = true;
     } else if (args.after) {
-      where = { 'disputes.lastMessageAt': { $lt: args.after } };
+      beforeAfterMatch = { 'disputes.lastMessageAt': { $lt: args.after } };
     }
+
+    const searchMatch = args.search
+      ? {
+          subject: { $regex: new RegExp(escapeStringRegexp(args.search), 'i') },
+        }
+      : {};
 
     const unwindSubjects = await context.mongoose.models.Subject.aggregate()
       .unwind('disputes')
@@ -26,7 +34,8 @@ const queries: QueryResolvers = {
           { 'disputes.partnerIdB': userId },
         ],
       })
-      .match(where)
+      .match(beforeAfterMatch)
+      .match(searchMatch)
       .sort(sort)
       .limit(args.limit)
       .exec();
@@ -48,7 +57,7 @@ const queries: QueryResolvers = {
             { 'disputes.partnerIdB': userId },
           ],
         })
-        .match(where)
+        .match(beforeAfterMatch)
         .count('count')
         .exec();
 
