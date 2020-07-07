@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 
 export interface UserDocument extends mongoose.Document {
   email: string;
-  twitterId: number;
+  twitterId: string;
 }
 
 const UserSchema = new mongoose.Schema(

@@ -21,7 +21,7 @@ export default async (options: CreateJwtOptions): Promise<string> => {
     skip_status: true,
     include_email: true,
   });
-  const { id: twitterId, email } = verifyResponse;
+  const { id_str: twitterId, email } = verifyResponse;
 
   const user = await options.mongoose.models.User.findOneAndUpdate(
     { twitterId },
