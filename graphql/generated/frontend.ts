@@ -51,6 +51,7 @@ export type QueryChatArgs = {
   limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['DateTime']>;
   before?: Maybe<Scalars['DateTime']>;
+  search?: Maybe<Scalars['String']>;
 };
 
 export type QueryDisputeArgs = {

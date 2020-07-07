@@ -267,5 +267,83 @@ describe('query chat', () => {
         }
       `);
     });
+
+    describe('search argument', () => {
+      test('regular search', async () => {
+        await new mongoose.models.Subject(subject1).save();
+        await new mongoose.models.Subject(subject3).save();
+
+        const chatQueryWithSearch = `
+          {
+            chat(search: "TESTSUBJECT") {
+              items {
+                id
+                subject {
+                  subject
+                }
+              }
+              newestLastMessageAt
+              oldestLastMessageAt
+              hasNextPage
+            }
+          }
+        `;
+
+        const result = await request(app)
+          .post('')
+          .set('Cookie', [`token=${token}`])
+          .send({ query: chatQueryWithSearch })
+          .expect(200);
+
+        expect(result.body).toMatchInlineSnapshot(`
+          Object {
+            "data": Object {
+              "chat": Object {
+                "hasNextPage": false,
+                "items": Array [
+                  Object {
+                    "id": "a17456a1410c7fb7ed325372",
+                    "subject": Object {
+                      "subject": "testSubject",
+                    },
+                  },
+                  Object {
+                    "id": "bbaeec62fed1fe8eff4bc127",
+                    "subject": Object {
+                      "subject": "testSubject",
+                    },
+                  },
+                ],
+                "newestLastMessageAt": "2020-06-15T11:00:00.000Z",
+                "oldestLastMessageAt": "2020-06-15T10:00:00.000Z",
+              },
+            },
+          }
+        `);
+      });
+
+      test('escape regex expression', async () => {
+        await new mongoose.models.Subject(subject1).save();
+
+        const chatQueryWithSearch = `
+          {
+            chat(search: ".") {
+              items {
+                id
+              }
+            }
+          }
+        `;
+
+        const result = await request(app)
+          .post('')
+          .set('Cookie', [`token=${token}`])
+          .send({ query: chatQueryWithSearch })
+          .expect(200);
+
+        expect(result.body.errors).toBeUndefined();
+        expect(result.body.data.chat.items).toHaveLength(0);
+      });
+    });
   });
 });

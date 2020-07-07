@@ -69,6 +69,7 @@ export type QueryChatArgs = {
   limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['DateTime']>;
   before?: Maybe<Scalars['DateTime']>;
+  search?: Maybe<Scalars['String']>;
 };
 
 export type QueryDisputeArgs = {
@@ -949,7 +950,7 @@ type Query {
   allDisputes(limit: Int = 10, after: String, before: String): DisputeConnection! @complexity(value: 1, multipliers: ["limit"])
   allNotifications(limit: Int = 10, after: String, before: String): NotificationConnection
   allSubjects(limit: Int = 10, after: String, before: String, filter: SubjectFilter): SubjectConnection! @complexity(value: 1, multipliers: ["limit"])
-  chat(limit: Int = 10, after: DateTime, before: DateTime): Chat
+  chat(limit: Int = 10, after: DateTime, before: DateTime, search: String): Chat
   dispute(id: ID!): Dispute
   me: User
   notificationStatus: NotificationStatus! @auth

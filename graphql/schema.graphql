@@ -33,7 +33,7 @@ type Query {
   ): NotificationConnection
   notificationStatus: NotificationStatus! @auth
   twitterTimeline: [Tweet!]
-  chat(limit: Int = 10, after: DateTime, before: DateTime): Chat
+  chat(limit: Int = 10, after: DateTime, before: DateTime, search: String): Chat
 }
 
 type Mutation {
