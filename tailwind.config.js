@@ -4,6 +4,7 @@ const sansFontFamily = `"Open Sans", ${tailwindSansFontFamily}`;
 const textMessageFontFamily = `Muli, ${sansFontFamily}`;
 
 module.exports = {
+  purge: ['./components/**/*.{js,jsx,ts,tsx}', './pages/**/*.{js,jsx,ts,tsx}'],
   theme: {
     fontFamily: {
       sans: sansFontFamily,
