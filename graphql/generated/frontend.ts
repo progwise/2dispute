@@ -335,6 +335,7 @@ export type MessageVotesFragment = { __typename?: 'Votes' } & Pick<
 export type ChatListQueryVariables = {
   after?: Maybe<Scalars['DateTime']>;
   before?: Maybe<Scalars['DateTime']>;
+  search?: Maybe<Scalars['String']>;
 };
 
 export type ChatListQuery = { __typename?: 'Query' } & {
@@ -831,8 +832,8 @@ export type VoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
   VoteMutationVariables
 >;
 export const ChatListDocument = gql`
-  query ChatList($after: DateTime, $before: DateTime) {
-    chat(after: $after, before: $before) {
+  query ChatList($after: DateTime, $before: DateTime, $search: String) {
+    chat(after: $after, before: $before, search: $search) {
       items {
         ...ChatListItem
       }
@@ -858,6 +859,7 @@ export const ChatListDocument = gql`
  *   variables: {
  *      after: // value for 'after'
  *      before: // value for 'before'
+ *      search: // value for 'search'
  *   },
  * });
  */

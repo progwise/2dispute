@@ -7,10 +7,16 @@ import Loader from './Loader';
 
 interface ChatListProps {
   selectedDisputeId?: string;
+  search: string;
 }
 
-const ChatList = ({ selectedDisputeId }: ChatListProps): JSX.Element => {
-  const { data, loading, error, fetchMore } = useChatListQuery();
+const ChatList = ({
+  selectedDisputeId,
+  search,
+}: ChatListProps): JSX.Element => {
+  const { data, loading, error, fetchMore } = useChatListQuery({
+    variables: { search },
+  });
 
   const fetchNewerDisputes = async (): Promise<void> => {
     if (!data?.chat) {
