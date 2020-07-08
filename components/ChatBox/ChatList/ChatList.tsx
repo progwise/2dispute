@@ -3,6 +3,7 @@ import { Waypoint } from 'react-waypoint';
 import { useChatListQuery } from '../../../graphql/generated/frontend';
 import useInterval from '../../../utils/react-hooks/useInterval';
 import ChatListItem from './ChatListItem';
+import Loader from './Loader';
 
 interface ChatListProps {
   selectedDisputeId?: string;
@@ -88,7 +89,11 @@ const ChatList = ({ selectedDisputeId }: ChatListProps): JSX.Element => {
   useInterval(() => fetchNewerDisputes(), 30 * 1000);
 
   if (loading) {
-    return <p>Loading</p>;
+    return (
+      <div className="flex justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   if (error || !data?.chat) {
