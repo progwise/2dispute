@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaPen } from 'react-icons/fa';
 import Dispute from '../Dispute/Dispute';
 import { useFullPage } from '../FullPage';
 import Link from '../Link/Link';
@@ -22,7 +23,15 @@ const ChatBox = ({ selectedDisputeId }: ChatBoxProps): JSX.Element => {
           isDisputeSelected && 'hidden'
         }`}
       >
-        <SearchBox onChange={setSearch} />
+        <div className="flex">
+          <SearchBox onChange={setSearch} className="flex-grow" />
+          <Link
+            href="/subjects/create"
+            className="flex-grow-0 flex items-center"
+          >
+            <FaPen className="m-2" />
+          </Link>
+        </div>
         <div className="overflow-y-auto">
           <ChatList selectedDisputeId={selectedDisputeId} search={search} />
         </div>

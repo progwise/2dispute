@@ -3,16 +3,20 @@ import { FaSearch, FaTimesCircle } from 'react-icons/fa';
 
 interface SearchBoxProps {
   onChange: (newValue: string) => void;
+  className?: string;
 }
 
-const SearchBox = ({ onChange }: SearchBoxProps): JSX.Element => {
+const SearchBox = ({
+  onChange,
+  className = '',
+}: SearchBoxProps): JSX.Element => {
   const handleReset = (): void => onChange('');
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void =>
     onChange(event.target.value);
 
   return (
     <form
-      className="flex items-center px-2 my-2 bg-gray-200 rounded-lg text-sm text-gray-700 space-x-2"
+      className={`flex items-center px-2 my-2 bg-gray-200 rounded-lg text-sm text-gray-700 space-x-2 ${className}`}
       onReset={handleReset}
     >
       <FaSearch />
