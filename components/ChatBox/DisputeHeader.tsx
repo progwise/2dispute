@@ -17,12 +17,16 @@ const DisputeHeader = ({
     fetchPolicy: 'cache-only',
   });
 
+  const subject = data?.dispute?.subject.subject;
+
   return (
     <div className={`${className} flex items-center py-2`}>
       <Link href="/chat" className="p-2 text-xl md:hidden">
         <FaArrowLeft />
       </Link>
-      <span className="py-2">{data?.dispute?.subject.subject}</span>
+      <span className="py-2 truncate" title={subject}>
+        {subject}
+      </span>
     </div>
   );
 };
