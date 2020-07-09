@@ -20,7 +20,7 @@ const ChatListItem = ({
           isSelected ? 'bg-blue-700 text-gray-100' : 'hover:bg-gray-300'
         }`}
       >
-        <div className="flex items-end">
+        <div className="flex items-end space-x-1">
           <div className="truncate flex-grow" title={dispute.subject.subject}>
             {dispute.subject.subject}
           </div>
