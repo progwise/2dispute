@@ -23,10 +23,10 @@ module.exports = {
       },
       gridTemplateColumns: {
         selectTweet: 'min-content 1fr',
-        chatBox: 'minmax(0, 1fr) minmax(0, 2fr)',
       },
       gridTemplateRows: {
         fullPage: 'auto minmax(0, 1fr)',
+        chatBox: 'min-content 1fr',
       },
       gridRowEnd: {
         last: '100000000',

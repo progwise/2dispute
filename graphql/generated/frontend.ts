@@ -356,6 +356,18 @@ export type ChatListItemFragment = { __typename?: 'Dispute' } & Pick<
     partnerB: { __typename?: 'User' } & ChatPersonFragment;
   };
 
+export type DisputeHeaderQueryVariables = {
+  disputeId: Scalars['ID'];
+};
+
+export type DisputeHeaderQuery = { __typename?: 'Query' } & {
+  dispute?: Maybe<
+    { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
+        subject: { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject'>;
+      }
+  >;
+};
+
 export type ClearNotificationsForDisputeMutationVariables = {
   disputeId: Scalars['ID'];
 };
@@ -892,6 +904,66 @@ export type ChatListLazyQueryHookResult = ReturnType<
 export type ChatListQueryResult = ApolloReactCommon.QueryResult<
   ChatListQuery,
   ChatListQueryVariables
+>;
+export const DisputeHeaderDocument = gql`
+  query DisputeHeader($disputeId: ID!) {
+    dispute(id: $disputeId) {
+      id
+      subject {
+        id
+        subject
+      }
+    }
+  }
+`;
+
+/**
+ * __useDisputeHeaderQuery__
+ *
+ * To run a query within a React component, call `useDisputeHeaderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDisputeHeaderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDisputeHeaderQuery({
+ *   variables: {
+ *      disputeId: // value for 'disputeId'
+ *   },
+ * });
+ */
+export function useDisputeHeaderQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    DisputeHeaderQuery,
+    DisputeHeaderQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    DisputeHeaderQuery,
+    DisputeHeaderQueryVariables
+  >(DisputeHeaderDocument, baseOptions);
+}
+export function useDisputeHeaderLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    DisputeHeaderQuery,
+    DisputeHeaderQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    DisputeHeaderQuery,
+    DisputeHeaderQueryVariables
+  >(DisputeHeaderDocument, baseOptions);
+}
+export type DisputeHeaderQueryHookResult = ReturnType<
+  typeof useDisputeHeaderQuery
+>;
+export type DisputeHeaderLazyQueryHookResult = ReturnType<
+  typeof useDisputeHeaderLazyQuery
+>;
+export type DisputeHeaderQueryResult = ApolloReactCommon.QueryResult<
+  DisputeHeaderQuery,
+  DisputeHeaderQueryVariables
 >;
 export const ClearNotificationsForDisputeDocument = gql`
   mutation clearNotificationsForDispute($disputeId: ID!) {

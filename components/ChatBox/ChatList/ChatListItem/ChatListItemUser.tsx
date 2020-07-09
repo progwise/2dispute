@@ -3,9 +3,13 @@ import { ChatPersonFragment } from '../../../../graphql/generated/frontend';
 
 interface ChatListItemUserProps {
   user: ChatPersonFragment;
+  isSelected?: boolean;
 }
 
-const ChatListItemUser = ({ user }: ChatListItemUserProps): JSX.Element => (
+const ChatListItemUser = ({
+  user,
+  isSelected = false,
+}: ChatListItemUserProps): JSX.Element => (
   <div
     className="flex items-center text-xs space-x-1"
     title={`${user.name}\n@${user.twitterHandle}`}
@@ -14,7 +18,9 @@ const ChatListItemUser = ({ user }: ChatListItemUserProps): JSX.Element => (
     <span className="truncate">
       {user.name}
       <br />
-      <span className="text-blue-600">@{user.twitterHandle}</span>
+      <span className={isSelected ? '' : 'text-blue-600'}>
+        @{user.twitterHandle}
+      </span>
     </span>
   </div>
 );

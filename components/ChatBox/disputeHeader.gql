@@ -1,0 +1,9 @@
+query DisputeHeader($disputeId: ID!) {
+  dispute(id: $disputeId) {
+    id
+    subject {
+      id
+      subject
+    }
+  }
+}
