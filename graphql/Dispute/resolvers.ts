@@ -16,6 +16,7 @@ const resolvers: DisputeResolvers = {
 
     return subject;
   },
+  lastUpdateAt: parent => parent.lastMessageAt.toISOString(),
 };
 
 export default resolvers;

@@ -3,7 +3,7 @@ query StartPage {
     edges {
       node {
         id
-        lastMessageAt
+        lastUpdateAt
         partnerA {
           ...StartPageUser
         }

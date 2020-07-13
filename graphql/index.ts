@@ -22,7 +22,7 @@ import { tweetQueries } from './Tweet';
 import { newDisputeNotificationResolvers } from './Notification/NewDisputeNotification';
 import { newMessageNotificationResolvers } from './Notification/NewMessageNotification';
 import { notificationsUpdateResolvers } from './Notification/NotificationsUpdate';
-import { chatQueries } from './Chat';
+import { chatQueries, chatItemResolvers } from './Chat';
 
 const resolvers: Resolvers = {
   Query: {
@@ -48,6 +48,7 @@ const resolvers: Resolvers = {
   NewDisputeNotification: newDisputeNotificationResolvers,
   NewMessageNotification: newMessageNotificationResolvers,
   NotificationsUpdate: notificationsUpdateResolvers,
+  ChatItem: chatItemResolvers,
 };
 
 export default new ApolloServer({

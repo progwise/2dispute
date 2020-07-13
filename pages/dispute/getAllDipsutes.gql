@@ -3,7 +3,7 @@ query getAllDisputes($cursor: String) {
     edges {
       node {
         id
-        lastMessageAt
+        lastUpdateAt
         subject {
           id
           subject

@@ -5,11 +5,11 @@ import withApollo from '../../utils/withApollo';
 
 const ChatWithOpenDispute = (): JSX.Element => {
   const router = useRouter();
-  const disputeId = Array.isArray(router.query.disputeId)
-    ? router.query.disputeId[0]
-    : router.query.disputeId;
+  const chatItemId = Array.isArray(router.query.chatItemId)
+    ? router.query.chatItemId[0]
+    : router.query.chatItemId;
 
-  return <ChatBox selectedDisputeId={disputeId} />;
+  return <ChatBox selectedChatItemId={chatItemId} />;
 };
 
 export default withApollo(ChatWithOpenDispute);

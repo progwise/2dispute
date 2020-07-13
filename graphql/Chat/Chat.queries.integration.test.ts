@@ -39,8 +39,10 @@ describe('query chat', () => {
     {
       chat {
         items {
-          id
-          lastMessageAt
+          ... on Dispute {
+            id
+            lastUpdateAt
+          }
         }
         newestLastMessageAt
         oldestLastMessageAt
@@ -102,7 +104,7 @@ describe('query chat', () => {
             "items": Array [
               Object {
                 "id": "dc938ae30aab50b2e75c70e6",
-                "lastMessageAt": "2020-06-17T11:00:00.000Z",
+                "lastUpdateAt": "2020-06-17T11:00:00.000Z",
               },
             ],
             "newestLastMessageAt": "2020-06-17T11:00:00.000Z",
@@ -131,15 +133,15 @@ describe('query chat', () => {
             "items": Array [
               Object {
                 "id": "dc938ae30aab50b2e75c70e6",
-                "lastMessageAt": "2020-06-17T11:00:00.000Z",
+                "lastUpdateAt": "2020-06-17T11:00:00.000Z",
               },
               Object {
                 "id": "a17456a1410c7fb7ed325372",
-                "lastMessageAt": "2020-06-15T11:00:00.000Z",
+                "lastUpdateAt": "2020-06-15T11:00:00.000Z",
               },
               Object {
                 "id": "bbaeec62fed1fe8eff4bc127",
-                "lastMessageAt": "2020-06-15T10:00:00.000Z",
+                "lastUpdateAt": "2020-06-15T10:00:00.000Z",
               },
             ],
             "newestLastMessageAt": "2020-06-17T11:00:00.000Z",
@@ -160,7 +162,9 @@ describe('query chat', () => {
           chat(limit: 1) {
             hasNextPage
             items {
-              id
+              ... on Dispute {
+                id
+              }
             }
             newestLastMessageAt
             oldestLastMessageAt
@@ -186,8 +190,10 @@ describe('query chat', () => {
         {
           chat(before: "2020-06-15T10:00:00.000Z") {
             items {
-              id
-              lastMessageAt
+              ... on Dispute {
+                id
+                lastUpdateAt
+              }
             }
             newestLastMessageAt
             oldestLastMessageAt
@@ -210,11 +216,11 @@ describe('query chat', () => {
               "items": Array [
                 Object {
                   "id": "dc938ae30aab50b2e75c70e6",
-                  "lastMessageAt": "2020-06-17T11:00:00.000Z",
+                  "lastUpdateAt": "2020-06-17T11:00:00.000Z",
                 },
                 Object {
                   "id": "a17456a1410c7fb7ed325372",
-                  "lastMessageAt": "2020-06-15T11:00:00.000Z",
+                  "lastUpdateAt": "2020-06-15T11:00:00.000Z",
                 },
               ],
               "newestLastMessageAt": "2020-06-17T11:00:00.000Z",
@@ -233,8 +239,10 @@ describe('query chat', () => {
         {
           chat(after: "2020-06-15T11:00:00.000Z") {
             items {
-              id
-              lastMessageAt
+              ... on Dispute {
+                id
+                lastUpdateAt
+              }
             }
             newestLastMessageAt
             oldestLastMessageAt
@@ -257,7 +265,7 @@ describe('query chat', () => {
               "items": Array [
                 Object {
                   "id": "bbaeec62fed1fe8eff4bc127",
-                  "lastMessageAt": "2020-06-15T10:00:00.000Z",
+                  "lastUpdateAt": "2020-06-15T10:00:00.000Z",
                 },
               ],
               "newestLastMessageAt": "2020-06-15T10:00:00.000Z",
@@ -277,9 +285,11 @@ describe('query chat', () => {
           {
             chat(search: "TESTSUBJECT") {
               items {
-                id
-                subject {
-                  subject
+                ... on Dispute {
+                  id
+                  subject {
+                    subject
+                  }
                 }
               }
               newestLastMessageAt
@@ -329,7 +339,9 @@ describe('query chat', () => {
           {
             chat(search: ".") {
               items {
-                id
+                ... on Dispute {
+                  id
+                }
               }
             }
           }

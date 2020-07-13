@@ -6,12 +6,12 @@ import ChatListItem from './ChatListItem';
 import Loader from './Loader';
 
 interface ChatListProps {
-  selectedDisputeId?: string;
+  selectedChatItemId?: string;
   search: string;
 }
 
 const ChatList = ({
-  selectedDisputeId,
+  selectedChatItemId,
   search,
 }: ChatListProps): JSX.Element => {
   const { data, loading, error, fetchMore } = useChatListQuery({
@@ -109,14 +109,14 @@ const ChatList = ({
   return (
     <ul>
       {data.chat.items
-        .sort((disputeA, disputeB) =>
-          disputeB.lastMessageAt.localeCompare(disputeA.lastMessageAt),
+        .sort((chatItemA, chatItemB) =>
+          chatItemB.lastUpdateAt.localeCompare(chatItemA.lastUpdateAt),
         )
-        .map(dispute => (
+        .map(chatItem => (
           <ChatListItem
-            key={dispute.id}
-            dispute={dispute}
-            isSelected={dispute.id === selectedDisputeId}
+            key={chatItem.id}
+            chatItem={chatItem}
+            isSelected={chatItem.id === selectedChatItemId}
           />
         ))}
       {data.chat.hasNextPage && !loading && (

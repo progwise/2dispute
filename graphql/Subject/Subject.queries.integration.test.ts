@@ -47,6 +47,7 @@ describe('query subject', () => {
         author {
           id
         }
+        lastUpdateAt
       }
     }
   `;
@@ -96,6 +97,7 @@ describe('query subject', () => {
             },
             "hasDisputes": true,
             "id": "123456789012345678901234",
+            "lastUpdateAt": "2020-06-15T11:00:00.000Z",
             "subject": "testSubject",
           },
         },
@@ -112,6 +114,7 @@ describe('query allSubjects', () => {
       edges {
         node {
           id
+          lastUpdateAt
           hasDisputes
         }
         cursor
@@ -171,6 +174,7 @@ describe('query allSubjects', () => {
                   "node": Object {
                     "hasDisputes": false,
                     "id": "81c408836fc2e528e7ed82f3",
+                    "lastUpdateAt": "2020-06-15T11:00:00.000Z",
                   },
                 },
                 Object {
@@ -178,6 +182,7 @@ describe('query allSubjects', () => {
                   "node": Object {
                     "hasDisputes": true,
                     "id": "123456789012345678901234",
+                    "lastUpdateAt": "2020-06-15T11:00:00.000Z",
                   },
                 },
               ],

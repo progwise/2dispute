@@ -9,18 +9,20 @@ query ChatList($after: DateTime, $before: DateTime, $search: String) {
   }
 }
 
-fragment ChatListItem on Dispute {
+fragment ChatListItem on ChatItem {
   id
-  createdAt
-  lastMessageAt
-  subject {
-    id
-    subject
-  }
-  partnerA {
-    ...ChatPerson
-  }
-  partnerB {
-    ...ChatPerson
+  lastUpdateAt
+  ... on Dispute {
+    createdAt
+    subject {
+      id
+      subject
+    }
+    partnerA {
+      ...ChatPerson
+    }
+    partnerB {
+      ...ChatPerson
+    }
   }
 }
