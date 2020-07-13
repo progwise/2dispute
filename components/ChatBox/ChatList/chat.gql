@@ -3,8 +3,8 @@ query ChatList($after: DateTime, $before: DateTime, $search: String) {
     items {
       ...ChatListItem
     }
-    newestLastMessageAt
-    oldestLastMessageAt
+    newestLastUpdateAt
+    oldestLastUpdateAt
     hasNextPage
   }
 }

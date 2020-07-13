@@ -24,7 +24,7 @@ const ChatList = ({
     }
 
     await fetchMore({
-      variables: { before: data.chat.newestLastMessageAt },
+      variables: { before: data.chat.newestLastUpdateAt },
       updateQuery: (prevResult, { fetchMoreResult }) => {
         if (!prevResult.chat) {
           return {
@@ -50,9 +50,9 @@ const ChatList = ({
           ...prevResult,
           chat: {
             ...prevResult.chat,
-            newestLastMessageAt:
-              fetchMoreResult.chat.newestLastMessageAt ??
-              prevResult.chat.newestLastMessageAt,
+            newestLastUpdateAt:
+              fetchMoreResult.chat.newestLastUpdateAt ??
+              prevResult.chat.newestLastUpdateAt,
             hasNextPage: fetchMoreResult.chat.hasNextPage,
             items: newItems,
           },
@@ -67,7 +67,7 @@ const ChatList = ({
     }
 
     await fetchMore({
-      variables: { after: data.chat.oldestLastMessageAt },
+      variables: { after: data.chat.oldestLastUpdateAt },
       updateQuery: (prevResult, { fetchMoreResult }) => {
         if (!prevResult.chat) {
           return {
@@ -85,7 +85,7 @@ const ChatList = ({
           chat: {
             ...prevResult.chat,
             items: [...prevResult.chat.items, ...fetchMoreResult.chat.items],
-            oldestLastMessageAt: fetchMoreResult.chat.oldestLastMessageAt,
+            oldestLastUpdateAt: fetchMoreResult.chat.oldestLastUpdateAt,
           },
         };
       },
@@ -121,7 +121,7 @@ const ChatList = ({
         ))}
       {data.chat.hasNextPage && !loading && (
         <Waypoint
-          key={data.chat.oldestLastMessageAt ?? ''}
+          key={data.chat.oldestLastUpdateAt ?? ''}
           onEnter={handleFetchMore}
           bottomOffset="-100px"
         />
