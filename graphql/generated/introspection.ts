@@ -14,13 +14,25 @@ const result: IntrospectionResultData = {
     types: [
       {
         kind: 'INTERFACE',
+        name: 'ChatItem',
+        possibleTypes: [
+          {
+            name: 'Subject',
+          },
+          {
+            name: 'Dispute',
+          },
+        ],
+      },
+      {
+        kind: 'INTERFACE',
         name: 'Notification',
         possibleTypes: [
           {
-            name: 'NewMessageNotification',
+            name: 'NewDisputeNotification',
           },
           {
-            name: 'NewDisputeNotification',
+            name: 'NewMessageNotification',
           },
         ],
       },

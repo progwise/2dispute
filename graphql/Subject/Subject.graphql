@@ -2,8 +2,9 @@
 # import Dispute from '../Dispute/Dispute.graphql'
 # import Message from '../Message/Message.graphql'
 # import PageInfo from '../PageInfo/PageInfo.graphql'
+# import ChatItem from '../Chat/Chat.graphql'
 
-type Subject {
+type Subject implements ChatItem {
   id: ID!
   subject: String!
   tweetId: String
@@ -12,6 +13,7 @@ type Subject {
   firstMessage: Message!
   createdAt: DateTime!
   hasDisputes: Boolean!
+  lastUpdateAt: DateTime!
 }
 
 input SubjectCreateInput {

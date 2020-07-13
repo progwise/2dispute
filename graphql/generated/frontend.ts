@@ -106,7 +106,7 @@ export type MutationVoteArgs = {
   voting: UserVoting;
 };
 
-export type Subject = {
+export type Subject = ChatItem & {
   __typename?: 'Subject';
   author: User;
   createdAt: Scalars['DateTime'];
@@ -114,6 +114,7 @@ export type Subject = {
   firstMessage: Message;
   hasDisputes: Scalars['Boolean'];
   id: Scalars['ID'];
+  lastUpdateAt: Scalars['DateTime'];
   subject: Scalars['String'];
   tweetId?: Maybe<Scalars['String']>;
 };
@@ -139,11 +140,11 @@ export type SubjectFilter = {
   hasDisputes?: Maybe<Scalars['Boolean']>;
 };
 
-export type Dispute = {
+export type Dispute = ChatItem & {
   __typename?: 'Dispute';
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
-  lastMessageAt: Scalars['DateTime'];
+  lastUpdateAt: Scalars['DateTime'];
   messages: Array<Message>;
   partnerA: User;
   partnerB: User;
@@ -226,7 +227,7 @@ export type Tweet = {
 export type Chat = {
   __typename?: 'Chat';
   hasNextPage: Scalars['Boolean'];
-  items: Array<Dispute>;
+  items: Array<ChatItem>;
   newestLastMessageAt?: Maybe<Scalars['DateTime']>;
   oldestLastMessageAt?: Maybe<Scalars['DateTime']>;
 };
@@ -237,6 +238,11 @@ export type PageInfo = {
   hasNextPage: Scalars['Boolean'];
   hasPreviousPage: Scalars['Boolean'];
   startCursor: Scalars['String'];
+};
+
+export type ChatItem = {
+  id: Scalars['ID'];
+  lastUpdateAt: Scalars['DateTime'];
 };
 
 export type Notification = {
@@ -270,20 +276,20 @@ export type Votes = {
   userVoting: UserVoting;
 };
 
-export type NewMessageNotification = Notification & {
-  __typename?: 'NewMessageNotification';
-  id: Scalars['ID'];
-  read: Scalars['Boolean'];
-  createdAt: Scalars['DateTime'];
-  message: Message;
-};
-
 export type NewDisputeNotification = Notification & {
   __typename?: 'NewDisputeNotification';
   id: Scalars['ID'];
   read: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
   dispute: Dispute;
+};
+
+export type NewMessageNotification = Notification & {
+  __typename?: 'NewMessageNotification';
+  id: Scalars['ID'];
+  read: Scalars['Boolean'];
+  createdAt: Scalars['DateTime'];
+  message: Message;
 };
 
 export type VoteMutationVariables = {
@@ -343,18 +349,32 @@ export type ChatListQuery = { __typename?: 'Query' } & {
     { __typename?: 'Chat' } & Pick<
       Chat,
       'newestLastMessageAt' | 'oldestLastMessageAt' | 'hasNextPage'
-    > & { items: Array<{ __typename?: 'Dispute' } & ChatListItemFragment> }
+    > & {
+        items: Array<
+          | ({ __typename?: 'Subject' } & ChatListItem_Subject_Fragment)
+          | ({ __typename?: 'Dispute' } & ChatListItem_Dispute_Fragment)
+        >;
+      }
   >;
 };
 
-export type ChatListItemFragment = { __typename?: 'Dispute' } & Pick<
+type ChatListItem_Subject_Fragment = { __typename?: 'Subject' } & Pick<
+  Subject,
+  'id' | 'lastUpdateAt'
+>;
+
+type ChatListItem_Dispute_Fragment = { __typename?: 'Dispute' } & Pick<
   Dispute,
-  'id' | 'createdAt' | 'lastMessageAt'
+  'createdAt' | 'id' | 'lastUpdateAt'
 > & {
     subject: { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject'>;
     partnerA: { __typename?: 'User' } & ChatPersonFragment;
     partnerB: { __typename?: 'User' } & ChatPersonFragment;
   };
+
+export type ChatListItemFragment =
+  | ChatListItem_Subject_Fragment
+  | ChatListItem_Dispute_Fragment;
 
 export type DisputeHeaderQueryVariables = {
   disputeId: Scalars['ID'];
@@ -377,12 +397,12 @@ export type ClearNotificationsForDisputeMutation = {
 } & {
   markNotificationsAsReadForDispute: { __typename?: 'NotificationsUpdate' } & {
     updatedNotification: Array<
-      | ({ __typename?: 'NewMessageNotification' } & Pick<
-          NewMessageNotification,
-          'id' | 'read'
-        >)
       | ({ __typename?: 'NewDisputeNotification' } & Pick<
           NewDisputeNotification,
+          'id' | 'read'
+        >)
+      | ({ __typename?: 'NewMessageNotification' } & Pick<
+          NewMessageNotification,
           'id' | 'read'
         >)
     >;
@@ -424,7 +444,7 @@ export type ReplyOnDisputeMutationVariables = {
 export type ReplyOnDisputeMutation = { __typename?: 'Mutation' } & {
   replyOnDispute: { __typename?: 'Dispute' } & Pick<
     Dispute,
-    'id' | 'lastMessageAt'
+    'id' | 'lastUpdateAt'
   > & {
       messages: Array<
         { __typename?: 'Message' } & Pick<Message, 'id' | 'text'> & {
@@ -456,6 +476,17 @@ export type NotificationListQuery = { __typename?: 'Query' } & {
         edges: Array<
           { __typename?: 'NotificationEdge' } & {
             node:
+              | ({ __typename: 'NewDisputeNotification' } & Pick<
+                  NewDisputeNotification,
+                  'id' | 'createdAt' | 'read'
+                > & {
+                    dispute: { __typename?: 'Dispute' } & Pick<
+                      Dispute,
+                      'id'
+                    > & {
+                        partnerB: { __typename?: 'User' } & ChatPersonFragment;
+                      };
+                  })
               | ({ __typename: 'NewMessageNotification' } & Pick<
                   NewMessageNotification,
                   'id' | 'createdAt' | 'read'
@@ -469,17 +500,6 @@ export type NotificationListQuery = { __typename?: 'Query' } & {
                           Dispute,
                           'id'
                         >;
-                      };
-                  })
-              | ({ __typename: 'NewDisputeNotification' } & Pick<
-                  NewDisputeNotification,
-                  'id' | 'createdAt' | 'read'
-                > & {
-                    dispute: { __typename?: 'Dispute' } & Pick<
-                      Dispute,
-                      'id'
-                    > & {
-                        partnerB: { __typename?: 'User' } & ChatPersonFragment;
                       };
                   });
           }
@@ -553,7 +573,7 @@ export type GetAllDisputesQuery = { __typename?: 'Query' } & {
       { __typename?: 'DisputeEdge' } & {
         node: { __typename?: 'Dispute' } & Pick<
           Dispute,
-          'id' | 'lastMessageAt'
+          'id' | 'lastUpdateAt'
         > & {
             subject: { __typename?: 'Subject' } & Pick<
               Subject,
@@ -579,7 +599,7 @@ export type StartPageQuery = { __typename?: 'Query' } & {
       { __typename?: 'DisputeEdge' } & {
         node: { __typename?: 'Dispute' } & Pick<
           Dispute,
-          'id' | 'lastMessageAt'
+          'id' | 'lastUpdateAt'
         > & {
             partnerA: { __typename?: 'User' } & StartPageUserFragment;
             partnerB: { __typename?: 'User' } & StartPageUserFragment;
@@ -739,19 +759,21 @@ export const ChatDisputeFragmentDoc = gql`
   ${ChatMessageFragmentDoc}
 `;
 export const ChatListItemFragmentDoc = gql`
-  fragment ChatListItem on Dispute {
+  fragment ChatListItem on ChatItem {
     id
-    createdAt
-    lastMessageAt
-    subject {
-      id
-      subject
-    }
-    partnerA {
-      ...ChatPerson
-    }
-    partnerB {
-      ...ChatPerson
+    lastUpdateAt
+    ... on Dispute {
+      createdAt
+      subject {
+        id
+        subject
+      }
+      partnerA {
+        ...ChatPerson
+      }
+      partnerB {
+        ...ChatPerson
+      }
     }
   }
   ${ChatPersonFragmentDoc}
@@ -1104,7 +1126,7 @@ export const ReplyOnDisputeDocument = gql`
         }
         text
       }
-      lastMessageAt
+      lastUpdateAt
     }
   }
 `;
@@ -1468,7 +1490,7 @@ export const GetAllDisputesDocument = gql`
       edges {
         node {
           id
-          lastMessageAt
+          lastUpdateAt
           subject {
             id
             subject
@@ -1545,7 +1567,7 @@ export const StartPageDocument = gql`
       edges {
         node {
           id
-          lastMessageAt
+          lastUpdateAt
           partnerA {
             ...StartPageUser
           }

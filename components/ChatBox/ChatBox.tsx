@@ -6,14 +6,14 @@ import DisputeHeader from './DisputeHeader';
 import SearchAndCreateSubjectBox from './SearchAndCreateSubjectBox';
 
 interface ChatBoxProps {
-  selectedDisputeId?: string;
+  selectedChatItemId?: string;
 }
 
-const ChatBox = ({ selectedDisputeId }: ChatBoxProps): JSX.Element => {
+const ChatBox = ({ selectedChatItemId }: ChatBoxProps): JSX.Element => {
   const [search, setSearch] = useState('');
   useFullPage();
 
-  const isDisputeSelected = selectedDisputeId !== undefined;
+  const isDisputeSelected = selectedChatItemId !== undefined;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-chatBox h-full text-gray-900">
@@ -24,9 +24,9 @@ const ChatBox = ({ selectedDisputeId }: ChatBoxProps): JSX.Element => {
         } md:flex`}
       />
 
-      {selectedDisputeId !== undefined && (
+      {selectedChatItemId !== undefined && (
         <DisputeHeader
-          disputeId={selectedDisputeId}
+          disputeId={selectedChatItemId}
           className="md:col-span-2 border-b px-4"
         />
       )}
@@ -35,11 +35,11 @@ const ChatBox = ({ selectedDisputeId }: ChatBoxProps): JSX.Element => {
           isDisputeSelected && 'hidden'
         } md:block`}
       >
-        <ChatList selectedDisputeId={selectedDisputeId} search={search} />
+        <ChatList selectedChatItemId={selectedChatItemId} search={search} />
       </div>
-      {selectedDisputeId && (
+      {selectedChatItemId && (
         <div className="md:col-span-2 overflow-y-auto px-4">
-          <Dispute disputeId={selectedDisputeId} />
+          <Dispute disputeId={selectedChatItemId} />
         </div>
       )}
     </div>

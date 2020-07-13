@@ -1,7 +1,10 @@
-# import Dispute from '../Dispute/Dispute.graphql'
+interface ChatItem {
+  id: ID!
+  lastUpdateAt: DateTime!
+}
 
 type Chat {
-  items: [Dispute!]!
+  items: [ChatItem!]!
   newestLastMessageAt: DateTime
   oldestLastMessageAt: DateTime
   hasNextPage: Boolean!

@@ -1,14 +1,15 @@
 # import Message from '../Message/Message.graphql'
 # import PageInfo from '../PageInfo/PageInfo.graphql'
+# import ChatItem from '../Chat/Chat.graphql'
 
-type Dispute {
+type Dispute implements ChatItem {
   id: ID!
   subject: Subject!
   partnerA: User!
   partnerB: User!
   messages: [Message!]!
   createdAt: DateTime!
-  lastMessageAt: DateTime!
+  lastUpdateAt: DateTime!
 }
 
 type DisputeConnection {
