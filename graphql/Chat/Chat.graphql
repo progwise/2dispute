@@ -5,7 +5,7 @@ interface ChatItem {
 
 type Chat {
   items: [ChatItem!]!
-  newestLastMessageAt: DateTime
-  oldestLastMessageAt: DateTime
+  newestLastUpdateAt: DateTime
+  oldestLastUpdateAt: DateTime
   hasNextPage: Boolean!
 }

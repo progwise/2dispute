@@ -228,8 +228,8 @@ export type Chat = {
   __typename?: 'Chat';
   hasNextPage: Scalars['Boolean'];
   items: Array<ChatItem>;
-  newestLastMessageAt?: Maybe<Scalars['DateTime']>;
-  oldestLastMessageAt?: Maybe<Scalars['DateTime']>;
+  newestLastUpdateAt?: Maybe<Scalars['DateTime']>;
+  oldestLastUpdateAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type PageInfo = {
@@ -348,7 +348,7 @@ export type ChatListQuery = { __typename?: 'Query' } & {
   chat?: Maybe<
     { __typename?: 'Chat' } & Pick<
       Chat,
-      'newestLastMessageAt' | 'oldestLastMessageAt' | 'hasNextPage'
+      'newestLastUpdateAt' | 'oldestLastUpdateAt' | 'hasNextPage'
     > & {
         items: Array<
           | ({ __typename?: 'Subject' } & ChatListItem_Subject_Fragment)
@@ -871,8 +871,8 @@ export const ChatListDocument = gql`
       items {
         ...ChatListItem
       }
-      newestLastMessageAt
-      oldestLastMessageAt
+      newestLastUpdateAt
+      oldestLastUpdateAt
       hasNextPage
     }
   }

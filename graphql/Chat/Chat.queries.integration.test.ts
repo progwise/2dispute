@@ -44,8 +44,8 @@ describe('query chat', () => {
             lastUpdateAt
           }
         }
-        newestLastMessageAt
-        oldestLastMessageAt
+        newestLastUpdateAt
+        oldestLastUpdateAt
         hasNextPage
       }
     }
@@ -79,8 +79,8 @@ describe('query chat', () => {
           "chat": Object {
             "hasNextPage": false,
             "items": Array [],
-            "newestLastMessageAt": null,
-            "oldestLastMessageAt": null,
+            "newestLastUpdateAt": null,
+            "oldestLastUpdateAt": null,
           },
         },
       }
@@ -107,8 +107,8 @@ describe('query chat', () => {
                 "lastUpdateAt": "2020-06-17T11:00:00.000Z",
               },
             ],
-            "newestLastMessageAt": "2020-06-17T11:00:00.000Z",
-            "oldestLastMessageAt": "2020-06-17T11:00:00.000Z",
+            "newestLastUpdateAt": "2020-06-17T11:00:00.000Z",
+            "oldestLastUpdateAt": "2020-06-17T11:00:00.000Z",
           },
         },
       }
@@ -144,8 +144,8 @@ describe('query chat', () => {
                 "lastUpdateAt": "2020-06-15T10:00:00.000Z",
               },
             ],
-            "newestLastMessageAt": "2020-06-17T11:00:00.000Z",
-            "oldestLastMessageAt": "2020-06-15T10:00:00.000Z",
+            "newestLastUpdateAt": "2020-06-17T11:00:00.000Z",
+            "oldestLastUpdateAt": "2020-06-15T10:00:00.000Z",
           },
         },
       }
@@ -166,8 +166,8 @@ describe('query chat', () => {
                 id
               }
             }
-            newestLastMessageAt
-            oldestLastMessageAt
+            newestLastUpdateAt
+            oldestLastUpdateAt
           }
         }
       `;
@@ -195,8 +195,8 @@ describe('query chat', () => {
                 lastUpdateAt
               }
             }
-            newestLastMessageAt
-            oldestLastMessageAt
+            newestLastUpdateAt
+            oldestLastUpdateAt
             hasNextPage
           }
         }
@@ -223,8 +223,8 @@ describe('query chat', () => {
                   "lastUpdateAt": "2020-06-15T11:00:00.000Z",
                 },
               ],
-              "newestLastMessageAt": "2020-06-17T11:00:00.000Z",
-              "oldestLastMessageAt": "2020-06-15T11:00:00.000Z",
+              "newestLastUpdateAt": "2020-06-17T11:00:00.000Z",
+              "oldestLastUpdateAt": "2020-06-15T11:00:00.000Z",
             },
           },
         }
@@ -244,8 +244,8 @@ describe('query chat', () => {
                 lastUpdateAt
               }
             }
-            newestLastMessageAt
-            oldestLastMessageAt
+            newestLastUpdateAt
+            oldestLastUpdateAt
             hasNextPage
           }
         }
@@ -268,8 +268,8 @@ describe('query chat', () => {
                   "lastUpdateAt": "2020-06-15T10:00:00.000Z",
                 },
               ],
-              "newestLastMessageAt": "2020-06-15T10:00:00.000Z",
-              "oldestLastMessageAt": "2020-06-15T10:00:00.000Z",
+              "newestLastUpdateAt": "2020-06-15T10:00:00.000Z",
+              "oldestLastUpdateAt": "2020-06-15T10:00:00.000Z",
             },
           },
         }
@@ -292,8 +292,8 @@ describe('query chat', () => {
                   }
                 }
               }
-              newestLastMessageAt
-              oldestLastMessageAt
+              newestLastUpdateAt
+              oldestLastUpdateAt
               hasNextPage
             }
           }
@@ -324,8 +324,8 @@ describe('query chat', () => {
                     },
                   },
                 ],
-                "newestLastMessageAt": "2020-06-15T11:00:00.000Z",
-                "oldestLastMessageAt": "2020-06-15T10:00:00.000Z",
+                "newestLastUpdateAt": "2020-06-15T11:00:00.000Z",
+                "oldestLastUpdateAt": "2020-06-15T10:00:00.000Z",
               },
             },
           }

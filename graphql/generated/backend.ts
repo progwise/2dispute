@@ -246,8 +246,8 @@ export type Chat = {
   __typename?: 'Chat';
   hasNextPage: FieldWrapper<Scalars['Boolean']>;
   items: FieldWrapper<Array<ChatItem>>;
-  newestLastMessageAt?: FieldWrapper<Maybe<Scalars['DateTime']>>;
-  oldestLastMessageAt?: FieldWrapper<Maybe<Scalars['DateTime']>>;
+  newestLastUpdateAt?: FieldWrapper<Maybe<Scalars['DateTime']>>;
+  oldestLastUpdateAt?: FieldWrapper<Maybe<Scalars['DateTime']>>;
 };
 
 export type PageInfo = {
@@ -802,12 +802,12 @@ export type ChatResolvers<
 > = ResolversObject<{
   hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   items?: Resolver<Array<ResolversTypes['ChatItem']>, ParentType, ContextType>;
-  newestLastMessageAt?: Resolver<
+  newestLastUpdateAt?: Resolver<
     Maybe<ResolversTypes['DateTime']>,
     ParentType,
     ContextType
   >;
-  oldestLastMessageAt?: Resolver<
+  oldestLastUpdateAt?: Resolver<
     Maybe<ResolversTypes['DateTime']>,
     ParentType,
     ContextType
@@ -1085,8 +1085,8 @@ type Tweet {
 type Chat {
   hasNextPage: Boolean!
   items: [ChatItem!]!
-  newestLastMessageAt: DateTime
-  oldestLastMessageAt: DateTime
+  newestLastUpdateAt: DateTime
+  oldestLastUpdateAt: DateTime
 }
 
 type PageInfo {

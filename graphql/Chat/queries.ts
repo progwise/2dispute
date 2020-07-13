@@ -41,9 +41,8 @@ const queries: QueryResolvers = {
       .exec();
     const disputes = unwindSubjects.map(subject => subject.disputes);
     const items = reverse ? disputes.reverse() : disputes;
-    const newestLastMessageAt =
-      items.length > 0 ? items[0].lastMessageAt : null;
-    const oldestLastMessageAt =
+    const newestLastUpdateAt = items.length > 0 ? items[0].lastMessageAt : null;
+    const oldestLastUpdateAt =
       items.length > 0 ? items[items.length - 1].lastMessageAt : null;
 
     const hasNextPage = async (): Promise<boolean> => {
@@ -64,7 +63,7 @@ const queries: QueryResolvers = {
       return (result[0]?.count ?? 0) > args.limit;
     };
 
-    return { items, newestLastMessageAt, oldestLastMessageAt, hasNextPage };
+    return { items, newestLastUpdateAt, oldestLastUpdateAt, hasNextPage };
   },
 };
 
