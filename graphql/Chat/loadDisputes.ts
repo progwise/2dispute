@@ -2,6 +2,7 @@
 import escapeStringRegexp from 'escape-string-regexp';
 import { Context } from '../context';
 import { DisputeDocument } from '../Dispute/DisputeSchema';
+import { ChatScope } from '../generated/backend';
 
 const loadDisputes = async (
   args: {
@@ -9,6 +10,7 @@ const loadDisputes = async (
     after?: string | null;
     search?: string | null;
     limit: number;
+    scope: ChatScope;
   },
   context: Context,
 ): Promise<{
@@ -28,9 +30,15 @@ const loadDisputes = async (
     beforeAfterMatch = { 'disputes.lastMessageAt': { $lt: args.after } };
   }
 
-  const userMatch = {
-    $or: [{ 'disputes.partnerIdA': userId }, { 'disputes.partnerIdB': userId }],
-  };
+  const userMatch =
+    args.scope === ChatScope.UserScope
+      ? {
+          $or: [
+            { 'disputes.partnerIdA': userId },
+            { 'disputes.partnerIdB': userId },
+          ],
+        }
+      : {};
   const searchMatch = args.search
     ? {
         subject: { $regex: new RegExp(escapeStringRegexp(args.search), 'i') },

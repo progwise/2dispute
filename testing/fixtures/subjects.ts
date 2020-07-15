@@ -71,3 +71,21 @@ export const subject3 = {
   ],
   createdAt: new Date('2020-06-17T11:00:00.000Z'),
 };
+
+export const subject4 = {
+  _id: '4ee55ac0d26d7b37c0b08284',
+  subject: 'Subject 3',
+  userId: '2',
+  firstMessage: 'First Message',
+  disputes: [
+    {
+      _id: mongoose.Types.ObjectId('5590801ae7b5bc7f82f3754d'),
+      createdAt: new Date('2020-06-18T11:00:00.000Z'),
+      lastMessageAt: new Date('2020-06-18T11:00:00.000Z'),
+      partnerIdA: '2',
+      partnerIdB: '3',
+      messages: [],
+    } as DisputeDocument,
+  ],
+  createdAt: new Date('2020-06-18T11:00:00.000Z'),
+};
