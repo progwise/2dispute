@@ -1,4 +1,3 @@
-import max from 'date-fns/max';
 import { SubjectResolvers } from '../generated/backend';
 import { DisputeDocument } from '../Dispute/DisputeSchema';
 
