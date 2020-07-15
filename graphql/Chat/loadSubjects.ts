@@ -2,6 +2,7 @@
 import escapeStringRegexp from 'escape-string-regexp';
 import { Context } from '../context';
 import { SubjectDocument } from '../Subject/SubjectSchema';
+import { ChatScope } from '../generated/backend';
 
 const loadSubjects = async (
   args: {
@@ -9,6 +10,7 @@ const loadSubjects = async (
     after?: string | null;
     search?: string | null;
     limit: number;
+    scope: ChatScope;
   },
   context: Context,
 ): Promise<{
@@ -31,7 +33,8 @@ const loadSubjects = async (
         subject: { $regex: new RegExp(escapeStringRegexp(args.search), 'i') },
       }
     : {};
-  const userWhere = { userId: context.user?.id };
+  const userWhere =
+    args.scope === ChatScope.UserScope ? { userId: context.user?.id } : {};
 
   const subjects = await context.mongoose.models.Subject.find()
     .where(userWhere)

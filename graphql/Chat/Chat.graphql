@@ -9,3 +9,8 @@ type Chat {
   oldestLastUpdateAt: DateTime
   hasNextPage: Boolean!
 }
+
+enum ChatScope {
+  ALL
+  USER_SCOPE
+}
