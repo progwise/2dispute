@@ -1,0 +1,10 @@
+query ChatItem($id: ID!) {
+  chatItem(id: $id) {
+    id
+    ...Dispute
+    ...Subject
+  }
+  me {
+    ...ChatPerson
+  }
+}

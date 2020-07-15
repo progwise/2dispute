@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Dispute from '../Dispute/Dispute';
 import { useFullPage } from '../FullPage';
 import ChatList from './ChatList';
-import DisputeHeader from './DisputeHeader';
+import ChatItemHeader from './ChatItemHeader';
 import SearchAndCreateSubjectBox from './SearchAndCreateSubjectBox';
+import ChatItem from './ChatItem';
 
 interface ChatBoxProps {
   selectedChatItemId?: string;
@@ -25,8 +25,8 @@ const ChatBox = ({ selectedChatItemId }: ChatBoxProps): JSX.Element => {
       />
 
       {selectedChatItemId !== undefined && (
-        <DisputeHeader
-          disputeId={selectedChatItemId}
+        <ChatItemHeader
+          chatItemId={selectedChatItemId}
           className="md:col-span-2 border-b px-4"
         />
       )}
@@ -39,7 +39,7 @@ const ChatBox = ({ selectedChatItemId }: ChatBoxProps): JSX.Element => {
       </div>
       {selectedChatItemId && (
         <div className="md:col-span-2 overflow-y-auto px-4">
-          <Dispute disputeId={selectedChatItemId} />
+          <ChatItem chatItemId={selectedChatItemId} />
         </div>
       )}
     </div>
