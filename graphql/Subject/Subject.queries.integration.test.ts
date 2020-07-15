@@ -97,7 +97,7 @@ describe('query subject', () => {
             },
             "hasDisputes": true,
             "id": "123456789012345678901234",
-            "lastUpdateAt": "2020-06-15T11:00:00.000Z",
+            "lastUpdateAt": "2020-06-15T10:00:00.000Z",
             "subject": "testSubject",
           },
         },
@@ -182,7 +182,7 @@ describe('query allSubjects', () => {
                   "node": Object {
                     "hasDisputes": true,
                     "id": "123456789012345678901234",
-                    "lastUpdateAt": "2020-06-15T11:00:00.000Z",
+                    "lastUpdateAt": "2020-06-15T10:00:00.000Z",
                   },
                 },
               ],

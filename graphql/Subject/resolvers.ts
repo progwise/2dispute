@@ -22,11 +22,7 @@ const subjectResolvers: SubjectResolvers = {
   }),
   disputes: parent => parent.disputes.sort(compareDisputesByLastMessageAt),
   hasDisputes: parent => parent.disputes.length > 0,
-  lastUpdateAt: parent => {
-    const lastMessageAtFromDisputes = parent.disputes.map(d => d.lastMessageAt);
-    const allUpdateDates = [parent.createdAt, ...lastMessageAtFromDisputes];
-    return max(allUpdateDates).toISOString();
-  },
+  lastUpdateAt: parent => parent.createdAt.toISOString(),
 };
 
 export default subjectResolvers;
