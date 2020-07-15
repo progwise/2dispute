@@ -25,4 +25,10 @@ fragment ChatListItem on ChatItem {
       ...ChatPerson
     }
   }
+  ... on Subject {
+    author {
+      ...ChatPerson
+    }
+    subjectTitle: subject
+  }
 }

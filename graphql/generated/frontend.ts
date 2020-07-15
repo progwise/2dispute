@@ -361,7 +361,9 @@ export type ChatListQuery = { __typename?: 'Query' } & {
 type ChatListItem_Subject_Fragment = { __typename?: 'Subject' } & Pick<
   Subject,
   'id' | 'lastUpdateAt'
->;
+> & { subjectTitle: Subject['subject'] } & {
+    author: { __typename?: 'User' } & ChatPersonFragment;
+  };
 
 type ChatListItem_Dispute_Fragment = { __typename?: 'Dispute' } & Pick<
   Dispute,
@@ -774,6 +776,12 @@ export const ChatListItemFragmentDoc = gql`
       partnerB {
         ...ChatPerson
       }
+    }
+    ... on Subject {
+      author {
+        ...ChatPerson
+      }
+      subjectTitle: subject
     }
   }
   ${ChatPersonFragmentDoc}
