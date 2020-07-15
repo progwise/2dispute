@@ -1,69 +1,59 @@
-// eslint-disable-next-line import/default
-import escapeStringRegexp from 'escape-string-regexp';
-import { QueryResolvers } from '../generated/backend';
+import { QueryResolvers, ChatItem } from '../generated/backend';
+import loadDisputes from './loadDisputes';
+import loadSubjects from './loadSubjects';
 
 const queries: QueryResolvers = {
   chat: async (parent, args, context) => {
-    const userId = context.user?.id;
-    if (!userId) {
+    if (!context.user) {
       return null;
     }
 
-    let beforeAfterMatch: object = {};
-    let sort = '-disputes.lastMessageAt id';
-    let reverse = false;
-    if (args.before) {
-      beforeAfterMatch = { 'disputes.lastMessageAt': { $gt: args.before } };
-      sort = 'disputes.lastMessageAt -id';
-      reverse = true;
-    } else if (args.after) {
-      beforeAfterMatch = { 'disputes.lastMessageAt': { $lt: args.after } };
-    }
+    const [resultDisputes, resultSubjects] = await Promise.all([
+      loadDisputes(args, context),
+      loadSubjects(args, context),
+    ]);
 
-    const searchMatch = args.search
-      ? {
-          subject: { $regex: new RegExp(escapeStringRegexp(args.search), 'i') },
-        }
-      : {};
+    const disputeItems = resultDisputes.items.map(dispute => ({
+      updateAt: dispute.lastMessageAt,
+      value: dispute,
+    }));
+    const subjectItems = resultSubjects.items.map(subject => ({
+      updateAt: subject.createdAt,
+      value: subject,
+    }));
 
-    const unwindSubjects = await context.mongoose.models.Subject.aggregate()
-      .unwind('disputes')
-      .match({
-        $or: [
-          { 'disputes.partnerIdA': userId },
-          { 'disputes.partnerIdB': userId },
-        ],
-      })
-      .match(beforeAfterMatch)
-      .match(searchMatch)
-      .sort(sort)
-      .limit(args.limit)
-      .exec();
-    const disputes = unwindSubjects.map(subject => subject.disputes);
-    const items = reverse ? disputes.reverse() : disputes;
-    const newestLastUpdateAt = items.length > 0 ? items[0].lastMessageAt : null;
-    const oldestLastUpdateAt =
-      items.length > 0 ? items[items.length - 1].lastMessageAt : null;
+    const allLoadedItems = [...disputeItems, ...subjectItems].sort(
+      (itemA, itemB) => itemB.updateAt.getTime() - itemA.updateAt.getTime(),
+    );
+
+    const getNewestElement = !!args.before || !args.after;
+    const items = getNewestElement
+      ? allLoadedItems.slice(0, args.limit) // first nth elements
+      : allLoadedItems.slice(-args.limit); // last nth elements
 
     const hasNextPage = async (): Promise<boolean> => {
-      const result: [
-        { count: number } | undefined,
-      ] = await context.mongoose.models.Subject.aggregate()
-        .unwind('disputes')
-        .match({
-          $or: [
-            { 'disputes.partnerIdA': userId },
-            { 'disputes.partnerIdB': userId },
-          ],
-        })
-        .match(beforeAfterMatch)
-        .count('count')
-        .exec();
+      const loadedMoreItemsThanNecessary = allLoadedItems.length > args.limit;
+      if (loadedMoreItemsThanNecessary) {
+        return true;
+      }
 
-      return (result[0]?.count ?? 0) > args.limit;
+      const hasNextPages = await Promise.all([
+        resultDisputes.hasNextPage(),
+        resultSubjects.hasNextPage(),
+      ]);
+      return hasNextPages.includes(true);
     };
 
-    return { items, newestLastUpdateAt, oldestLastUpdateAt, hasNextPage };
+    return {
+      items: (items.map(item => item.value) as unknown) as ChatItem[],
+      newestLastUpdateAt:
+        items.length > 0 ? items[0].updateAt.toISOString() : null,
+      oldestLastUpdateAt:
+        items.length > 0
+          ? items[items.length - 1].updateAt.toISOString()
+          : null,
+      hasNextPage,
+    };
   },
 };
 

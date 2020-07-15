@@ -39,10 +39,9 @@ describe('query chat', () => {
     {
       chat {
         items {
-          ... on Dispute {
-            id
-            lastUpdateAt
-          }
+          id
+          lastUpdateAt
+          __typename
         }
         newestLastUpdateAt
         oldestLastUpdateAt
@@ -87,7 +86,7 @@ describe('query chat', () => {
     `);
   });
 
-  test('returns one dispute when user does only participate in that dispute', async () => {
+  test('returns one dispute and one subject when user does only participate in that dispute', async () => {
     await new mongoose.models.Subject(subject3).save();
 
     const result = await request(app)
@@ -103,7 +102,13 @@ describe('query chat', () => {
             "hasNextPage": false,
             "items": Array [
               Object {
+                "__typename": "Dispute",
                 "id": "dc938ae30aab50b2e75c70e6",
+                "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+              },
+              Object {
+                "__typename": "Subject",
+                "id": "5021abebf3312244c2aeb762",
                 "lastUpdateAt": "2020-06-17T11:00:00.000Z",
               },
             ],
@@ -115,7 +120,7 @@ describe('query chat', () => {
     `);
   });
 
-  test('returns disputes sorted by last message', async () => {
+  test('returns disputes sorted by last update at', async () => {
     await new mongoose.models.Subject(subject1).save();
     await new mongoose.models.Subject(subject3).save();
 
@@ -132,15 +137,28 @@ describe('query chat', () => {
             "hasNextPage": false,
             "items": Array [
               Object {
+                "__typename": "Dispute",
                 "id": "dc938ae30aab50b2e75c70e6",
                 "lastUpdateAt": "2020-06-17T11:00:00.000Z",
               },
               Object {
+                "__typename": "Subject",
+                "id": "5021abebf3312244c2aeb762",
+                "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+              },
+              Object {
+                "__typename": "Dispute",
                 "id": "a17456a1410c7fb7ed325372",
                 "lastUpdateAt": "2020-06-15T11:00:00.000Z",
               },
               Object {
+                "__typename": "Dispute",
                 "id": "bbaeec62fed1fe8eff4bc127",
+                "lastUpdateAt": "2020-06-15T10:00:00.000Z",
+              },
+              Object {
+                "__typename": "Subject",
+                "id": "123456789012345678901234",
                 "lastUpdateAt": "2020-06-15T10:00:00.000Z",
               },
             ],
@@ -162,9 +180,9 @@ describe('query chat', () => {
           chat(limit: 1) {
             hasNextPage
             items {
-              ... on Dispute {
-                id
-              }
+              id
+              lastUpdateAt
+              __typename
             }
             newestLastUpdateAt
             oldestLastUpdateAt
@@ -190,10 +208,9 @@ describe('query chat', () => {
         {
           chat(before: "2020-06-15T10:00:00.000Z") {
             items {
-              ... on Dispute {
-                id
-                lastUpdateAt
-              }
+              id
+              lastUpdateAt
+              __typename
             }
             newestLastUpdateAt
             oldestLastUpdateAt
@@ -215,10 +232,17 @@ describe('query chat', () => {
               "hasNextPage": false,
               "items": Array [
                 Object {
+                  "__typename": "Dispute",
                   "id": "dc938ae30aab50b2e75c70e6",
                   "lastUpdateAt": "2020-06-17T11:00:00.000Z",
                 },
                 Object {
+                  "__typename": "Subject",
+                  "id": "5021abebf3312244c2aeb762",
+                  "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+                },
+                Object {
+                  "__typename": "Dispute",
                   "id": "a17456a1410c7fb7ed325372",
                   "lastUpdateAt": "2020-06-15T11:00:00.000Z",
                 },
@@ -239,10 +263,9 @@ describe('query chat', () => {
         {
           chat(after: "2020-06-15T11:00:00.000Z") {
             items {
-              ... on Dispute {
-                id
-                lastUpdateAt
-              }
+              id
+              lastUpdateAt
+              __typename
             }
             newestLastUpdateAt
             oldestLastUpdateAt
@@ -264,7 +287,13 @@ describe('query chat', () => {
               "hasNextPage": false,
               "items": Array [
                 Object {
+                  "__typename": "Dispute",
                   "id": "bbaeec62fed1fe8eff4bc127",
+                  "lastUpdateAt": "2020-06-15T10:00:00.000Z",
+                },
+                Object {
+                  "__typename": "Subject",
+                  "id": "123456789012345678901234",
                   "lastUpdateAt": "2020-06-15T10:00:00.000Z",
                 },
               ],
@@ -285,11 +314,16 @@ describe('query chat', () => {
           {
             chat(search: "TESTSUBJECT") {
               items {
+                id
+                lastUpdateAt
+                __typename
                 ... on Dispute {
-                  id
-                  subject {
+                  connectedSubject: subject {
                     subject
                   }
+                }
+                ... on Subject {
+                  subject
                 }
               }
               newestLastUpdateAt
@@ -312,16 +346,26 @@ describe('query chat', () => {
                 "hasNextPage": false,
                 "items": Array [
                   Object {
-                    "id": "a17456a1410c7fb7ed325372",
-                    "subject": Object {
+                    "__typename": "Dispute",
+                    "connectedSubject": Object {
                       "subject": "testSubject",
                     },
+                    "id": "a17456a1410c7fb7ed325372",
+                    "lastUpdateAt": "2020-06-15T11:00:00.000Z",
                   },
                   Object {
-                    "id": "bbaeec62fed1fe8eff4bc127",
-                    "subject": Object {
+                    "__typename": "Dispute",
+                    "connectedSubject": Object {
                       "subject": "testSubject",
                     },
+                    "id": "bbaeec62fed1fe8eff4bc127",
+                    "lastUpdateAt": "2020-06-15T10:00:00.000Z",
+                  },
+                  Object {
+                    "__typename": "Subject",
+                    "id": "123456789012345678901234",
+                    "lastUpdateAt": "2020-06-15T10:00:00.000Z",
+                    "subject": "testSubject",
                   },
                 ],
                 "newestLastUpdateAt": "2020-06-15T11:00:00.000Z",
