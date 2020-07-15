@@ -1,0 +1,22 @@
+query getSubject($subjectId: ID!) {
+  subject(id: $subjectId) {
+    ...Subject
+  }
+  me {
+    ...ChatPerson
+  }
+}
+
+fragment Subject on Subject {
+  id
+  topic: subject
+  tweetId
+  ...ChatSubject
+  disputes {
+    id
+    partnerB {
+      id
+      name
+    }
+  }
+}

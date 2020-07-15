@@ -1,25 +1,29 @@
 query getDispute($disputeId: ID!) {
   dispute(id: $disputeId) {
-    id
-    subject {
-      id
-      subject
-      tweetId
-      disputes {
-        id
-        partnerA {
-          id
-          name
-        }
-        partnerB {
-          id
-          name
-        }
-      }
-    }
-    ...ChatDispute
+    ...Dispute
   }
   me {
     ...ChatPerson
   }
+}
+
+fragment Dispute on Dispute {
+  id
+  subject {
+    id
+    subject
+    tweetId
+    disputes {
+      id
+      partnerA {
+        id
+        name
+      }
+      partnerB {
+        id
+        name
+      }
+    }
+  }
+  ...ChatDispute
 }

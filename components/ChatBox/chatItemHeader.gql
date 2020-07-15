@@ -1,0 +1,13 @@
+query ChatItemHeader($chatItemId: ID!) {
+  chatItem(id: $chatItemId) {
+    id
+    ... on Dispute {
+      subject {
+        subject
+      }
+    }
+    ... on Subject {
+      topic: subject
+    }
+  }
+}

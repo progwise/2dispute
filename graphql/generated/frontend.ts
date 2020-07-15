@@ -343,6 +343,18 @@ export type MessageVotesFragment = { __typename?: 'Votes' } & Pick<
   'ups' | 'downs' | 'userVoting'
 >;
 
+export type ChatItemQueryVariables = {
+  id: Scalars['ID'];
+};
+
+export type ChatItemQuery = { __typename?: 'Query' } & {
+  chatItem?: Maybe<
+    | ({ __typename?: 'Subject' } & Pick<Subject, 'id'> & SubjectFragment)
+    | ({ __typename?: 'Dispute' } & Pick<Dispute, 'id'> & DisputeFragment)
+  >;
+  me?: Maybe<{ __typename?: 'User' } & ChatPersonFragment>;
+};
+
 export type ChatListQueryVariables = {
   after?: Maybe<Scalars['DateTime']>;
   before?: Maybe<Scalars['DateTime']>;
@@ -383,15 +395,18 @@ export type ChatListItemFragment =
   | ChatListItem_Subject_Fragment
   | ChatListItem_Dispute_Fragment;
 
-export type DisputeHeaderQueryVariables = {
-  disputeId: Scalars['ID'];
+export type ChatItemHeaderQueryVariables = {
+  chatItemId: Scalars['ID'];
 };
 
-export type DisputeHeaderQuery = { __typename?: 'Query' } & {
-  dispute?: Maybe<
-    { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
-        subject: { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject'>;
-      }
+export type ChatItemHeaderQuery = { __typename?: 'Query' } & {
+  chatItem?: Maybe<
+    | ({ __typename?: 'Subject' } & Pick<Subject, 'id'> & {
+          topic: Subject['subject'];
+        })
+    | ({ __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
+          subject: { __typename?: 'Subject' } & Pick<Subject, 'subject'>;
+        })
   >;
 };
 
@@ -425,23 +440,26 @@ export type GetDisputeQueryVariables = {
 };
 
 export type GetDisputeQuery = { __typename?: 'Query' } & {
-  dispute?: Maybe<
-    { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
-        subject: { __typename?: 'Subject' } & Pick<
-          Subject,
-          'id' | 'subject' | 'tweetId'
-        > & {
-            disputes: Array<
-              { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
-                  partnerA: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
-                  partnerB: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
-                }
-            >;
-          };
-      } & ChatDisputeFragment
-  >;
+  dispute?: Maybe<{ __typename?: 'Dispute' } & DisputeFragment>;
   me?: Maybe<{ __typename?: 'User' } & ChatPersonFragment>;
 };
+
+export type DisputeFragment = { __typename?: 'Dispute' } & Pick<
+  Dispute,
+  'id'
+> & {
+    subject: { __typename?: 'Subject' } & Pick<
+      Subject,
+      'id' | 'subject' | 'tweetId'
+    > & {
+        disputes: Array<
+          { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
+              partnerA: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
+              partnerB: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
+            }
+        >;
+      };
+  } & ChatDisputeFragment;
 
 export type ReplyOnDisputeMutationVariables = {
   disputeId: Scalars['ID'];
@@ -527,6 +545,35 @@ export type TwitterTimelineQuery = { __typename?: 'Query' } & {
   twitterTimeline?: Maybe<
     Array<{ __typename?: 'Tweet' } & Pick<Tweet, 'id' | 'link'>>
   >;
+};
+
+export type GetSubjectQueryVariables = {
+  subjectId: Scalars['ID'];
+};
+
+export type GetSubjectQuery = { __typename?: 'Query' } & {
+  subject?: Maybe<{ __typename?: 'Subject' } & SubjectFragment>;
+  me?: Maybe<{ __typename?: 'User' } & ChatPersonFragment>;
+};
+
+export type SubjectFragment = { __typename?: 'Subject' } & Pick<
+  Subject,
+  'id' | 'tweetId'
+> & { topic: Subject['subject'] } & {
+    disputes: Array<
+      { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
+          partnerB: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
+        }
+    >;
+  } & ChatSubjectFragment;
+
+export type ReplyOnSubjectMutationVariables = {
+  subjectId: Scalars['ID'];
+  message: Scalars['String'];
+};
+
+export type ReplyOnSubjectMutation = { __typename?: 'Mutation' } & {
+  replyOnSubject: { __typename?: 'Dispute' } & Pick<Dispute, 'id'>;
 };
 
 export type UserInfoFragment = { __typename?: 'User' } & Pick<
@@ -679,32 +726,6 @@ export type GetAllSubjectsQuery = { __typename?: 'Query' } & {
   };
 };
 
-export type GetSubjectQueryVariables = {
-  subjectId: Scalars['ID'];
-};
-
-export type GetSubjectQuery = { __typename?: 'Query' } & {
-  subject?: Maybe<
-    { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject' | 'tweetId'> & {
-        disputes: Array<
-          { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
-              partnerB: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
-            }
-        >;
-      } & ChatSubjectFragment
-  >;
-  me?: Maybe<{ __typename?: 'User' } & ChatPersonFragment>;
-};
-
-export type ReplyOnSubjectMutationVariables = {
-  subjectId: Scalars['ID'];
-  message: Scalars['String'];
-};
-
-export type ReplyOnSubjectMutation = { __typename?: 'Mutation' } & {
-  replyOnSubject: { __typename?: 'Dispute' } & Pick<Dispute, 'id'>;
-};
-
 export const ChatPersonFragmentDoc = gql`
   fragment ChatPerson on User {
     id
@@ -712,58 +733,6 @@ export const ChatPersonFragmentDoc = gql`
     twitterHandle
     picture
   }
-`;
-export const MessageVotesFragmentDoc = gql`
-  fragment MessageVotes on Votes {
-    ups
-    downs
-    userVoting
-  }
-`;
-export const ChatMessageFragmentDoc = gql`
-  fragment ChatMessage on Message {
-    id
-    text
-    createdAt
-    author {
-      ...ChatPerson
-    }
-    votes {
-      ...MessageVotes
-    }
-  }
-  ${ChatPersonFragmentDoc}
-  ${MessageVotesFragmentDoc}
-`;
-export const ChatSubjectFragmentDoc = gql`
-  fragment ChatSubject on Subject {
-    id
-    author {
-      ...ChatPerson
-    }
-    firstMessage {
-      ...ChatMessage
-    }
-    createdAt
-  }
-  ${ChatPersonFragmentDoc}
-  ${ChatMessageFragmentDoc}
-`;
-export const ChatDisputeFragmentDoc = gql`
-  fragment ChatDispute on Dispute {
-    id
-    partnerA {
-      ...ChatPerson
-    }
-    partnerB {
-      ...ChatPerson
-    }
-    messages {
-      ...ChatMessage
-    }
-  }
-  ${ChatPersonFragmentDoc}
-  ${ChatMessageFragmentDoc}
 `;
 export const ChatListItemFragmentDoc = gql`
   fragment ChatListItem on ChatItem {
@@ -790,6 +759,97 @@ export const ChatListItemFragmentDoc = gql`
     }
   }
   ${ChatPersonFragmentDoc}
+`;
+export const MessageVotesFragmentDoc = gql`
+  fragment MessageVotes on Votes {
+    ups
+    downs
+    userVoting
+  }
+`;
+export const ChatMessageFragmentDoc = gql`
+  fragment ChatMessage on Message {
+    id
+    text
+    createdAt
+    author {
+      ...ChatPerson
+    }
+    votes {
+      ...MessageVotes
+    }
+  }
+  ${ChatPersonFragmentDoc}
+  ${MessageVotesFragmentDoc}
+`;
+export const ChatDisputeFragmentDoc = gql`
+  fragment ChatDispute on Dispute {
+    id
+    partnerA {
+      ...ChatPerson
+    }
+    partnerB {
+      ...ChatPerson
+    }
+    messages {
+      ...ChatMessage
+    }
+  }
+  ${ChatPersonFragmentDoc}
+  ${ChatMessageFragmentDoc}
+`;
+export const DisputeFragmentDoc = gql`
+  fragment Dispute on Dispute {
+    id
+    subject {
+      id
+      subject
+      tweetId
+      disputes {
+        id
+        partnerA {
+          id
+          name
+        }
+        partnerB {
+          id
+          name
+        }
+      }
+    }
+    ...ChatDispute
+  }
+  ${ChatDisputeFragmentDoc}
+`;
+export const ChatSubjectFragmentDoc = gql`
+  fragment ChatSubject on Subject {
+    id
+    author {
+      ...ChatPerson
+    }
+    firstMessage {
+      ...ChatMessage
+    }
+    createdAt
+  }
+  ${ChatPersonFragmentDoc}
+  ${ChatMessageFragmentDoc}
+`;
+export const SubjectFragmentDoc = gql`
+  fragment Subject on Subject {
+    id
+    topic: subject
+    tweetId
+    ...ChatSubject
+    disputes {
+      id
+      partnerB {
+        id
+        name
+      }
+    }
+  }
+  ${ChatSubjectFragmentDoc}
 `;
 export const UserInfoFragmentDoc = gql`
   fragment UserInfo on User {
@@ -878,6 +938,68 @@ export type VoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
   VoteMutation,
   VoteMutationVariables
 >;
+export const ChatItemDocument = gql`
+  query ChatItem($id: ID!) {
+    chatItem(id: $id) {
+      id
+      ...Dispute
+      ...Subject
+    }
+    me {
+      ...ChatPerson
+    }
+  }
+  ${DisputeFragmentDoc}
+  ${SubjectFragmentDoc}
+  ${ChatPersonFragmentDoc}
+`;
+
+/**
+ * __useChatItemQuery__
+ *
+ * To run a query within a React component, call `useChatItemQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChatItemQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChatItemQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useChatItemQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    ChatItemQuery,
+    ChatItemQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<ChatItemQuery, ChatItemQueryVariables>(
+    ChatItemDocument,
+    baseOptions,
+  );
+}
+export function useChatItemLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    ChatItemQuery,
+    ChatItemQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<ChatItemQuery, ChatItemQueryVariables>(
+    ChatItemDocument,
+    baseOptions,
+  );
+}
+export type ChatItemQueryHookResult = ReturnType<typeof useChatItemQuery>;
+export type ChatItemLazyQueryHookResult = ReturnType<
+  typeof useChatItemLazyQuery
+>;
+export type ChatItemQueryResult = ApolloReactCommon.QueryResult<
+  ChatItemQuery,
+  ChatItemQueryVariables
+>;
 export const ChatListDocument = gql`
   query ChatList($after: DateTime, $before: DateTime, $search: String) {
     chat(after: $after, before: $before, search: $search) {
@@ -940,65 +1062,69 @@ export type ChatListQueryResult = ApolloReactCommon.QueryResult<
   ChatListQuery,
   ChatListQueryVariables
 >;
-export const DisputeHeaderDocument = gql`
-  query DisputeHeader($disputeId: ID!) {
-    dispute(id: $disputeId) {
+export const ChatItemHeaderDocument = gql`
+  query ChatItemHeader($chatItemId: ID!) {
+    chatItem(id: $chatItemId) {
       id
-      subject {
-        id
-        subject
+      ... on Dispute {
+        subject {
+          subject
+        }
+      }
+      ... on Subject {
+        topic: subject
       }
     }
   }
 `;
 
 /**
- * __useDisputeHeaderQuery__
+ * __useChatItemHeaderQuery__
  *
- * To run a query within a React component, call `useDisputeHeaderQuery` and pass it any options that fit your needs.
- * When your component renders, `useDisputeHeaderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useChatItemHeaderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChatItemHeaderQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useDisputeHeaderQuery({
+ * const { data, loading, error } = useChatItemHeaderQuery({
  *   variables: {
- *      disputeId: // value for 'disputeId'
+ *      chatItemId: // value for 'chatItemId'
  *   },
  * });
  */
-export function useDisputeHeaderQuery(
+export function useChatItemHeaderQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    DisputeHeaderQuery,
-    DisputeHeaderQueryVariables
+    ChatItemHeaderQuery,
+    ChatItemHeaderQueryVariables
   >,
 ) {
   return ApolloReactHooks.useQuery<
-    DisputeHeaderQuery,
-    DisputeHeaderQueryVariables
-  >(DisputeHeaderDocument, baseOptions);
+    ChatItemHeaderQuery,
+    ChatItemHeaderQueryVariables
+  >(ChatItemHeaderDocument, baseOptions);
 }
-export function useDisputeHeaderLazyQuery(
+export function useChatItemHeaderLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    DisputeHeaderQuery,
-    DisputeHeaderQueryVariables
+    ChatItemHeaderQuery,
+    ChatItemHeaderQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    DisputeHeaderQuery,
-    DisputeHeaderQueryVariables
-  >(DisputeHeaderDocument, baseOptions);
+    ChatItemHeaderQuery,
+    ChatItemHeaderQueryVariables
+  >(ChatItemHeaderDocument, baseOptions);
 }
-export type DisputeHeaderQueryHookResult = ReturnType<
-  typeof useDisputeHeaderQuery
+export type ChatItemHeaderQueryHookResult = ReturnType<
+  typeof useChatItemHeaderQuery
 >;
-export type DisputeHeaderLazyQueryHookResult = ReturnType<
-  typeof useDisputeHeaderLazyQuery
+export type ChatItemHeaderLazyQueryHookResult = ReturnType<
+  typeof useChatItemHeaderLazyQuery
 >;
-export type DisputeHeaderQueryResult = ApolloReactCommon.QueryResult<
-  DisputeHeaderQuery,
-  DisputeHeaderQueryVariables
+export type ChatItemHeaderQueryResult = ApolloReactCommon.QueryResult<
+  ChatItemHeaderQuery,
+  ChatItemHeaderQueryVariables
 >;
 export const ClearNotificationsForDisputeDocument = gql`
   mutation clearNotificationsForDispute($disputeId: ID!) {
@@ -1055,30 +1181,13 @@ export type ClearNotificationsForDisputeMutationOptions = ApolloReactCommon.Base
 export const GetDisputeDocument = gql`
   query getDispute($disputeId: ID!) {
     dispute(id: $disputeId) {
-      id
-      subject {
-        id
-        subject
-        tweetId
-        disputes {
-          id
-          partnerA {
-            id
-            name
-          }
-          partnerB {
-            id
-            name
-          }
-        }
-      }
-      ...ChatDispute
+      ...Dispute
     }
     me {
       ...ChatPerson
     }
   }
-  ${ChatDisputeFragmentDoc}
+  ${DisputeFragmentDoc}
   ${ChatPersonFragmentDoc}
 `;
 
@@ -1385,6 +1494,112 @@ export type TwitterTimelineLazyQueryHookResult = ReturnType<
 export type TwitterTimelineQueryResult = ApolloReactCommon.QueryResult<
   TwitterTimelineQuery,
   TwitterTimelineQueryVariables
+>;
+export const GetSubjectDocument = gql`
+  query getSubject($subjectId: ID!) {
+    subject(id: $subjectId) {
+      ...Subject
+    }
+    me {
+      ...ChatPerson
+    }
+  }
+  ${SubjectFragmentDoc}
+  ${ChatPersonFragmentDoc}
+`;
+
+/**
+ * __useGetSubjectQuery__
+ *
+ * To run a query within a React component, call `useGetSubjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSubjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSubjectQuery({
+ *   variables: {
+ *      subjectId: // value for 'subjectId'
+ *   },
+ * });
+ */
+export function useGetSubjectQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetSubjectQuery,
+    GetSubjectQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<GetSubjectQuery, GetSubjectQueryVariables>(
+    GetSubjectDocument,
+    baseOptions,
+  );
+}
+export function useGetSubjectLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetSubjectQuery,
+    GetSubjectQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    GetSubjectQuery,
+    GetSubjectQueryVariables
+  >(GetSubjectDocument, baseOptions);
+}
+export type GetSubjectQueryHookResult = ReturnType<typeof useGetSubjectQuery>;
+export type GetSubjectLazyQueryHookResult = ReturnType<
+  typeof useGetSubjectLazyQuery
+>;
+export type GetSubjectQueryResult = ApolloReactCommon.QueryResult<
+  GetSubjectQuery,
+  GetSubjectQueryVariables
+>;
+export const ReplyOnSubjectDocument = gql`
+  mutation replyOnSubject($subjectId: ID!, $message: String!) {
+    replyOnSubject(input: { subjectId: $subjectId, message: $message }) {
+      id
+    }
+  }
+`;
+
+/**
+ * __useReplyOnSubjectMutation__
+ *
+ * To run a mutation, you first call `useReplyOnSubjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReplyOnSubjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [replyOnSubjectMutation, { data, loading, error }] = useReplyOnSubjectMutation({
+ *   variables: {
+ *      subjectId: // value for 'subjectId'
+ *      message: // value for 'message'
+ *   },
+ * });
+ */
+export function useReplyOnSubjectMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ReplyOnSubjectMutation,
+    ReplyOnSubjectMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ReplyOnSubjectMutation,
+    ReplyOnSubjectMutationVariables
+  >(ReplyOnSubjectDocument, baseOptions);
+}
+export type ReplyOnSubjectMutationHookResult = ReturnType<
+  typeof useReplyOnSubjectMutation
+>;
+export type ReplyOnSubjectMutationResult = ApolloReactCommon.MutationResult<
+  ReplyOnSubjectMutation
+>;
+export type ReplyOnSubjectMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ReplyOnSubjectMutation,
+  ReplyOnSubjectMutationVariables
 >;
 export const GetUserInfoByIdDocument = gql`
   query getUserInfoById($userId: ID!) {
@@ -1838,120 +2053,4 @@ export type GetAllSubjectsLazyQueryHookResult = ReturnType<
 export type GetAllSubjectsQueryResult = ApolloReactCommon.QueryResult<
   GetAllSubjectsQuery,
   GetAllSubjectsQueryVariables
->;
-export const GetSubjectDocument = gql`
-  query getSubject($subjectId: ID!) {
-    subject(id: $subjectId) {
-      id
-      subject
-      tweetId
-      ...ChatSubject
-      disputes {
-        id
-        partnerB {
-          id
-          name
-        }
-      }
-    }
-    me {
-      ...ChatPerson
-    }
-  }
-  ${ChatSubjectFragmentDoc}
-  ${ChatPersonFragmentDoc}
-`;
-
-/**
- * __useGetSubjectQuery__
- *
- * To run a query within a React component, call `useGetSubjectQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetSubjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetSubjectQuery({
- *   variables: {
- *      subjectId: // value for 'subjectId'
- *   },
- * });
- */
-export function useGetSubjectQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetSubjectQuery,
-    GetSubjectQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<GetSubjectQuery, GetSubjectQueryVariables>(
-    GetSubjectDocument,
-    baseOptions,
-  );
-}
-export function useGetSubjectLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    GetSubjectQuery,
-    GetSubjectQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    GetSubjectQuery,
-    GetSubjectQueryVariables
-  >(GetSubjectDocument, baseOptions);
-}
-export type GetSubjectQueryHookResult = ReturnType<typeof useGetSubjectQuery>;
-export type GetSubjectLazyQueryHookResult = ReturnType<
-  typeof useGetSubjectLazyQuery
->;
-export type GetSubjectQueryResult = ApolloReactCommon.QueryResult<
-  GetSubjectQuery,
-  GetSubjectQueryVariables
->;
-export const ReplyOnSubjectDocument = gql`
-  mutation replyOnSubject($subjectId: ID!, $message: String!) {
-    replyOnSubject(input: { subjectId: $subjectId, message: $message }) {
-      id
-    }
-  }
-`;
-
-/**
- * __useReplyOnSubjectMutation__
- *
- * To run a mutation, you first call `useReplyOnSubjectMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useReplyOnSubjectMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [replyOnSubjectMutation, { data, loading, error }] = useReplyOnSubjectMutation({
- *   variables: {
- *      subjectId: // value for 'subjectId'
- *      message: // value for 'message'
- *   },
- * });
- */
-export function useReplyOnSubjectMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    ReplyOnSubjectMutation,
-    ReplyOnSubjectMutationVariables
-  >,
-) {
-  return ApolloReactHooks.useMutation<
-    ReplyOnSubjectMutation,
-    ReplyOnSubjectMutationVariables
-  >(ReplyOnSubjectDocument, baseOptions);
-}
-export type ReplyOnSubjectMutationHookResult = ReturnType<
-  typeof useReplyOnSubjectMutation
->;
-export type ReplyOnSubjectMutationResult = ApolloReactCommon.MutationResult<
-  ReplyOnSubjectMutation
->;
-export type ReplyOnSubjectMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  ReplyOnSubjectMutation,
-  ReplyOnSubjectMutationVariables
 >;
