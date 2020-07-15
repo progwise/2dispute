@@ -403,3 +403,85 @@ describe('query chat', () => {
     });
   });
 });
+
+describe('query chatItem', () => {
+  test('returns null when chatItem not exists', async () => {
+    const chatItemQuery = `
+      {
+        chatItem(id: "not existing id") {
+          __typename
+          id
+          lastUpdateAt
+        }
+      }
+    `;
+
+    const result = await request(app)
+      .post('')
+      .send({ query: chatItemQuery })
+      .expect(200);
+
+    expect(result.body.errors).toBeUndefined();
+    expect(result.body.data.chatItem).toBeNull();
+  });
+
+  test('returns a subject when passing a subject id', async () => {
+    await new mongoose.models.Subject(subject3).save();
+
+    const chatItemQuery = `
+      {
+        chatItem(id: "5021abebf3312244c2aeb762") {
+          __typename
+          id
+          lastUpdateAt
+        }
+      }
+    `;
+
+    const result = await request(app)
+      .post('')
+      .send({ query: chatItemQuery })
+      .expect(200);
+
+    expect(result.body.errors).toBeUndefined();
+    expect(result.body.data).toMatchInlineSnapshot(`
+      Object {
+        "chatItem": Object {
+          "__typename": "Subject",
+          "id": "5021abebf3312244c2aeb762",
+          "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+        },
+      }
+    `);
+  });
+
+  test('returns a dispute when passing a dispute id', async () => {
+    await new mongoose.models.Subject(subject3).save();
+
+    const chatItemQuery = `
+      {
+        chatItem(id: "dc938ae30aab50b2e75c70e6") {
+          __typename
+          id
+          lastUpdateAt
+        }
+      }
+    `;
+
+    const result = await request(app)
+      .post('')
+      .send({ query: chatItemQuery })
+      .expect(200);
+
+    expect(result.body.errors).toBeUndefined();
+    expect(result.body.data).toMatchInlineSnapshot(`
+      Object {
+        "chatItem": Object {
+          "__typename": "Dispute",
+          "id": "dc938ae30aab50b2e75c70e6",
+          "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+        },
+      }
+    `);
+  });
+});

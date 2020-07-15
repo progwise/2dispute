@@ -55,6 +55,25 @@ const queries: QueryResolvers = {
       hasNextPage,
     };
   },
+
+  chatItem: async (parent, args, context) => {
+    try {
+      const subject = await context.mongoose.models.Subject.findOne({
+        $or: [{ _id: args.id }, { 'disputes._id': args.id }],
+      }).exec();
+
+      if (subject?._id.equals(args.id)) {
+        return subject;
+      }
+
+      const dispute = subject?.disputes.find(dispute =>
+        dispute._id.equals(args.id),
+      );
+      return dispute ?? null;
+    } catch (e) {
+      return null;
+    }
+  },
 };
 
 export default queries;
