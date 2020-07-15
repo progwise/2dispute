@@ -1,8 +1,8 @@
 import React from 'react';
-import Link from 'next/link';
 import { ChatListItemFragment } from '../../../../graphql/generated/frontend';
 import ChatListItemUser from './ChatListItemUser';
-import DateTimeDistance from './DateTimeDistance';
+import ChatListItemHeader from './ChatListItemHeader';
+import ChatListItemContainer from './ChatListItemContainer';
 
 interface ChatListItemProps {
   chatItem: ChatListItemFragment;
@@ -13,36 +13,31 @@ const ChatListItem = ({
   chatItem,
   isSelected,
 }: ChatListItemProps): JSX.Element => {
-  if (chatItem.__typename !== 'Dispute') {
-    return <li>Chat Item type not implemented yet</li>;
-  }
-
-  return (
-    <li className="border-b">
-      <Link href="/chat/[chatItemId]" as={`/chat/${chatItem.id}`}>
-        <a
-          className={`p-3 cursor-pointer block space-y-1 ${
-            isSelected ? 'bg-blue-700 text-gray-100' : 'hover:bg-gray-300'
-          }`}
-        >
-          <div className="flex items-end space-x-1">
-            <div
-              className="truncate flex-grow"
-              title={chatItem.subject.subject}
-            >
-              {chatItem.subject.subject}
-            </div>
-            <DateTimeDistance
-              dateTime={chatItem.lastUpdateAt}
-              className="text-xs font-light whitespace-no-wrap"
-            />
-          </div>
+  switch (chatItem.__typename) {
+    case 'Dispute':
+      return (
+        <ChatListItemContainer chatItemId={chatItem.id} isSelected={isSelected}>
+          <ChatListItemHeader
+            title={chatItem.subject.subject}
+            dateTime={chatItem.lastUpdateAt}
+          />
           <ChatListItemUser user={chatItem.partnerA} isSelected={isSelected} />
           <ChatListItemUser user={chatItem.partnerB} isSelected={isSelected} />
-        </a>
-      </Link>
-    </li>
-  );
+        </ChatListItemContainer>
+      );
+    case 'Subject':
+      return (
+        <ChatListItemContainer chatItemId={chatItem.id} isSelected={isSelected}>
+          <ChatListItemHeader
+            title={chatItem.subjectTitle}
+            dateTime={chatItem.lastUpdateAt}
+          />
+          <ChatListItemUser user={chatItem.author} isSelected={isSelected} />
+        </ChatListItemContainer>
+      );
+    default:
+      throw new Error('Chat item type not implemented yet');
+  }
 };
 
 export default ChatListItem;
