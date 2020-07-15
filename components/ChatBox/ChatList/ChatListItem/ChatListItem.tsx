@@ -19,7 +19,7 @@ const ChatListItem = ({
 
   return (
     <li className="border-b">
-      <Link href="/chat/[disputeId]" as={`/chat/${chatItem.id}`}>
+      <Link href="/chat/[chatItemId]" as={`/chat/${chatItem.id}`}>
         <a
           className={`p-3 cursor-pointer block space-y-1 ${
             isSelected ? 'bg-blue-700 text-gray-100' : 'hover:bg-gray-300'
