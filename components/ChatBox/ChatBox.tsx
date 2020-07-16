@@ -12,7 +12,7 @@ interface ChatBoxProps {
 
 const ChatBox = ({ selectedChatItemId }: ChatBoxProps): JSX.Element => {
   const [search, setSearch] = useState('');
-  const [scope, setScope] = useState<ChatScope>(ChatScope.UserScope);
+  const [scope, setScope] = useState<ChatScope>(ChatScope.All);
   useFullPage();
 
   // When search or scope change scroll in chat list to the top
