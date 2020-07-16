@@ -5,6 +5,7 @@ import '../css/tailwind.css';
 import Layout from '../components/Layout';
 import TokenManager from '../components/TokenManager';
 import { FullPageProvider, FullPageContext } from '../components/FullPage';
+import { ChatContextProvider } from '../components/ChatBox/ChatContext';
 
 interface MyAppProp {
   Component: new (props: any) => React.Component;
@@ -32,7 +33,9 @@ const MyApp = ({ Component, pageProps }: MyAppProp): JSX.Element => {
 
 const MyAppWithProvider = (props): JSX.Element => (
   <FullPageProvider>
-    <MyApp {...props} />
+    <ChatContextProvider>
+      <MyApp {...props} />
+    </ChatContextProvider>
   </FullPageProvider>
 );
 

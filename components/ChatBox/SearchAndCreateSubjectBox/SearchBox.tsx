@@ -2,11 +2,13 @@ import React from 'react';
 import { FaSearch, FaTimesCircle } from 'react-icons/fa';
 
 interface SearchBoxProps {
+  search: string;
   onChange: (newValue: string) => void;
   className?: string;
 }
 
 const SearchBox = ({
+  search,
   onChange,
   className = '',
 }: SearchBoxProps): JSX.Element => {
@@ -24,6 +26,7 @@ const SearchBox = ({
         className="bg-transparent w-full py-2 outline-none"
         placeholder="Suche"
         onChange={handleChange}
+        defaultValue={search}
       />
       <button type="reset" className="self-stretch outline-none">
         <FaTimesCircle />

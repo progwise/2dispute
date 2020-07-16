@@ -5,6 +5,7 @@ import { ChatScope } from '../../../graphql/generated/backend';
 import SearchBox from './SearchBox';
 
 interface SearchAndCreateSubjectBoxProps {
+  search: string;
   onSearchChange: (newSearch: string) => void;
   className?: string;
   scope: ChatScope;
@@ -12,6 +13,7 @@ interface SearchAndCreateSubjectBoxProps {
 }
 
 const SearchAndCreateSubjectBox = ({
+  search,
   onSearchChange,
   className = '',
   scope,
@@ -19,7 +21,11 @@ const SearchAndCreateSubjectBox = ({
 }: SearchAndCreateSubjectBoxProps): JSX.Element => (
   <div className={className}>
     <div className="flex w-full">
-      <SearchBox onChange={onSearchChange} className="flex-grow" />
+      <SearchBox
+        search={search}
+        onChange={onSearchChange}
+        className="flex-grow"
+      />
       <a
         className="flex-grow-0 flex items-center cursor-pointer text-blue-600 p-2"
         onClick={(): unknown =>
