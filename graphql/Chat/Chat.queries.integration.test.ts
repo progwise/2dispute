@@ -37,7 +37,7 @@ beforeEach(async () => mongoose.models.Subject.deleteMany({}).exec());
 describe('query chat', () => {
   const chatQuery = `
     {
-      chat {
+      chat(scope: USER_SCOPE) {
         items {
           id
           lastUpdateAt
@@ -50,19 +50,41 @@ describe('query chat', () => {
     }
   `;
 
-  test('returns null when unauthenticated', async () => {
-    const result = await request(app)
-      .post('')
-      .send({ query: chatQuery })
-      .expect(200);
+  describe('unauthenticated', () => {
+    test('returns null when unauthenticated and scope arg is "USER_SCOPE"', async () => {
+      const result = await request(app)
+        .post('')
+        .send({ query: chatQuery })
+        .expect(200);
 
-    expect(result.body).toMatchInlineSnapshot(`
-      Object {
-        "data": Object {
-          "chat": null,
-        },
-      }
-    `);
+      expect(result.body).toMatchInlineSnapshot(`
+        Object {
+          "data": Object {
+            "chat": null,
+          },
+        }
+      `);
+    });
+
+    test('returns array of chat items when unauthenticated and scope arg is "ALL"', async () => {
+      const chatQueryAllScope = `
+        {
+          chat(scope: ALL) {
+            items {
+              id
+            }
+          }
+        }
+      `;
+
+      const result = await request(app)
+        .post('')
+        .send({ query: chatQueryAllScope })
+        .expect(200);
+
+      expect(result.body.errors).toBeUndefined();
+      expect(result.body.data.chat).toEqual({ items: [] });
+    });
   });
 
   test('returns empty array when user does not participate in a dispute', async () => {

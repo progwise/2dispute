@@ -1,10 +1,10 @@
-import { QueryResolvers, ChatItem } from '../generated/backend';
+import { QueryResolvers, ChatItem, ChatScope } from '../generated/backend';
 import loadDisputes from './loadDisputes';
 import loadSubjects from './loadSubjects';
 
 const queries: QueryResolvers = {
   chat: async (parent, args, context) => {
-    if (!context.user) {
+    if (args.scope === ChatScope.UserScope && !context.user) {
       return null;
     }
 
