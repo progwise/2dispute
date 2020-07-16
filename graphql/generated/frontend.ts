@@ -365,6 +365,7 @@ export type ChatListQueryVariables = {
   after?: Maybe<Scalars['DateTime']>;
   before?: Maybe<Scalars['DateTime']>;
   search?: Maybe<Scalars['String']>;
+  scope?: Maybe<ChatScope>;
 };
 
 export type ChatListQuery = { __typename?: 'Query' } & {
@@ -1007,8 +1008,13 @@ export type ChatItemQueryResult = ApolloReactCommon.QueryResult<
   ChatItemQueryVariables
 >;
 export const ChatListDocument = gql`
-  query ChatList($after: DateTime, $before: DateTime, $search: String) {
-    chat(after: $after, before: $before, search: $search) {
+  query ChatList(
+    $after: DateTime
+    $before: DateTime
+    $search: String
+    $scope: ChatScope
+  ) {
+    chat(after: $after, before: $before, search: $search, scope: $scope) {
       items {
         ...ChatListItem
       }
@@ -1035,6 +1041,7 @@ export const ChatListDocument = gql`
  *      after: // value for 'after'
  *      before: // value for 'before'
  *      search: // value for 'search'
+ *      scope: // value for 'scope'
  *   },
  * });
  */

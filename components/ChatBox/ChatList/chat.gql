@@ -1,5 +1,10 @@
-query ChatList($after: DateTime, $before: DateTime, $search: String) {
-  chat(after: $after, before: $before, search: $search) {
+query ChatList(
+  $after: DateTime
+  $before: DateTime
+  $search: String
+  $scope: ChatScope
+) {
+  chat(after: $after, before: $before, search: $search, scope: $scope) {
     items {
       ...ChatListItem
     }
