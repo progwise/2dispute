@@ -1,9 +1,8 @@
 import React from 'react';
-import { FaPen } from 'react-icons/fa';
+import { FaPen, FaUser, FaUserFriends } from 'react-icons/fa';
 import Link from '../../Link/Link';
 import { ChatScope } from '../../../graphql/generated/backend';
 import SearchBox from './SearchBox';
-import ScopeLink from './ScopeLink';
 
 interface SearchAndCreateSubjectBoxProps {
   onSearchChange: (newSearch: string) => void;
@@ -21,25 +20,24 @@ const SearchAndCreateSubjectBox = ({
   <div className={className}>
     <div className="flex w-full">
       <SearchBox onChange={onSearchChange} className="flex-grow" />
+      <a
+        className="flex-grow-0 flex items-center cursor-pointer text-blue-600 p-2"
+        onClick={(): unknown =>
+          onScopeChange(
+            scope === ChatScope.All ? ChatScope.UserScope : ChatScope.All,
+          )
+        }
+        title={scope === ChatScope.All ? 'Alle Themen' : 'Meine Themen'}
+      >
+        {scope === ChatScope.All ? (
+          <FaUserFriends className="text-2xl" />
+        ) : (
+          <FaUser />
+        )}
+      </a>
       <Link href="/subjects/create" className="flex-grow-0 flex items-center">
         <FaPen className="m-2" />
       </Link>
-    </div>
-    <div className="text-sm px-3">
-      <ScopeLink
-        isSelected={scope === ChatScope.All}
-        onClick={(): unknown => onScopeChange(ChatScope.All)}
-      >
-        Alle
-      </ScopeLink>{' '}
-      /{' '}
-      <ScopeLink
-        isSelected={scope === ChatScope.UserScope}
-        onClick={(): unknown => onScopeChange(ChatScope.UserScope)}
-      >
-        Meine
-      </ScopeLink>{' '}
-      Dispute
     </div>
   </div>
 );
