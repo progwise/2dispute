@@ -1,6 +1,9 @@
 import React from 'react';
 import { Waypoint } from 'react-waypoint';
-import { useChatListQuery } from '../../../graphql/generated/frontend';
+import {
+  useChatListQuery,
+  ChatScope,
+} from '../../../graphql/generated/frontend';
 import useInterval from '../../../utils/react-hooks/useInterval';
 import ChatListItem from './ChatListItem';
 import Loader from './Loader';
@@ -8,14 +11,16 @@ import Loader from './Loader';
 interface ChatListProps {
   selectedChatItemId?: string;
   search: string;
+  scope: ChatScope;
 }
 
 const ChatList = ({
   selectedChatItemId,
   search,
+  scope,
 }: ChatListProps): JSX.Element => {
   const { data, loading, error, fetchMore } = useChatListQuery({
-    variables: { search },
+    variables: { search, scope },
   });
 
   const fetchNewerDisputes = async (): Promise<void> => {
