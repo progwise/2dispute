@@ -5,7 +5,7 @@ import {
   useCreateSubjectMutation,
 } from '../../../graphql/generated/frontend';
 import Loader from '../../ChatBox/ChatList/Loader';
-import CreateSubjectForm, { FormSubmitValues } from '../CreateSubjectForm';
+import CreateSubjectForm, { FormSubmitValues } from './CreateSubjectForm';
 
 const CreateSubject = (): JSX.Element | null => {
   const router = useRouter();

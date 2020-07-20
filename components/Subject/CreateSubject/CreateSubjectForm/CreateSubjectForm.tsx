@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { Form, Formik } from 'formik';
-import Yup from '../../../utils/yup';
-import { Input, TextareaInput } from '../../Input';
-import Button from '../../Button/Button';
-import ChatContainer from '../../Chat/components/ChatContainer';
-import ChatBubble from '../../Chat/components/ChatMessage/ChatBubble';
-import ChatItemFullWidth from '../../Chat/components/ChatItemFullWidth';
-import { ChatPersonFragment } from '../../../graphql/generated/frontend';
+import Yup from '../../../../utils/yup';
+import { Input, TextareaInput } from '../../../Input';
+import Button from '../../../Button/Button';
+import ChatContainer from '../../../Chat/components/ChatContainer';
+import ChatBubble from '../../../Chat/components/ChatMessage/ChatBubble';
+import ChatItemFullWidth from '../../../Chat/components/ChatItemFullWidth';
+import { ChatPersonFragment } from '../../../../graphql/generated/frontend';
 import SelectTweet from './SelectTweet';
 
 interface FormValues {

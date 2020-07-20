@@ -41,7 +41,7 @@ const SearchAndCreateSubjectBox = ({
           <FaUser />
         )}
       </a>
-      <Link href="/subjects/create" className="flex-grow-0 flex items-center">
+      <Link href="/chat/new" className="flex-grow-0 flex items-center">
         <FaPen className="m-2" />
       </Link>
     </div>
