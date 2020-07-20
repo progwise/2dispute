@@ -1,7 +1,7 @@
 import React from 'react';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { FaRegCircle, FaRegCheckCircle } from 'react-icons/fa';
-import { useTwitterTimelineQuery } from '../../../graphql/generated/frontend';
+import { useTwitterTimelineQuery } from '../../../../graphql/generated/frontend';
 
 interface SelectTweetProps {
   onSelect: (tweetLink: string) => void;

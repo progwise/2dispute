@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useContext } from 'react';
 import { useFullPage } from '../FullPage';
-import CreateSubject from '../Subject/CreateSubject/CreateSubject';
+import CreateSubject from '../Subject/CreateSubject';
 import ChatList from './ChatList';
 import ChatBoxHeader, { ChatItemHeader } from './ChatBoxHeader';
 import SearchAndCreateSubjectBox from './SearchAndCreateSubjectBox';
