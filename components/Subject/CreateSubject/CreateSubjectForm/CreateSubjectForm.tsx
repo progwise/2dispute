@@ -45,7 +45,7 @@ enum State {
 }
 
 const CreateSubjectForm = (props: CreateSubjectFormProps): JSX.Element => {
-  const [state, setState] = useState<State>(State.Form);
+  const [state, setState] = useState<State>(State.SelectTweet);
 
   const handleSubmit = (values: FormValues): Promise<void> => {
     const tweetId = getTweetId(values.tweetLink);

@@ -27,7 +27,7 @@ const SelectTweet = (props: SelectTweetProps): JSX.Element => {
           className="cursor-pointer text-blue-600 underline"
           onClick={(): void => props.onCancel()}
         >
-          Abbrechen und zurück zum Formular
+          Keinen Tweet verlinken
         </a>
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-selectTweet max-w-full">
