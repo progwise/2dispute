@@ -114,6 +114,7 @@ const ChatList = ({
   return (
     <ul>
       {data.chat.items
+        .slice()
         .sort((chatItemA, chatItemB) =>
           chatItemB.lastUpdateAt.localeCompare(chatItemA.lastUpdateAt),
         )

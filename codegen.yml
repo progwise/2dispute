@@ -13,9 +13,10 @@ generates:
       withComponent: false
       withHooks: true
       withMutationFn: false
-      gqlImport: apollo-boost#gql
+      gqlImport: @apollo/client#gql
       scalars:
         DateTime: string
+      reactApolloVersion: 3
   graphql/generated/backend.ts:
     plugins:
       - add: '/* eslint-disable */'
@@ -41,7 +42,7 @@ generates:
     plugins:
       - fragment-matcher
     config:
-      apolloClientVersion: 2
+      apolloClientVersion: 3
 hooks:
   afterOneFileWrite:
     - prettier --write
