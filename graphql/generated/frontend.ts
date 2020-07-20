@@ -1,7 +1,7 @@
 /* eslint-disable */
-import { gql } from 'apollo-boost';
-import * as ApolloReactCommon from '@apollo/react-common';
-import * as ApolloReactHooks from '@apollo/react-hooks';
+import { gql } from '@apollo/client';
+import * as ApolloReactCommon from '@apollo/client';
+import * as ApolloReactHooks from '@apollo/client';
 export type Maybe<T> = T | null;
 
 /** All built-in and custom scalars, mapped to their actual values */
@@ -349,6 +349,21 @@ export type MessageVotesFragment = { __typename?: 'Votes' } & Pick<
   'ups' | 'downs' | 'userVoting'
 >;
 
+export type ChatItemHeaderQueryVariables = {
+  chatItemId: Scalars['ID'];
+};
+
+export type ChatItemHeaderQuery = { __typename?: 'Query' } & {
+  chatItem?: Maybe<
+    | ({ __typename?: 'Subject' } & Pick<Subject, 'id'> & {
+          topic: Subject['subject'];
+        })
+    | ({ __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
+          subject: { __typename?: 'Subject' } & Pick<Subject, 'subject'>;
+        })
+  >;
+};
+
 export type ChatItemQueryVariables = {
   id: Scalars['ID'];
 };
@@ -401,21 +416,6 @@ type ChatListItem_Dispute_Fragment = { __typename?: 'Dispute' } & Pick<
 export type ChatListItemFragment =
   | ChatListItem_Subject_Fragment
   | ChatListItem_Dispute_Fragment;
-
-export type ChatItemHeaderQueryVariables = {
-  chatItemId: Scalars['ID'];
-};
-
-export type ChatItemHeaderQuery = { __typename?: 'Query' } & {
-  chatItem?: Maybe<
-    | ({ __typename?: 'Subject' } & Pick<Subject, 'id'> & {
-          topic: Subject['subject'];
-        })
-    | ({ __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
-          subject: { __typename?: 'Subject' } & Pick<Subject, 'subject'>;
-        })
-  >;
-};
 
 export type ClearNotificationsForDisputeMutationVariables = {
   disputeId: Scalars['ID'];
@@ -945,6 +945,70 @@ export type VoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
   VoteMutation,
   VoteMutationVariables
 >;
+export const ChatItemHeaderDocument = gql`
+  query ChatItemHeader($chatItemId: ID!) {
+    chatItem(id: $chatItemId) {
+      id
+      ... on Dispute {
+        subject {
+          subject
+        }
+      }
+      ... on Subject {
+        topic: subject
+      }
+    }
+  }
+`;
+
+/**
+ * __useChatItemHeaderQuery__
+ *
+ * To run a query within a React component, call `useChatItemHeaderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChatItemHeaderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChatItemHeaderQuery({
+ *   variables: {
+ *      chatItemId: // value for 'chatItemId'
+ *   },
+ * });
+ */
+export function useChatItemHeaderQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    ChatItemHeaderQuery,
+    ChatItemHeaderQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    ChatItemHeaderQuery,
+    ChatItemHeaderQueryVariables
+  >(ChatItemHeaderDocument, baseOptions);
+}
+export function useChatItemHeaderLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    ChatItemHeaderQuery,
+    ChatItemHeaderQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    ChatItemHeaderQuery,
+    ChatItemHeaderQueryVariables
+  >(ChatItemHeaderDocument, baseOptions);
+}
+export type ChatItemHeaderQueryHookResult = ReturnType<
+  typeof useChatItemHeaderQuery
+>;
+export type ChatItemHeaderLazyQueryHookResult = ReturnType<
+  typeof useChatItemHeaderLazyQuery
+>;
+export type ChatItemHeaderQueryResult = ApolloReactCommon.QueryResult<
+  ChatItemHeaderQuery,
+  ChatItemHeaderQueryVariables
+>;
 export const ChatItemDocument = gql`
   query ChatItem($id: ID!) {
     chatItem(id: $id) {
@@ -1074,70 +1138,6 @@ export type ChatListLazyQueryHookResult = ReturnType<
 export type ChatListQueryResult = ApolloReactCommon.QueryResult<
   ChatListQuery,
   ChatListQueryVariables
->;
-export const ChatItemHeaderDocument = gql`
-  query ChatItemHeader($chatItemId: ID!) {
-    chatItem(id: $chatItemId) {
-      id
-      ... on Dispute {
-        subject {
-          subject
-        }
-      }
-      ... on Subject {
-        topic: subject
-      }
-    }
-  }
-`;
-
-/**
- * __useChatItemHeaderQuery__
- *
- * To run a query within a React component, call `useChatItemHeaderQuery` and pass it any options that fit your needs.
- * When your component renders, `useChatItemHeaderQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useChatItemHeaderQuery({
- *   variables: {
- *      chatItemId: // value for 'chatItemId'
- *   },
- * });
- */
-export function useChatItemHeaderQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    ChatItemHeaderQuery,
-    ChatItemHeaderQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<
-    ChatItemHeaderQuery,
-    ChatItemHeaderQueryVariables
-  >(ChatItemHeaderDocument, baseOptions);
-}
-export function useChatItemHeaderLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    ChatItemHeaderQuery,
-    ChatItemHeaderQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    ChatItemHeaderQuery,
-    ChatItemHeaderQueryVariables
-  >(ChatItemHeaderDocument, baseOptions);
-}
-export type ChatItemHeaderQueryHookResult = ReturnType<
-  typeof useChatItemHeaderQuery
->;
-export type ChatItemHeaderLazyQueryHookResult = ReturnType<
-  typeof useChatItemHeaderLazyQuery
->;
-export type ChatItemHeaderQueryResult = ApolloReactCommon.QueryResult<
-  ChatItemHeaderQuery,
-  ChatItemHeaderQueryVariables
 >;
 export const ClearNotificationsForDisputeDocument = gql`
   mutation clearNotificationsForDispute($disputeId: ID!) {

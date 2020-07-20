@@ -4,22 +4,18 @@
 
 import React from 'react';
 import withApollo from 'next-with-apollo';
-import ApolloClient, {
-  InMemoryCache,
-  IntrospectionFragmentMatcher,
+import {
+  ApolloClient,
+  ApolloProvider,
   defaultDataIdFromObject,
-} from 'apollo-boost';
-import { ApolloProvider } from '@apollo/react-hooks';
-import introspectionQueryResultData from '../graphql/generated/introspection';
-
-const fragmentMatcher = new IntrospectionFragmentMatcher({
-  introspectionQueryResultData,
-});
+  InMemoryCache,
+} from '@apollo/client';
+import possibleTypes from '../graphql/generated/introspection';
 
 const createCache = (initialState: any): InMemoryCache =>
   new InMemoryCache({
-    fragmentMatcher,
-    dataIdFromObject: (object): string | null => {
+    possibleTypes: possibleTypes.possibleTypes,
+    dataIdFromObject: (object): string | undefined => {
       switch (object.__typename) {
         case 'NotificationStatus':
           return 'NotificationStatus';

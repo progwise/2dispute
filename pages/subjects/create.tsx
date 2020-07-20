@@ -25,7 +25,7 @@ const CreateSubject = (): JSX.Element => {
       variables: values,
     });
 
-    if (errors || data === undefined) {
+    if (errors || !data) {
       throw new Error('submit failed');
     }
 

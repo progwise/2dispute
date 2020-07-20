@@ -1,42 +1,14 @@
-export interface IntrospectionResultData {
-  __schema: {
-    types: {
-      kind: string;
-      name: string;
-      possibleTypes: {
-        name: string;
-      }[];
-    }[];
+export interface PossibleTypesResultData {
+  possibleTypes: {
+    [key: string]: string[];
   };
 }
-const result: IntrospectionResultData = {
-  __schema: {
-    types: [
-      {
-        kind: 'INTERFACE',
-        name: 'ChatItem',
-        possibleTypes: [
-          {
-            name: 'Subject',
-          },
-          {
-            name: 'Dispute',
-          },
-        ],
-      },
-      {
-        kind: 'INTERFACE',
-        name: 'Notification',
-        possibleTypes: [
-          {
-            name: 'NewDisputeNotification',
-          },
-          {
-            name: 'NewMessageNotification',
-          },
-        ],
-      },
-    ],
+
+const result: PossibleTypesResultData = {
+  possibleTypes: {
+    ChatItem: ['Subject', 'Dispute'],
+    Notification: ['NewDisputeNotification', 'NewMessageNotification'],
   },
 };
+
 export default result;

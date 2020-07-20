@@ -27,7 +27,7 @@ const SubjectPresentation = ({
       variables: { subjectId: subject.id, message: values.message },
     });
 
-    if (errors || data === undefined) throw new Error('submit failed');
+    if (errors || !data) throw new Error('submit failed');
 
     const chatItemId = data.replyOnSubject.id;
     router.push('/chat/[chatItemId]', `/chat/${chatItemId}`);
