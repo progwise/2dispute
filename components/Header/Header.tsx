@@ -19,7 +19,7 @@ const Header = (): JSX.Element => {
   const getLoginPath = (redirectTo: string = router.asPath): string =>
     `/api/auth/twitter?redirectTo=${redirectTo}`;
   const logoutPath = '/api/auth/logout';
-  const createSubjectPath = '/chat/new';
+  const createSubjectPath = '/new';
 
   return (
     <>
@@ -38,7 +38,7 @@ const Header = (): JSX.Element => {
         </NavBarItem>
         {isAuthenticated ? (
           <>
-            <NavBarItem href="/chat">Chat</NavBarItem>
+            <NavBarItem href="/">Chat</NavBarItem>
             <NavBarItem href="/me">Mein Profil</NavBarItem>
             <NavBarItem href={logoutPath}>Abmelden</NavBarItem>
             <li className="hidden md:block">

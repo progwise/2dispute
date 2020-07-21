@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import ChatBox from '../../components/ChatBox';
-import withApollo from '../../utils/withApollo';
+import ChatBox from '../components/ChatBox';
+import withApollo from '../utils/withApollo';
 
 const ChatWithOpenDispute = (): JSX.Element => {
   const router = useRouter();
