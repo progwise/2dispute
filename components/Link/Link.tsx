@@ -1,8 +1,9 @@
+import { UrlObject } from 'url';
 import React from 'react';
 import NextLink from 'next/link';
 
 interface LinkProps {
-  href: string;
+  href: string | UrlObject;
   as?: string;
   className?: string;
   children: React.ReactNode;
