@@ -41,7 +41,10 @@ const SearchAndCreateSubjectBox = ({
           <FaUser />
         )}
       </a>
-      <Link href="/new" className="flex-grow-0 flex items-center">
+      <Link
+        href={{ pathname: '/', query: { new: '' } }}
+        className="flex-grow-0 flex items-center"
+      >
         <FaPen className="m-2" />
       </Link>
     </div>

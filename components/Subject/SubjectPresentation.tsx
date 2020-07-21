@@ -30,7 +30,7 @@ const SubjectPresentation = ({
     if (errors || !data) throw new Error('submit failed');
 
     const chatItemId = data.replyOnSubject.id;
-    router.push('/[chatItemId]', `/${chatItemId}`);
+    router.push({ pathname: '/', query: { chatId: chatItemId } });
   };
 
   return (

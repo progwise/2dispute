@@ -1,8 +1,9 @@
+import { UrlObject } from 'url';
 import React from 'react';
 import Link from 'next/link';
 
 interface NavBarItemProps {
-  href: string;
+  href: string | UrlObject;
   as?: string;
   children: React.ReactNode;
 }

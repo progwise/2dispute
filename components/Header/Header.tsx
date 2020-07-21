@@ -1,3 +1,4 @@
+import url, { UrlObject } from 'url';
 import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { Waypoint } from 'react-waypoint';
@@ -16,10 +17,11 @@ const Header = (): JSX.Element => {
 
   const isAuthenticated = data?.me ? true : false;
 
-  const getLoginPath = (redirectTo: string = router.asPath): string =>
-    `/api/auth/twitter?redirectTo=${redirectTo}`;
+  const getLoginPath = (
+    redirectTo: string | UrlObject = router.asPath,
+  ): string => `/api/auth/twitter?redirectTo=${url.format(redirectTo)}`;
   const logoutPath = '/api/auth/logout';
-  const createSubjectPath = '/new';
+  const createSubjectPath: UrlObject = { pathname: '/', query: { new: '' } };
 
   return (
     <>
