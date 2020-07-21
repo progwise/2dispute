@@ -26,7 +26,7 @@ const queries: QueryResolvers = {
       (itemA, itemB) => itemB.updateAt.getTime() - itemA.updateAt.getTime(),
     );
 
-    const getNewestElement = !!args.before || !args.after;
+    const getNewestElement = !args.before;
     const items = getNewestElement
       ? allLoadedItems.slice(0, args.limit) // first nth elements
       : allLoadedItems.slice(-args.limit); // last nth elements
