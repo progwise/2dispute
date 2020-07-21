@@ -24,7 +24,7 @@ const CreateSubject = (): JSX.Element | null => {
 
     const subjectId = data.createSubject.id;
 
-    router.push('/chat/[chatItemId]', `/chat/${subjectId}`);
+    router.push('/[chatItemId]', `/${subjectId}`);
   };
 
   if (loading) {

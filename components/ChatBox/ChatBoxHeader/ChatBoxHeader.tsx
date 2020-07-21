@@ -8,7 +8,7 @@ interface ChatBoxHeaderProps {
 
 const ChatBoxHeader = ({ header }: ChatBoxHeaderProps): JSX.Element => (
   <div className="md:col-span-2 border-b px-4 flex items-center py-2">
-    <Link href="/chat" className="p-2 text-xl md:hidden">
+    <Link href="/" className="p-2 text-xl md:hidden">
       <FaArrowLeft />
     </Link>
     <span className="py-2 truncate" title={header}>
