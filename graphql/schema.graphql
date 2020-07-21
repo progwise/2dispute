@@ -39,7 +39,7 @@ type Query {
     before: DateTime
     search: String
     scope: ChatScope! = USER_SCOPE
-  ): Chat
+  ): Chat @complexity(value: 1, multipliers: ["limit"])
   chatItem(id: ID!): ChatItem
 }
 
