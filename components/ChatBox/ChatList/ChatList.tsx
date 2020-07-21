@@ -91,6 +91,7 @@ const ChatList = ({
             ...prevResult.chat,
             items: [...prevResult.chat.items, ...fetchMoreResult.chat.items],
             oldestLastUpdateAt: fetchMoreResult.chat.oldestLastUpdateAt,
+            hasNextPage: fetchMoreResult.chat.hasNextPage,
           },
         };
       },
