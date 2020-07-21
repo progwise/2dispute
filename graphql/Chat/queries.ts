@@ -32,7 +32,13 @@ const queries: QueryResolvers = {
       : allLoadedItems.slice(-args.limit); // last nth elements
 
     const hasNextPage = async (): Promise<boolean> => {
+      const loadedLessItemsThenAsked = allLoadedItems.length < args.limit;
       const loadedMoreItemsThanNecessary = allLoadedItems.length > args.limit;
+
+      if (loadedLessItemsThenAsked) {
+        return false;
+      }
+
       if (loadedMoreItemsThanNecessary) {
         return true;
       }
