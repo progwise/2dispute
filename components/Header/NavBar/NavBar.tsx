@@ -3,7 +3,7 @@ import { FaBars } from 'react-icons/fa';
 import Layout from '../../Layout';
 import LogoSVG from '../Logo/Logo.svg';
 import Link from '../../Link/Link';
-import Notifications from '../Notifcations';
+import Notifications from '../Notifications';
 
 interface NavBarProps {
   children: React.ReactNode;

@@ -7,7 +7,7 @@ import withApollo from '../../utils/withApollo';
 import { FullPageContext } from '../FullPage';
 import NavBar, { NavBarItem } from './NavBar';
 import Logo from './Logo';
-import Notifications from './Notifcations';
+import Notifications from './Notifications';
 
 const Header = (): JSX.Element => {
   const [logoVisible, setLogoVisible] = useState(true);
