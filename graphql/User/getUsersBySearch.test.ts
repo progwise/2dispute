@@ -55,6 +55,22 @@ test('search by twitter handle', async () => {
   `);
 });
 
+test('search with @-sign', async () => {
+  const users = await getUsersBySearch('@TWitterH', mongoose);
+
+  expect(users).toHaveLength(1);
+  expect(users).toMatchInlineSnapshot(`
+    Array [
+      Object {
+        "id": "1",
+        "name": "User name",
+        "picture": null,
+        "twitterHandle": "twitterHandle",
+      },
+    ]
+  `);
+});
+
 test('escape regex', async () => {
   const users = await getUsersBySearch('.', mongoose);
   expect(users).toHaveLength(0);
