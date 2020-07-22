@@ -1,4 +1,5 @@
 import { QueryResolvers, ChatItem, ChatScope } from '../generated/backend';
+import getUsersBySearch from '../User/getUsersBySearch';
 import loadDisputes from './loadDisputes';
 import loadSubjects from './loadSubjects';
 
@@ -8,9 +9,15 @@ const queries: QueryResolvers = {
       return null;
     }
 
+    let userIds: string[] = [];
+    if (args.search && args.search.trim() !== '') {
+      const users = await getUsersBySearch(args.search, context.mongoose);
+      userIds = users.map(user => user.id);
+    }
+
     const [resultDisputes, resultSubjects] = await Promise.all([
-      loadDisputes(args, context),
-      loadSubjects(args, context),
+      loadDisputes(args, context, userIds),
+      loadSubjects(args, context, userIds),
     ]);
 
     const disputeItems = resultDisputes.items.map(dispute => ({

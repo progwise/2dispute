@@ -13,6 +13,7 @@ const loadDisputes = async (
     scope: ChatScope;
   },
   context: Context,
+  userIds: string[],
 ): Promise<{
   items: DisputeDocument[];
   hasNextPage: () => Promise<boolean>;
@@ -41,7 +42,11 @@ const loadDisputes = async (
       : {};
   const searchMatch = args.search
     ? {
-        subject: { $regex: new RegExp(escapeStringRegexp(args.search), 'i') },
+        $or: [
+          { subject: new RegExp(escapeStringRegexp(args.search), 'i') },
+          { 'disputes.partnerIdA': { $in: userIds } },
+          { 'disputes.partnerIdB': { $in: userIds } },
+        ],
       }
     : {};
 
