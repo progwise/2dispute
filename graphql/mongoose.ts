@@ -10,6 +10,9 @@ import {
   newMessageNotificationSchema,
 } from './Notification/NotificationSchema';
 import UserSchema, { UserDocument } from './User/UserSchema';
+import CacheManagerSchema, {
+  CacheManagerDocument,
+} from './User/CacheManagerSchema';
 
 mongoose.set('debug', process.env.NODE_ENV === 'development');
 mongoose.set('useFindAndModify', false);
@@ -23,6 +26,7 @@ export interface MongooseHelper {
     NewDisputeNotification: mongoose.Model<NewDisputeNotificationDocument, {}>;
     NewMessageNotification: mongoose.Model<NewMessageNotificationDocument, {}>;
     User: mongoose.Model<UserDocument, {}>;
+    CacheManager: mongoose.Model<CacheManagerDocument, {}>;
   };
 }
 
@@ -66,6 +70,9 @@ export const getMongooseHelper = async (): Promise<MongooseHelper> => {
     );
   const User: mongoose.Model<UserDocument, {}> =
     mongoose.models.User ?? mongoose.model<UserDocument>('User', UserSchema);
+  const CacheManager: mongoose.Model<CacheManagerDocument, {}> =
+    mongoose.models.CacheManager ??
+    mongoose.model<CacheManagerDocument>('CacheManager', CacheManagerSchema);
 
   return {
     connection: mongoose.connections[0],
@@ -75,6 +82,7 @@ export const getMongooseHelper = async (): Promise<MongooseHelper> => {
       NewDisputeNotification,
       NewMessageNotification,
       User,
+      CacheManager,
     },
   };
 };
