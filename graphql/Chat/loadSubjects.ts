@@ -13,6 +13,7 @@ const loadSubjects = async (
     scope: ChatScope;
   },
   context: Context,
+  userIds: string[],
 ): Promise<{
   items: SubjectDocument[];
   hasNextPage: () => Promise<boolean>;
@@ -30,7 +31,10 @@ const loadSubjects = async (
 
   const searchWhere = args.search
     ? {
-        subject: { $regex: new RegExp(escapeStringRegexp(args.search), 'i') },
+        $or: [
+          { subject: new RegExp(escapeStringRegexp(args.search), 'i') },
+          { userId: { $in: userIds } },
+        ],
       }
     : {};
   const userWhere =

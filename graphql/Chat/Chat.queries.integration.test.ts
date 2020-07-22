@@ -9,6 +9,7 @@ import {
   MongooseHelper,
 } from '../mongoose';
 import { subject1, subject3, subject4 } from '../../testing/fixtures/subjects';
+import { user1 } from '../../testing/fixtures/cacheManager';
 
 let app: http.Server;
 let mongoose: MongooseHelper;
@@ -32,7 +33,12 @@ afterAll(async () => {
   app.close();
 });
 
-beforeEach(async () => mongoose.models.Subject.deleteMany({}).exec());
+beforeEach(() =>
+  Promise.all([
+    mongoose.models.Subject.deleteMany({}).exec(),
+    mongoose.models.CacheManager.deleteMany({}).exec(),
+  ]),
+);
 
 describe('query chat', () => {
   const chatQuery = `
@@ -421,6 +427,45 @@ describe('query chat', () => {
 
         expect(result.body.errors).toBeUndefined();
         expect(result.body.data.chat.items).toHaveLength(0);
+      });
+
+      test('search by twitter name', async () => {
+        await Promise.all([
+          new mongoose.models.Subject(subject3).save(),
+          new mongoose.models.CacheManager(user1).save(),
+        ]);
+
+        const chatQueryWithSearch = `
+          {
+            chat(search: "user name") {
+              items {
+                id
+                __typename
+              }
+            }
+          }
+        `;
+
+        const result = await request(app)
+          .post('')
+          .set('Cookie', [`token=${token}`])
+          .send({ query: chatQueryWithSearch })
+          .expect(200);
+
+        expect(result.body.errors).toBeUndefined();
+        expect(result.body.data.chat.items).toHaveLength(2);
+        expect(result.body.data.chat.items).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "__typename": "Dispute",
+              "id": "dc938ae30aab50b2e75c70e6",
+            },
+            Object {
+              "__typename": "Subject",
+              "id": "5021abebf3312244c2aeb762",
+            },
+          ]
+        `);
       });
     });
 
