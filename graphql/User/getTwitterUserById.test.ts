@@ -43,9 +43,7 @@ beforeEach(() => {
 
 afterEach(async () => {
   jest.resetAllMocks();
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore
-  await mongoCache.store.reset();
+  await mongoCache.reset();
 });
 
 afterAll(() => mongoConnection.close());
