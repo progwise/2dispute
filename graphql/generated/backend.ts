@@ -37,7 +37,7 @@ export type Query = {
   allDisputes: FieldWrapper<DisputeConnection>;
   allNotifications?: FieldWrapper<Maybe<NotificationConnection>>;
   allSubjects: FieldWrapper<SubjectConnection>;
-  chat?: FieldWrapper<Maybe<Chat>>;
+  chat?: FieldWrapper<Maybe<ChatConnection>>;
   chatItem?: FieldWrapper<Maybe<ChatItem>>;
   dispute?: FieldWrapper<Maybe<Dispute>>;
   me?: FieldWrapper<Maybe<User>>;
@@ -253,12 +253,10 @@ export type ChatItem = {
   lastUpdateAt: FieldWrapper<Scalars['DateTime']>;
 };
 
-export type Chat = {
-  __typename?: 'Chat';
-  hasNextPage: FieldWrapper<Scalars['Boolean']>;
-  items: FieldWrapper<Array<ChatItem>>;
-  newestLastUpdateAt?: FieldWrapper<Maybe<Scalars['DateTime']>>;
-  oldestLastUpdateAt?: FieldWrapper<Maybe<Scalars['DateTime']>>;
+export type ChatConnection = {
+  __typename?: 'ChatConnection';
+  edges: FieldWrapper<Array<ChatEdge>>;
+  pageInfo: FieldWrapper<PageInfo>;
 };
 
 export enum ChatScope {
@@ -303,6 +301,12 @@ export type Votes = {
   ups: FieldWrapper<Scalars['Int']>;
   downs: FieldWrapper<Scalars['Int']>;
   userVoting: FieldWrapper<UserVoting>;
+};
+
+export type ChatEdge = {
+  __typename?: 'ChatEdge';
+  cursor: FieldWrapper<Scalars['String']>;
+  node: FieldWrapper<ChatItem>;
 };
 
 export type NewMessageNotification = Notification & {
@@ -463,7 +467,7 @@ export type ResolversTypes = ResolversObject<{
   UserVoting: UserVoting;
   Tweet: ResolverTypeWrapper<Tweet>;
   ChatItem: ResolversTypes['Subject'] | ResolversTypes['Dispute'];
-  Chat: ResolverTypeWrapper<Chat>;
+  ChatConnection: ResolverTypeWrapper<ChatConnection>;
   ChatScope: ChatScope;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Notification:
@@ -477,6 +481,7 @@ export type ResolversTypes = ResolversObject<{
   >;
   NotificationEdge: ResolverTypeWrapper<NotificationEdge>;
   Votes: ResolverTypeWrapper<Votes>;
+  ChatEdge: ResolverTypeWrapper<ChatEdge>;
   NewMessageNotification: ResolverTypeWrapper<NewMessageNotificationDocument>;
   NewDisputeNotification: ResolverTypeWrapper<NewDisputeNotificationDocument>;
 }>;
@@ -510,7 +515,7 @@ export type ResolversParentTypes = ResolversObject<{
   UserVoting: UserVoting;
   Tweet: Tweet;
   ChatItem: ResolversParentTypes['Subject'] | ResolversParentTypes['Dispute'];
-  Chat: Chat;
+  ChatConnection: ChatConnection;
   ChatScope: ChatScope;
   PageInfo: PageInfo;
   Notification:
@@ -524,6 +529,7 @@ export type ResolversParentTypes = ResolversObject<{
   };
   NotificationEdge: NotificationEdge;
   Votes: Votes;
+  ChatEdge: ChatEdge;
   NewMessageNotification: NewMessageNotificationDocument;
   NewDisputeNotification: NewDisputeNotificationDocument;
 }>;
@@ -577,7 +583,7 @@ export type QueryResolvers<
     RequireFields<QueryAllSubjectsArgs, 'limit'>
   >;
   chat?: Resolver<
-    Maybe<ResolversTypes['Chat']>,
+    Maybe<ResolversTypes['ChatConnection']>,
     ParentType,
     ContextType,
     RequireFields<QueryChatArgs, 'limit' | 'scope'>
@@ -824,22 +830,12 @@ export type ChatItemResolvers<
   lastUpdateAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
 }>;
 
-export type ChatResolvers<
+export type ChatConnectionResolvers<
   ContextType = Context,
-  ParentType extends ResolversParentTypes['Chat'] = ResolversParentTypes['Chat']
+  ParentType extends ResolversParentTypes['ChatConnection'] = ResolversParentTypes['ChatConnection']
 > = ResolversObject<{
-  hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  items?: Resolver<Array<ResolversTypes['ChatItem']>, ParentType, ContextType>;
-  newestLastUpdateAt?: Resolver<
-    Maybe<ResolversTypes['DateTime']>,
-    ParentType,
-    ContextType
-  >;
-  oldestLastUpdateAt?: Resolver<
-    Maybe<ResolversTypes['DateTime']>,
-    ParentType,
-    ContextType
-  >;
+  edges?: Resolver<Array<ResolversTypes['ChatEdge']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -909,6 +905,15 @@ export type VotesResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
+export type ChatEdgeResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['ChatEdge'] = ResolversParentTypes['ChatEdge']
+> = ResolversObject<{
+  cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  node?: Resolver<ResolversTypes['ChatItem'], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
 export type NewMessageNotificationResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['NewMessageNotification'] = ResolversParentTypes['NewMessageNotification']
@@ -946,13 +951,14 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   Message?: MessageResolvers<ContextType>;
   Tweet?: TweetResolvers<ContextType>;
   ChatItem?: ChatItemResolvers;
-  Chat?: ChatResolvers<ContextType>;
+  ChatConnection?: ChatConnectionResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
   Notification?: NotificationResolvers;
   SubjectEdge?: SubjectEdgeResolvers<ContextType>;
   DisputeEdge?: DisputeEdgeResolvers<ContextType>;
   NotificationEdge?: NotificationEdgeResolvers<ContextType>;
   Votes?: VotesResolvers<ContextType>;
+  ChatEdge?: ChatEdgeResolvers<ContextType>;
   NewMessageNotification?: NewMessageNotificationResolvers<ContextType>;
   NewDisputeNotification?: NewDisputeNotificationResolvers<ContextType>;
 }>;
@@ -986,7 +992,7 @@ type Query {
   allDisputes(limit: Int = 10, after: String, before: String): DisputeConnection! @complexity(value: 1, multipliers: ["limit"])
   allNotifications(limit: Int = 10, after: String, before: String): NotificationConnection
   allSubjects(limit: Int = 10, after: String, before: String, filter: SubjectFilter): SubjectConnection! @complexity(value: 1, multipliers: ["limit"])
-  chat(limit: Int = 10, after: DateTime, before: DateTime, search: String, scope: ChatScope! = USER_SCOPE): Chat @complexity(value: 1, multipliers: ["limit"])
+  chat(limit: Int = 10, after: DateTime, before: DateTime, search: String, scope: ChatScope! = USER_SCOPE): ChatConnection @complexity(value: 1, multipliers: ["limit"])
   chatItem(id: ID!): ChatItem
   dispute(id: ID!): Dispute
   me: User
@@ -1107,11 +1113,9 @@ interface ChatItem {
   lastUpdateAt: DateTime!
 }
 
-type Chat {
-  hasNextPage: Boolean!
-  items: [ChatItem!]!
-  newestLastUpdateAt: DateTime
-  oldestLastUpdateAt: DateTime
+type ChatConnection {
+  edges: [ChatEdge!]!
+  pageInfo: PageInfo!
 }
 
 enum ChatScope {
@@ -1151,6 +1155,11 @@ type Votes {
   ups: Int!
   downs: Int!
   userVoting: UserVoting!
+}
+
+type ChatEdge {
+  cursor: String!
+  node: ChatItem!
 }
 
 type NewMessageNotification implements Notification {

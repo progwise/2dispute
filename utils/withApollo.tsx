@@ -10,7 +10,26 @@ import {
   defaultDataIdFromObject,
   InMemoryCache,
 } from '@apollo/client';
+import { relayStylePagination } from '@apollo/client/utilities';
+import { FieldPolicy } from '@apollo/client/cache';
 import possibleTypes from '../graphql/generated/introspection';
+
+// The relay implementation has a bug
+// see https://github.com/apollographql/apollo-client/issues/6502#issuecomment-662195579
+// This should temporary fix it:
+const fixedRelayStylePagination = (...args): FieldPolicy => ({
+  ...relayStylePagination(...args),
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  read: (...readArgs) => {
+    const existing = readArgs[0];
+    const originalRead = relayStylePagination(...args).read;
+
+    if (!existing || !originalRead) {
+      return;
+    }
+    return originalRead(...readArgs);
+  },
+});
 
 const createCache = (initialState: any): InMemoryCache =>
   new InMemoryCache({
@@ -22,6 +41,13 @@ const createCache = (initialState: any): InMemoryCache =>
         default:
           return defaultDataIdFromObject(object);
       }
+    },
+    typePolicies: {
+      Query: {
+        fields: {
+          chat: fixedRelayStylePagination(['search', 'scope']),
+        },
+      },
     },
   }).restore(initialState || {});
 

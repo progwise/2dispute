@@ -4,7 +4,7 @@
 # import NotificationConnection, NotificationsUpdate, NotificationStatus from './Notification/Notification.graphql'
 # import Message, UserVoting from './Message/Message.graphql'
 # import Tweet from './Tweet/Tweet.graphql'
-# import Chat, ChatItem, ChatScope from './Chat/Chat.graphql'
+# import ChatItem, ChatScope, ChatConnection from './Chat/Chat.graphql'
 # import @auth from './schemaDirectives/auth.graphql'
 # import @complexity from './schemaDirectives/complexity.graphql'
 
@@ -39,7 +39,7 @@ type Query {
     before: DateTime
     search: String
     scope: ChatScope! = USER_SCOPE
-  ): Chat @complexity(value: 1, multipliers: ["limit"])
+  ): ChatConnection @complexity(value: 1, multipliers: ["limit"])
   chatItem(id: ID!): ChatItem
 }
 

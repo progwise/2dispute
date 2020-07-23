@@ -44,14 +44,19 @@ describe('query chat', () => {
   const chatQuery = `
     {
       chat(scope: USER_SCOPE) {
-        items {
-          id
-          lastUpdateAt
-          __typename
+        edges{
+          cursor
+          node {
+            id
+            lastUpdateAt
+            __typename
+          }
         }
-        newestLastUpdateAt
-        oldestLastUpdateAt
-        hasNextPage
+        pageInfo {
+          startCursor
+          endCursor
+          hasNextPage
+        }
       }
     }
   `;
@@ -76,8 +81,10 @@ describe('query chat', () => {
       const chatQueryAllScope = `
         {
           chat(scope: ALL) {
-            items {
-              id
+            edges{
+              node {
+                id
+              }
             }
           }
         }
@@ -89,7 +96,7 @@ describe('query chat', () => {
         .expect(200);
 
       expect(result.body.errors).toBeUndefined();
-      expect(result.body.data.chat).toEqual({ items: [] });
+      expect(result.body.data.chat).toEqual({ edges: [] });
     });
   });
 
@@ -104,10 +111,12 @@ describe('query chat', () => {
       Object {
         "data": Object {
           "chat": Object {
-            "hasNextPage": false,
-            "items": Array [],
-            "newestLastUpdateAt": null,
-            "oldestLastUpdateAt": null,
+            "edges": Array [],
+            "pageInfo": Object {
+              "endCursor": "",
+              "hasNextPage": false,
+              "startCursor": "",
+            },
           },
         },
       }
@@ -127,21 +136,29 @@ describe('query chat', () => {
       Object {
         "data": Object {
           "chat": Object {
-            "hasNextPage": false,
-            "items": Array [
+            "edges": Array [
               Object {
-                "__typename": "Dispute",
-                "id": "dc938ae30aab50b2e75c70e6",
-                "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+                "cursor": "2020-06-17T11:00:00.000Z",
+                "node": Object {
+                  "__typename": "Dispute",
+                  "id": "dc938ae30aab50b2e75c70e6",
+                  "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+                },
               },
               Object {
-                "__typename": "Subject",
-                "id": "5021abebf3312244c2aeb762",
-                "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+                "cursor": "2020-06-17T11:00:00.000Z",
+                "node": Object {
+                  "__typename": "Subject",
+                  "id": "5021abebf3312244c2aeb762",
+                  "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+                },
               },
             ],
-            "newestLastUpdateAt": "2020-06-17T11:00:00.000Z",
-            "oldestLastUpdateAt": "2020-06-17T11:00:00.000Z",
+            "pageInfo": Object {
+              "endCursor": "2020-06-17T11:00:00.000Z",
+              "hasNextPage": false,
+              "startCursor": "2020-06-17T11:00:00.000Z",
+            },
           },
         },
       }
@@ -162,36 +179,53 @@ describe('query chat', () => {
       Object {
         "data": Object {
           "chat": Object {
-            "hasNextPage": false,
-            "items": Array [
+            "edges": Array [
               Object {
-                "__typename": "Dispute",
-                "id": "dc938ae30aab50b2e75c70e6",
-                "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+                "cursor": "2020-06-17T11:00:00.000Z",
+                "node": Object {
+                  "__typename": "Dispute",
+                  "id": "dc938ae30aab50b2e75c70e6",
+                  "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+                },
               },
               Object {
-                "__typename": "Subject",
-                "id": "5021abebf3312244c2aeb762",
-                "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+                "cursor": "2020-06-17T11:00:00.000Z",
+                "node": Object {
+                  "__typename": "Subject",
+                  "id": "5021abebf3312244c2aeb762",
+                  "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+                },
               },
               Object {
-                "__typename": "Dispute",
-                "id": "a17456a1410c7fb7ed325372",
-                "lastUpdateAt": "2020-06-15T11:00:00.000Z",
+                "cursor": "2020-06-15T11:00:00.000Z",
+                "node": Object {
+                  "__typename": "Dispute",
+                  "id": "a17456a1410c7fb7ed325372",
+                  "lastUpdateAt": "2020-06-15T11:00:00.000Z",
+                },
               },
               Object {
-                "__typename": "Dispute",
-                "id": "bbaeec62fed1fe8eff4bc127",
-                "lastUpdateAt": "2020-06-15T10:00:00.000Z",
+                "cursor": "2020-06-15T10:00:00.000Z",
+                "node": Object {
+                  "__typename": "Dispute",
+                  "id": "bbaeec62fed1fe8eff4bc127",
+                  "lastUpdateAt": "2020-06-15T10:00:00.000Z",
+                },
               },
               Object {
-                "__typename": "Subject",
-                "id": "123456789012345678901234",
-                "lastUpdateAt": "2020-06-15T10:00:00.000Z",
+                "cursor": "2020-06-15T10:00:00.000Z",
+                "node": Object {
+                  "__typename": "Subject",
+                  "id": "123456789012345678901234",
+                  "lastUpdateAt": "2020-06-15T10:00:00.000Z",
+                },
               },
             ],
-            "newestLastUpdateAt": "2020-06-17T11:00:00.000Z",
-            "oldestLastUpdateAt": "2020-06-15T10:00:00.000Z",
+            "pageInfo": Object {
+              "endCursor": "2020-06-15T10:00:00.000Z",
+              "hasNextPage": false,
+              "startCursor": "2020-06-17T11:00:00.000Z",
+            },
           },
         },
       }
@@ -206,14 +240,14 @@ describe('query chat', () => {
       const chatQueryWithLimit = `
         {
           chat(limit: 1) {
-            hasNextPage
-            items {
-              id
-              lastUpdateAt
-              __typename
+            edges{
+              node {
+                id
+              }
             }
-            newestLastUpdateAt
-            oldestLastUpdateAt
+            pageInfo {
+              hasNextPage
+            }
           }
         }
       `;
@@ -224,8 +258,8 @@ describe('query chat', () => {
         .send({ query: chatQueryWithLimit })
         .expect(200);
 
-      expect(result.body.data.chat.items).toHaveLength(1);
-      expect(result.body.data.chat.hasNextPage).toBeTruthy();
+      expect(result.body.data.chat.edges).toHaveLength(1);
+      expect(result.body.data.chat.pageInfo.hasNextPage).toBeTruthy();
     });
 
     test('before argument', async () => {
@@ -235,14 +269,18 @@ describe('query chat', () => {
       const chatQueryWithBefore = `
         {
           chat(before: "2020-06-15T10:00:00.000Z") {
-            items {
-              id
-              lastUpdateAt
-              __typename
+            edges{
+              node {
+                id
+                lastUpdateAt
+                __typename
+              }
             }
-            newestLastUpdateAt
-            oldestLastUpdateAt
-            hasNextPage
+            pageInfo {
+              startCursor
+              endCursor
+              hasNextPage
+            }
           }
         }
       `;
@@ -257,26 +295,34 @@ describe('query chat', () => {
         Object {
           "data": Object {
             "chat": Object {
-              "hasNextPage": false,
-              "items": Array [
+              "edges": Array [
                 Object {
-                  "__typename": "Dispute",
-                  "id": "dc938ae30aab50b2e75c70e6",
-                  "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+                  "node": Object {
+                    "__typename": "Dispute",
+                    "id": "dc938ae30aab50b2e75c70e6",
+                    "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+                  },
                 },
                 Object {
-                  "__typename": "Subject",
-                  "id": "5021abebf3312244c2aeb762",
-                  "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+                  "node": Object {
+                    "__typename": "Subject",
+                    "id": "5021abebf3312244c2aeb762",
+                    "lastUpdateAt": "2020-06-17T11:00:00.000Z",
+                  },
                 },
                 Object {
-                  "__typename": "Dispute",
-                  "id": "a17456a1410c7fb7ed325372",
-                  "lastUpdateAt": "2020-06-15T11:00:00.000Z",
+                  "node": Object {
+                    "__typename": "Dispute",
+                    "id": "a17456a1410c7fb7ed325372",
+                    "lastUpdateAt": "2020-06-15T11:00:00.000Z",
+                  },
                 },
               ],
-              "newestLastUpdateAt": "2020-06-17T11:00:00.000Z",
-              "oldestLastUpdateAt": "2020-06-15T11:00:00.000Z",
+              "pageInfo": Object {
+                "endCursor": "2020-06-15T11:00:00.000Z",
+                "hasNextPage": false,
+                "startCursor": "2020-06-17T11:00:00.000Z",
+              },
             },
           },
         }
@@ -290,14 +336,18 @@ describe('query chat', () => {
       const chatQueryWithAfter = `
         {
           chat(after: "2020-06-15T11:00:00.000Z") {
-            items {
-              id
-              lastUpdateAt
-              __typename
+            edges{
+              node {
+                id
+                lastUpdateAt
+                __typename
+              }
             }
-            newestLastUpdateAt
-            oldestLastUpdateAt
-            hasNextPage
+            pageInfo {
+              startCursor
+              endCursor
+              hasNextPage
+            }
           }
         }
       `;
@@ -312,21 +362,27 @@ describe('query chat', () => {
         Object {
           "data": Object {
             "chat": Object {
-              "hasNextPage": false,
-              "items": Array [
+              "edges": Array [
                 Object {
-                  "__typename": "Dispute",
-                  "id": "bbaeec62fed1fe8eff4bc127",
-                  "lastUpdateAt": "2020-06-15T10:00:00.000Z",
+                  "node": Object {
+                    "__typename": "Dispute",
+                    "id": "bbaeec62fed1fe8eff4bc127",
+                    "lastUpdateAt": "2020-06-15T10:00:00.000Z",
+                  },
                 },
                 Object {
-                  "__typename": "Subject",
-                  "id": "123456789012345678901234",
-                  "lastUpdateAt": "2020-06-15T10:00:00.000Z",
+                  "node": Object {
+                    "__typename": "Subject",
+                    "id": "123456789012345678901234",
+                    "lastUpdateAt": "2020-06-15T10:00:00.000Z",
+                  },
                 },
               ],
-              "newestLastUpdateAt": "2020-06-15T10:00:00.000Z",
-              "oldestLastUpdateAt": "2020-06-15T10:00:00.000Z",
+              "pageInfo": Object {
+                "endCursor": "2020-06-15T10:00:00.000Z",
+                "hasNextPage": false,
+                "startCursor": "2020-06-15T10:00:00.000Z",
+              },
             },
           },
         }
@@ -341,22 +397,26 @@ describe('query chat', () => {
         const chatQueryWithSearch = `
           {
             chat(search: "TESTSUBJECT") {
-              items {
-                id
-                lastUpdateAt
-                __typename
-                ... on Dispute {
-                  connectedSubject: subject {
+              edges{
+                node {
+                  id
+                  lastUpdateAt
+                  __typename
+                  ... on Dispute {
+                    connectedSubject: subject {
+                      subject
+                    }
+                  }
+                  ... on Subject {
                     subject
                   }
                 }
-                ... on Subject {
-                  subject
-                }
               }
-              newestLastUpdateAt
-              oldestLastUpdateAt
-              hasNextPage
+              pageInfo {
+                startCursor
+                endCursor
+                hasNextPage
+              }
             }
           }
         `;
@@ -371,33 +431,41 @@ describe('query chat', () => {
           Object {
             "data": Object {
               "chat": Object {
-                "hasNextPage": false,
-                "items": Array [
+                "edges": Array [
                   Object {
-                    "__typename": "Dispute",
-                    "connectedSubject": Object {
-                      "subject": "testSubject",
+                    "node": Object {
+                      "__typename": "Dispute",
+                      "connectedSubject": Object {
+                        "subject": "testSubject",
+                      },
+                      "id": "a17456a1410c7fb7ed325372",
+                      "lastUpdateAt": "2020-06-15T11:00:00.000Z",
                     },
-                    "id": "a17456a1410c7fb7ed325372",
-                    "lastUpdateAt": "2020-06-15T11:00:00.000Z",
                   },
                   Object {
-                    "__typename": "Dispute",
-                    "connectedSubject": Object {
-                      "subject": "testSubject",
+                    "node": Object {
+                      "__typename": "Dispute",
+                      "connectedSubject": Object {
+                        "subject": "testSubject",
+                      },
+                      "id": "bbaeec62fed1fe8eff4bc127",
+                      "lastUpdateAt": "2020-06-15T10:00:00.000Z",
                     },
-                    "id": "bbaeec62fed1fe8eff4bc127",
-                    "lastUpdateAt": "2020-06-15T10:00:00.000Z",
                   },
                   Object {
-                    "__typename": "Subject",
-                    "id": "123456789012345678901234",
-                    "lastUpdateAt": "2020-06-15T10:00:00.000Z",
-                    "subject": "testSubject",
+                    "node": Object {
+                      "__typename": "Subject",
+                      "id": "123456789012345678901234",
+                      "lastUpdateAt": "2020-06-15T10:00:00.000Z",
+                      "subject": "testSubject",
+                    },
                   },
                 ],
-                "newestLastUpdateAt": "2020-06-15T11:00:00.000Z",
-                "oldestLastUpdateAt": "2020-06-15T10:00:00.000Z",
+                "pageInfo": Object {
+                  "endCursor": "2020-06-15T10:00:00.000Z",
+                  "hasNextPage": false,
+                  "startCursor": "2020-06-15T11:00:00.000Z",
+                },
               },
             },
           }
@@ -410,9 +478,11 @@ describe('query chat', () => {
         const chatQueryWithSearch = `
           {
             chat(search: ".") {
-              items {
-                ... on Dispute {
-                  id
+              edges {
+                node {
+                  ... on Dispute {
+                    id
+                  }
                 }
               }
             }
@@ -426,7 +496,7 @@ describe('query chat', () => {
           .expect(200);
 
         expect(result.body.errors).toBeUndefined();
-        expect(result.body.data.chat.items).toHaveLength(0);
+        expect(result.body.data.chat.edges).toHaveLength(0);
       });
 
       test('search by twitter name', async () => {
@@ -438,9 +508,11 @@ describe('query chat', () => {
         const chatQueryWithSearch = `
           {
             chat(search: "user name") {
-              items {
-                id
-                __typename
+              edges {
+                node {
+                  id
+                  __typename
+                }
               }
             }
           }
@@ -453,16 +525,20 @@ describe('query chat', () => {
           .expect(200);
 
         expect(result.body.errors).toBeUndefined();
-        expect(result.body.data.chat.items).toHaveLength(2);
-        expect(result.body.data.chat.items).toMatchInlineSnapshot(`
+        expect(result.body.data.chat.edges).toHaveLength(2);
+        expect(result.body.data.chat.edges).toMatchInlineSnapshot(`
           Array [
             Object {
-              "__typename": "Dispute",
-              "id": "dc938ae30aab50b2e75c70e6",
+              "node": Object {
+                "__typename": "Dispute",
+                "id": "dc938ae30aab50b2e75c70e6",
+              },
             },
             Object {
-              "__typename": "Subject",
-              "id": "5021abebf3312244c2aeb762",
+              "node": Object {
+                "__typename": "Subject",
+                "id": "5021abebf3312244c2aeb762",
+              },
             },
           ]
         `);
@@ -481,9 +557,11 @@ describe('query chat', () => {
         const chatQueryWithSearch = `
           {
             chat(scope: USER_SCOPE) {
-              items {
-                id
-                __typename
+              edges {
+                node {
+                  id
+                  __typename
+                }
               }
             }
           }
@@ -496,15 +574,19 @@ describe('query chat', () => {
           .expect(200);
 
         expect(result.body.errors).toBeUndefined();
-        expect(result.body.data.chat.items).toMatchInlineSnapshot(`
+        expect(result.body.data.chat.edges).toMatchInlineSnapshot(`
           Array [
             Object {
-              "__typename": "Dispute",
-              "id": "dc938ae30aab50b2e75c70e6",
+              "node": Object {
+                "__typename": "Dispute",
+                "id": "dc938ae30aab50b2e75c70e6",
+              },
             },
             Object {
-              "__typename": "Subject",
-              "id": "5021abebf3312244c2aeb762",
+              "node": Object {
+                "__typename": "Subject",
+                "id": "5021abebf3312244c2aeb762",
+              },
             },
           ]
         `);
@@ -514,9 +596,11 @@ describe('query chat', () => {
         const chatQueryWithSearch = `
           {
             chat(scope: ALL) {
-              items {
-                id
-                __typename
+              edges {
+                node {
+                  id
+                  __typename
+                }
               }
             }
           }
@@ -529,23 +613,31 @@ describe('query chat', () => {
           .expect(200);
 
         expect(result.body.errors).toBeUndefined();
-        expect(result.body.data.chat.items).toMatchInlineSnapshot(`
+        expect(result.body.data.chat.edges).toMatchInlineSnapshot(`
           Array [
             Object {
-              "__typename": "Dispute",
-              "id": "5590801ae7b5bc7f82f3754d",
+              "node": Object {
+                "__typename": "Dispute",
+                "id": "5590801ae7b5bc7f82f3754d",
+              },
             },
             Object {
-              "__typename": "Subject",
-              "id": "4ee55ac0d26d7b37c0b08284",
+              "node": Object {
+                "__typename": "Subject",
+                "id": "4ee55ac0d26d7b37c0b08284",
+              },
             },
             Object {
-              "__typename": "Dispute",
-              "id": "dc938ae30aab50b2e75c70e6",
+              "node": Object {
+                "__typename": "Dispute",
+                "id": "dc938ae30aab50b2e75c70e6",
+              },
             },
             Object {
-              "__typename": "Subject",
-              "id": "5021abebf3312244c2aeb762",
+              "node": Object {
+                "__typename": "Subject",
+                "id": "5021abebf3312244c2aeb762",
+              },
             },
           ]
         `);

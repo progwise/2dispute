@@ -72,7 +72,7 @@ export default new ApolloServer({
             ],
           });
 
-          if (complexity >= 300) {
+          if (complexity >= 400) {
             throw new ApolloError('the query is too complex');
           }
         },

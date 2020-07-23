@@ -5,12 +5,17 @@ query ChatList(
   $scope: ChatScope
 ) {
   chat(after: $after, before: $before, search: $search, scope: $scope) {
-    items {
-      ...ChatListItem
+    edges {
+      cursor
+      node {
+        ...ChatListItem
+      }
     }
-    newestLastUpdateAt
-    oldestLastUpdateAt
-    hasNextPage
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+    }
   }
 }
 

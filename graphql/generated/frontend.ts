@@ -19,7 +19,7 @@ export type Query = {
   allDisputes: DisputeConnection;
   allNotifications?: Maybe<NotificationConnection>;
   allSubjects: SubjectConnection;
-  chat?: Maybe<Chat>;
+  chat?: Maybe<ChatConnection>;
   chatItem?: Maybe<ChatItem>;
   dispute?: Maybe<Dispute>;
   me?: Maybe<User>;
@@ -235,12 +235,10 @@ export type ChatItem = {
   lastUpdateAt: Scalars['DateTime'];
 };
 
-export type Chat = {
-  __typename?: 'Chat';
-  hasNextPage: Scalars['Boolean'];
-  items: Array<ChatItem>;
-  newestLastUpdateAt?: Maybe<Scalars['DateTime']>;
-  oldestLastUpdateAt?: Maybe<Scalars['DateTime']>;
+export type ChatConnection = {
+  __typename?: 'ChatConnection';
+  edges: Array<ChatEdge>;
+  pageInfo: PageInfo;
 };
 
 export enum ChatScope {
@@ -285,6 +283,12 @@ export type Votes = {
   ups: Scalars['Int'];
   downs: Scalars['Int'];
   userVoting: UserVoting;
+};
+
+export type ChatEdge = {
+  __typename?: 'ChatEdge';
+  cursor: Scalars['String'];
+  node: ChatItem;
 };
 
 export type NewMessageNotification = Notification & {
@@ -385,15 +389,19 @@ export type ChatListQueryVariables = {
 
 export type ChatListQuery = { __typename?: 'Query' } & {
   chat?: Maybe<
-    { __typename?: 'Chat' } & Pick<
-      Chat,
-      'newestLastUpdateAt' | 'oldestLastUpdateAt' | 'hasNextPage'
-    > & {
-        items: Array<
-          | ({ __typename?: 'Subject' } & ChatListItem_Subject_Fragment)
-          | ({ __typename?: 'Dispute' } & ChatListItem_Dispute_Fragment)
-        >;
-      }
+    { __typename?: 'ChatConnection' } & {
+      edges: Array<
+        { __typename?: 'ChatEdge' } & Pick<ChatEdge, 'cursor'> & {
+            node:
+              | ({ __typename?: 'Subject' } & ChatListItem_Subject_Fragment)
+              | ({ __typename?: 'Dispute' } & ChatListItem_Dispute_Fragment);
+          }
+      >;
+      pageInfo: { __typename?: 'PageInfo' } & Pick<
+        PageInfo,
+        'startCursor' | 'endCursor' | 'hasNextPage'
+      >;
+    }
   >;
 };
 
@@ -1036,12 +1044,17 @@ export const ChatListDocument = gql`
     $scope: ChatScope
   ) {
     chat(after: $after, before: $before, search: $search, scope: $scope) {
-      items {
-        ...ChatListItem
+      edges {
+        cursor
+        node {
+          ...ChatListItem
+        }
       }
-      newestLastUpdateAt
-      oldestLastUpdateAt
-      hasNextPage
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+      }
     }
   }
   ${ChatListItemFragmentDoc}

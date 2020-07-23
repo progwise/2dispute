@@ -27,75 +27,14 @@ const ChatList = ({
     if (!data?.chat) {
       return;
     }
-
-    await fetchMore({
-      variables: { before: data.chat.newestLastUpdateAt },
-      updateQuery: (prevResult, { fetchMoreResult }) => {
-        if (!prevResult.chat) {
-          return {
-            ...prevResult,
-            chat: fetchMoreResult?.chat,
-          };
-        }
-
-        if (!fetchMoreResult?.chat || fetchMoreResult.chat.items.length === 0) {
-          return prevResult;
-        }
-
-        const newItems = [
-          ...fetchMoreResult.chat.items,
-          ...prevResult.chat.items,
-        ].filter(
-          (item, index, array) =>
-            // If multiple items have the same id, keep only the first occurrence:
-            index === array.findIndex(i => i.id === item.id),
-        );
-
-        return {
-          ...prevResult,
-          chat: {
-            ...prevResult.chat,
-            newestLastUpdateAt:
-              fetchMoreResult.chat.newestLastUpdateAt ??
-              prevResult.chat.newestLastUpdateAt,
-            hasNextPage: fetchMoreResult.chat.hasNextPage,
-            items: newItems,
-          },
-        };
-      },
-    });
+    await fetchMore({ variables: { before: data.chat.pageInfo.startCursor } });
   };
 
   const handleFetchMore = async (): Promise<void> => {
     if (!data?.chat) {
       return;
     }
-
-    await fetchMore({
-      variables: { after: data.chat.oldestLastUpdateAt },
-      updateQuery: (prevResult, { fetchMoreResult }) => {
-        if (!prevResult.chat) {
-          return {
-            ...prevResult,
-            chat: fetchMoreResult?.chat,
-          };
-        }
-
-        if (!fetchMoreResult?.chat || fetchMoreResult.chat.items.length === 0) {
-          return prevResult;
-        }
-
-        return {
-          ...prevResult,
-          chat: {
-            ...prevResult.chat,
-            items: [...prevResult.chat.items, ...fetchMoreResult.chat.items],
-            oldestLastUpdateAt: fetchMoreResult.chat.oldestLastUpdateAt,
-            hasNextPage: fetchMoreResult.chat.hasNextPage,
-          },
-        };
-      },
-    });
+    await fetchMore({ variables: { after: data.chat.pageInfo.endCursor } });
   };
 
   useInterval(() => fetchNewerDisputes(), 30 * 1000);
@@ -114,8 +53,8 @@ const ChatList = ({
 
   return (
     <ul>
-      {data.chat.items
-        .slice()
+      {data.chat.edges
+        .map(edge => edge.node)
         .sort((chatItemA, chatItemB) =>
           chatItemB.lastUpdateAt.localeCompare(chatItemA.lastUpdateAt),
         )
@@ -126,9 +65,9 @@ const ChatList = ({
             isSelected={chatItem.id === selectedChatItemId}
           />
         ))}
-      {data.chat.hasNextPage && !loading && (
+      {data.chat.pageInfo.hasNextPage && !loading && (
         <Waypoint
-          key={data.chat.oldestLastUpdateAt ?? ''}
+          key={data.chat.pageInfo.endCursor ?? ''}
           onEnter={handleFetchMore}
           bottomOffset="-100px"
         />

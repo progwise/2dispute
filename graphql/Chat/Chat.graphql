@@ -1,13 +1,18 @@
+# import PageInfo from '../PageInfo/PageInfo.graphql'
+
 interface ChatItem {
   id: ID!
   lastUpdateAt: DateTime!
 }
 
-type Chat {
-  items: [ChatItem!]!
-  newestLastUpdateAt: DateTime
-  oldestLastUpdateAt: DateTime
-  hasNextPage: Boolean!
+type ChatConnection {
+  edges: [ChatEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ChatEdge {
+  cursor: String!
+  node: ChatItem!
 }
 
 enum ChatScope {

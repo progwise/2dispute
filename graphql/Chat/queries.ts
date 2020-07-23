@@ -58,14 +58,21 @@ const queries: QueryResolvers = {
     };
 
     return {
-      items: (items.map(item => item.value) as unknown) as ChatItem[],
-      newestLastUpdateAt:
-        items.length > 0 ? items[0].updateAt.toISOString() : null,
-      oldestLastUpdateAt:
-        items.length > 0
-          ? items[items.length - 1].updateAt.toISOString()
-          : null,
-      hasNextPage,
+      edges: items.map(item => ({
+        cursor: item.updateAt.toISOString(),
+        node: (item.value as unknown) as ChatItem,
+      })),
+      pageInfo: {
+        startCursor: items.length > 0 ? items[0].updateAt.toISOString() : '',
+        endCursor:
+          items.length > 0
+            ? items[items.length - 1].updateAt.toISOString()
+            : '',
+        hasNextPage,
+        hasPreviousPage: (): boolean => {
+          throw new Error('not implemented');
+        },
+      },
     };
   },
 
