@@ -3,6 +3,7 @@ import { Waypoint } from 'react-waypoint';
 import {
   useChatListQuery,
   ChatScope,
+  ChatListItemFragment,
 } from '../../../graphql/generated/frontend';
 import useInterval from '../../../utils/react-hooks/useInterval';
 import ChatListItem from './ChatListItem';
@@ -51,10 +52,22 @@ const ChatList = ({
     return <p>Chat Partner konnten nicht geladen werden</p>;
   }
 
+  const reduceDuplicates = (
+    accumulator: ChatListItemFragment[],
+    currentItem: ChatListItemFragment,
+  ): ChatListItemFragment[] => {
+    const alreadyAdded = accumulator.some(item => item.id === currentItem.id);
+    if (alreadyAdded) {
+      return accumulator;
+    }
+    return [...accumulator, currentItem];
+  };
+
   return (
     <ul>
       {data.chat.edges
         .map(edge => edge.node)
+        .reduce(reduceDuplicates, [])
         .sort((chatItemA, chatItemB) =>
           chatItemB.lastUpdateAt.localeCompare(chatItemA.lastUpdateAt),
         )
