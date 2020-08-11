@@ -22,7 +22,7 @@ module.exports = {
         '48': '12rem',
       },
       gridTemplateColumns: {
-        selectTweet: 'min-content 1fr',
+        selectTweet: 'min-content minmax(0, 550px)',
       },
       gridTemplateRows: {
         fullPage: 'auto minmax(0, 1fr)',
