@@ -6,6 +6,7 @@ import Layout from '../components/Layout';
 import TokenManager from '../components/TokenManager';
 import { FullPageProvider, FullPageContext } from '../components/FullPage';
 import { ChatContextProvider } from '../components/ChatBox/ChatContext';
+import Seo from '../components/Seo';
 
 interface MyAppProp {
   Component: new (props: any) => React.Component;
@@ -19,6 +20,7 @@ const MyApp = ({ Component, pageProps }: MyAppProp): JSX.Element => {
 
   return (
     <div className={className}>
+      <Seo />
       <TokenManager />
       <Header />
       <Layout className="h-full">
