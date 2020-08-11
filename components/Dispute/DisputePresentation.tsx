@@ -7,6 +7,7 @@ import {
 import SubjectHeader from '../Subject/SubjectHeader';
 import { DisputeChat, ChatFormValues } from '../Chat';
 import Link from '../Link/Link';
+import Seo from '../Seo';
 
 interface DisputePresentationProps {
   dispute: DisputeFragment;
@@ -41,6 +42,9 @@ const DisputePresentation = ({
 
   return (
     <>
+      <Seo
+        title={`Dispute ${dispute.partnerA.name} vs. ${dispute.partnerB.name}`}
+      />
       <SubjectHeader
         subject={dispute.subject.subject}
         tweetId={dispute.subject.tweetId ?? undefined}

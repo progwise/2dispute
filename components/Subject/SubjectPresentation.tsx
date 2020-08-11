@@ -7,6 +7,7 @@ import {
 } from '../../graphql/generated/frontend';
 import { SubjectChat, ChatFormValues } from '../Chat';
 import Link from '../Link/Link';
+import Seo from '../Seo';
 import SubjectHeader from './SubjectHeader';
 
 interface SubjectPresentationProps {
@@ -35,6 +36,7 @@ const SubjectPresentation = ({
 
   return (
     <>
+      <Seo title={`${subject.topic} von ${subject.author.name}`} />
       <SubjectHeader
         subject={subject.topic}
         tweetId={subject.tweetId ?? undefined}

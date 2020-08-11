@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useContext } from 'react';
 import { useFullPage } from '../FullPage';
 import CreateSubject from '../Subject/CreateSubject';
+import Seo from '../Seo';
 import ChatList from './ChatList';
 import ChatBoxHeader, { ChatItemHeader } from './ChatBoxHeader';
 import SearchAndCreateSubjectBox from './SearchAndCreateSubjectBox';
@@ -29,6 +30,7 @@ const ChatBox = ({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-chatBox h-full text-gray-900">
+      <Seo title="Chat" />
       <SearchAndCreateSubjectBox
         search={search}
         onSearchChange={setSearch}
@@ -58,7 +60,10 @@ const ChatBox = ({
       {showRightSide && (
         <div className="md:col-span-2 overflow-y-auto px-4">
           {showNewSubjectForm ? (
-            <CreateSubject />
+            <>
+              <Seo title="Neues Thema erstellen" />
+              <CreateSubject />
+            </>
           ) : (
             selectedChatItemId && <ChatItem chatItemId={selectedChatItemId} />
           )}
