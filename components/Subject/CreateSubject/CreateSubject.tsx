@@ -36,7 +36,7 @@ const CreateSubject = (): JSX.Element | null => {
   }
 
   if (!data.me) {
-    router.push('/api/auth/twitter');
+    router.push(`/api/auth/twitter?redirectTo=${router.asPath}`);
     return null;
   }
 
