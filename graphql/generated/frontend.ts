@@ -173,9 +173,9 @@ export type User = {
   allDisputes: DisputeConnection;
   allSubjects: SubjectConnection;
   id: Scalars['ID'];
-  name: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
   picture?: Maybe<Scalars['String']>;
-  twitterHandle: Scalars['String'];
+  twitterHandle?: Maybe<Scalars['String']>;
 };
 
 export type UserAllDisputesArgs = {

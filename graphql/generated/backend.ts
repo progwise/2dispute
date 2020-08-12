@@ -191,9 +191,9 @@ export type User = {
   allDisputes: FieldWrapper<DisputeConnection>;
   allSubjects: FieldWrapper<SubjectConnection>;
   id: FieldWrapper<Scalars['ID']>;
-  name: FieldWrapper<Scalars['String']>;
+  name?: FieldWrapper<Maybe<Scalars['String']>>;
   picture?: FieldWrapper<Maybe<Scalars['String']>>;
-  twitterHandle: FieldWrapper<Scalars['String']>;
+  twitterHandle?: FieldWrapper<Maybe<Scalars['String']>>;
 };
 
 export type UserAllDisputesArgs = {
@@ -754,9 +754,13 @@ export type UserResolvers<
     RequireFields<UserAllSubjectsArgs, 'limit'>
   >;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   picture?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  twitterHandle?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  twitterHandle?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -1068,9 +1072,9 @@ type User {
   allDisputes(limit: Int = 10, after: String, before: String): DisputeConnection! @complexity(value: 1, multipliers: ["limit"])
   allSubjects(limit: Int = 10, after: String, before: String): SubjectConnection! @complexity(value: 1, multipliers: ["limit"])
   id: ID!
-  name: String!
+  name: String
   picture: String
-  twitterHandle: String!
+  twitterHandle: String
 }
 
 type NotificationStatus {
