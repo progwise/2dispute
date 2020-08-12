@@ -47,10 +47,7 @@ const DisputePresentation = ({
   return (
     <>
       <Seo title={`Dispute ${partnerAName} vs. ${partnerBName}`} />
-      <SubjectHeader
-        subject={dispute.subject.subject}
-        tweetId={dispute.subject.tweetId ?? undefined}
-      />
+      <SubjectHeader tweetId={dispute.subject.tweetId ?? undefined} />
       <DisputeChat dispute={dispute} me={me} onNewMessage={handleNewMessage} />
       <div>
         Andere Dispute zu diesem Thema:
