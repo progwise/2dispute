@@ -40,10 +40,7 @@ const SubjectPresentation = ({
   return (
     <>
       <Seo title={`${subject.topic} von ${authorName}`} />
-      <SubjectHeader
-        subject={subject.topic}
-        tweetId={subject.tweetId ?? undefined}
-      />
+      <SubjectHeader tweetId={subject.tweetId ?? undefined} />
       <SubjectChat subject={subject} me={me} onNewMessage={handleNewMessage} />
       <div>
         Dispute zu diesem Thema:
