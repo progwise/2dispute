@@ -3,8 +3,8 @@
 
 type User {
   id: ID!
-  name: String!
-  twitterHandle: String!
+  name: String
+  twitterHandle: String
   picture: String
 
   allSubjects(

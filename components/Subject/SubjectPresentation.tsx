@@ -7,6 +7,7 @@ import {
 } from '../../graphql/generated/frontend';
 import { SubjectChat, ChatFormValues } from '../Chat';
 import Link from '../Link/Link';
+import constants from '../../utils/constants';
 import Seo from '../Seo';
 import SubjectHeader from './SubjectHeader';
 
@@ -34,9 +35,11 @@ const SubjectPresentation = ({
     router.push({ pathname: '/', query: { chatId: chatItemId } });
   };
 
+  const authorName = subject.author.name ?? constants.FALLBACK_USER.NAME;
+
   return (
     <>
-      <Seo title={`${subject.topic} von ${subject.author.name}`} />
+      <Seo title={`${subject.topic} von ${authorName}`} />
       <SubjectHeader
         subject={subject.topic}
         tweetId={subject.tweetId ?? undefined}
