@@ -1,12 +1,10 @@
 import React, { useRef, useEffect, useContext } from 'react';
 import { useFullPage } from '../FullPage';
-import CreateSubject from '../Subject/CreateSubject';
 import Seo from '../Seo';
 import ChatList from './ChatList';
-import ChatBoxHeader, { ChatItemHeader } from './ChatBoxHeader';
 import SearchAndCreateSubjectBox from './SearchAndCreateSubjectBox';
-import ChatItem from './ChatItem';
 import ChatContext from './ChatContext';
+import ChatBoxRightSide, { RightSideState } from './ChatBoxRightSide';
 
 interface ChatBoxProps {
   selectedChatItemId?: string;
@@ -26,28 +24,36 @@ const ChatBox = ({
     scrollableChatList.current?.scrollTo(0, 0);
   }, [scrollableChatList, search, scope]);
 
-  const showRightSide = selectedChatItemId !== undefined || showNewSubjectForm;
+  let rightSideState: RightSideState;
+  if (showNewSubjectForm) {
+    rightSideState = RightSideState.DisplayNewSubject;
+  } else if (selectedChatItemId === undefined) {
+    rightSideState = RightSideState.Empty;
+  } else {
+    rightSideState = RightSideState.DisplayDispute;
+  }
+
+  const displayLeftSideOnSmallDevices = rightSideState === RightSideState.Empty;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-chatBox h-full text-gray-900">
       <Seo title="Chat" />
+
+      {/* top left */}
       <SearchAndCreateSubjectBox
         search={search}
         onSearchChange={setSearch}
-        className={`border-b md:border-r ${showRightSide && 'hidden'} md:block`}
+        className={`row-start-1 col-start-1 border-b md:border-r ${
+          displayLeftSideOnSmallDevices ? '' : 'hidden'
+        } md:block`}
         scope={scope}
         onScopeChange={setScope}
       />
 
-      {selectedChatItemId !== undefined ? (
-        <ChatItemHeader chatItemId={selectedChatItemId} />
-      ) : (
-        showNewSubjectForm && <ChatBoxHeader header="Neues Thema" />
-      )}
-
+      {/* bottom left */}
       <div
-        className={`row-start-2 md:border-r overflow-y-auto ${
-          showRightSide && 'hidden'
+        className={`row-start-2 col-start-1 md:border-r overflow-y-auto ${
+          displayLeftSideOnSmallDevices ? '' : 'hidden'
         } md:block`}
         ref={scrollableChatList}
       >
@@ -57,18 +63,12 @@ const ChatBox = ({
           scope={scope}
         />
       </div>
-      {showRightSide && (
-        <div className="md:col-span-2 overflow-y-auto px-4">
-          {showNewSubjectForm ? (
-            <>
-              <Seo title="Neues Thema erstellen" />
-              <CreateSubject />
-            </>
-          ) : (
-            selectedChatItemId && <ChatItem chatItemId={selectedChatItemId} />
-          )}
-        </div>
-      )}
+
+      {/* top right and bottom right */}
+      <ChatBoxRightSide
+        rightSideState={rightSideState}
+        selectedChatItemId={selectedChatItemId}
+      />
     </div>
   );
 };

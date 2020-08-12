@@ -1,7 +1,7 @@
 import React from 'react';
-import { useChatItemQuery } from '../../../graphql/generated/frontend';
-import DisputePresentation from '../../Dispute/DisputePresentation';
-import SubjectPresentation from '../../Subject/SubjectPresentation';
+import { useChatItemQuery } from '../../../../graphql/generated/frontend';
+import DisputePresentation from '../../../Dispute/DisputePresentation';
+import SubjectPresentation from '../../../Subject/SubjectPresentation';
 
 interface ChatItemProps {
   chatItemId: string;
