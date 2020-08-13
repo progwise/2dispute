@@ -11,7 +11,12 @@ const ChatBoxNav = (): JSX.Element => {
 
   return (
     <div className="flex flex-wrap py-2 text-gray-800 font-light">
-      <ChatBoxNavItem href="/" icon={FaComments} text="Chat" />
+      <ChatBoxNavItem
+        href="/"
+        icon={FaComments}
+        text="Chat"
+        isActive={router.pathname === '/'}
+      />
       <ChatBoxNavItem href="/me" icon={FaUser} text="Profil" />
       {isAuthenticated ? (
         <ChatBoxNavItem
