@@ -11,11 +11,11 @@ const ChatBoxNav = (): JSX.Element => {
 
   return (
     <div className="flex flex-wrap py-2 text-gray-800 font-light">
-      <ChatBoxNavItem href={{ pathname: '/' }} icon={FaComments} text="Chat" />
-      <ChatBoxNavItem href={{ pathname: '/me' }} icon={FaUser} text="Profil" />
+      <ChatBoxNavItem href="/" icon={FaComments} text="Chat" />
+      <ChatBoxNavItem href="/me" icon={FaUser} text="Profil" />
       {isAuthenticated ? (
         <ChatBoxNavItem
-          href={{ pathname: '/api/auth/logout' }}
+          href="/api/auth/logout"
           icon={FaSignInAlt}
           text="Abmelden"
         />
