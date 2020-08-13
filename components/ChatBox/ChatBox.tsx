@@ -5,6 +5,7 @@ import ChatList from './ChatList';
 import SearchAndCreateSubjectBox from './SearchAndCreateSubjectBox';
 import ChatContext from './ChatContext';
 import ChatBoxRightSide, { RightSideState } from './ChatBoxRightSide';
+import ChatBoxNav from './ChatBoxNav';
 
 interface ChatBoxProps {
   selectedChatItemId?: string;
@@ -50,7 +51,7 @@ const ChatBox = ({
         onScopeChange={setScope}
       />
 
-      {/* bottom left */}
+      {/* middle left */}
       <div
         className={`row-start-2 col-start-1 md:border-r overflow-y-auto ${
           displayLeftSideOnSmallDevices ? '' : 'hidden'
@@ -62,6 +63,15 @@ const ChatBox = ({
           search={search}
           scope={scope}
         />
+      </div>
+
+      {/* bottom left */}
+      <div
+        className={`row-start-3 col-start-1 border-t md:border-r ${
+          displayLeftSideOnSmallDevices ? '' : 'hidden'
+        } md:block`}
+      >
+        <ChatBoxNav />
       </div>
 
       {/* top right and bottom right */}
