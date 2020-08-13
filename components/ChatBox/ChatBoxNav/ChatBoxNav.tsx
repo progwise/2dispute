@@ -1,10 +1,12 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { FaComments, FaSignInAlt, FaUser } from 'react-icons/fa';
 import useUser from '../../../utils/react-hooks/useUser';
 import ChatBoxNavItem from './ChatBoxNavItem';
 
 const ChatBoxNav = (): JSX.Element => {
   const user = useUser();
+  const router = useRouter();
   const isAuthenticated = user !== null;
 
   return (
@@ -19,7 +21,10 @@ const ChatBoxNav = (): JSX.Element => {
         />
       ) : (
         <ChatBoxNavItem
-          href={{ pathname: '/api/auth/twitter' }}
+          href={{
+            pathname: '/api/auth/twitter',
+            query: { redirectTo: router.asPath },
+          }}
           icon={FaSignInAlt}
           text="Anmelden"
         />
