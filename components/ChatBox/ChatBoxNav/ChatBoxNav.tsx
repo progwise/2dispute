@@ -10,7 +10,7 @@ const ChatBoxNav = (): JSX.Element => {
   const isAuthenticated = user !== null;
 
   return (
-    <div className="flex flex-wrap py-2 text-gray-800 font-light">
+    <div className="flex flex-wrap py-2 text-gray-700 font-light">
       <ChatBoxNavItem
         href="/"
         icon={FaComments}
