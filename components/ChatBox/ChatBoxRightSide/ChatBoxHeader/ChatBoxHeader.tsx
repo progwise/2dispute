@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaChevronLeft } from 'react-icons/fa';
 import Link from '../../../Link/Link';
 import LogoSVG from '../../../Header/Logo/Logo.svg';
 
@@ -18,7 +18,7 @@ const ChatBoxHeader = ({
     } md:flex truncate space-x-2`}
   >
     <Link href="/" className="py-2 text-xl md:hidden">
-      <FaArrowLeft />
+      <FaChevronLeft />
     </Link>
     <span className="py-2 truncate flex-grow" title={header}>
       {header}
