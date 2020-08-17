@@ -55,7 +55,7 @@ const ChatBox = ({
       <div
         className={`row-start-2 col-start-1 md:border-r overflow-y-auto ${
           displayLeftSideOnSmallDevices ? '' : 'hidden'
-        } md:block`}
+        } md:block pb-20`}
         ref={scrollableChatList}
       >
         <ChatList
@@ -67,11 +67,13 @@ const ChatBox = ({
 
       {/* bottom left */}
       <div
-        className={`row-start-3 col-start-1 border-t md:border-r ${
+        className={`${
           displayLeftSideOnSmallDevices ? '' : 'hidden'
-        } md:block`}
+        } md:grid md:grid-cols-3 w-full absolute bottom-0 left-0 right-0 max-w-screen-lg mx-auto`}
       >
-        <ChatBoxNav />
+        <div className={`border-t md:border-r bg-white`}>
+          <ChatBoxNav />
+        </div>
       </div>
 
       {/* top right and bottom right */}

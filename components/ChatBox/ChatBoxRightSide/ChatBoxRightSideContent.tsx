@@ -10,9 +10,9 @@ const ChatBoxRightSideContent = ({
   displayOnSmallDevices,
 }: ChatBoxRightSideContentProps): JSX.Element => (
   <div
-    className={`row-start-2 col-start-1 md:col-start-2 md:col-span-2 row-span-2 overflow-y-auto p-4 ${
+    className={`row-start-2 col-start-1 md:col-start-2 md:col-span-2 overflow-y-auto p-4 ${
       displayOnSmallDevices ? '' : 'hidden'
-    } md:block`}
+    } md:block z-10`}
   >
     {children}
   </div>

@@ -26,7 +26,7 @@ module.exports = {
       },
       gridTemplateRows: {
         fullPage: 'auto minmax(0, 1fr)',
-        chatBox: 'min-content 1fr min-content',
+        chatBox: 'min-content 1fr',
       },
       gridRowEnd: {
         last: '100000000',
