@@ -39,7 +39,7 @@ const SearchAndCreateSubjectBox = ({
 
   return (
     <div className={className}>
-      <div className="flex w-full">
+      <div className="flex items-center w-full h-full">
         <SearchBox
           search={search}
           onChange={onSearchChange}
