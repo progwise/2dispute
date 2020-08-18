@@ -40,6 +40,7 @@ module.exports = {
     opacity: ['disabled'],
     display: ['responsive', 'group-hover'],
     backgroundColor: ['responsive', 'hover', 'focus', 'odd'],
+    margin: ['responsive', 'important'],
   },
   plugins: [
     // Add border colors for top, bottom, left, right
@@ -82,6 +83,18 @@ module.exports = {
         '.spin': {
           animation: 'spinner 1.5s linear infinite',
         },
+      });
+    }),
+    // Add important variant
+    // see https://github.com/tailwindlabs/tailwindcss/issues/493#issuecomment-610907147
+    plugin(({ addVariant }) => {
+      addVariant('important', ({ container }) => {
+        container.walkRules(rule => {
+          rule.selector = `.\\!${rule.selector.slice(1)}`;
+          rule.walkDecls(decl => {
+            decl.important = true;
+          });
+        });
       });
     }),
   ],
