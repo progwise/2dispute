@@ -20,7 +20,7 @@ const ChatBoxHeader = ({
     <Link href="/" className="py-2 text-xl md:hidden">
       <FaChevronLeft />
     </Link>
-    <span className="py-2 truncate flex-grow" title={header}>
+    <span className="py-2 truncate flex-grow md:!ml-0" title={header}>
       {header}
     </span>
     <img src={LogoSVG} className="h-8 w-8" />
