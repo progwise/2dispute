@@ -15,16 +15,18 @@ const Input = ({ label, placeholder, name }: InputProps): JSX.Element => {
   const error = meta.touched ? meta.error : undefined;
 
   return (
-    <label className="w-full flex flex-col text-center">
-      {label ? <span className="text-blue-600">{label}</span> : null}
-      <input
-        className="border-2 rounded disabled:opacity-75"
-        placeholder={placeholder}
-        disabled={isSubmitting}
-        {...field}
-      />
+    <div className="flex flex-col">
+      <label className="flex space-x-2">
+        {label ? <span className="text-blue-600">{label}</span> : null}
+        <input
+          className="border-2 rounded disabled:opacity-75 flex-grow"
+          placeholder={placeholder}
+          disabled={isSubmitting}
+          {...field}
+        />
+      </label>
       {error && <InputError error={error} />}
-    </label>
+    </div>
   );
 };
 
