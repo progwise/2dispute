@@ -18,7 +18,7 @@ const Input = ({ label, placeholder, name }: InputProps): JSX.Element => {
     <label className="w-full flex flex-col text-center py-2">
       {label ? <span className="text-blue-600">{label}</span> : null}
       <input
-        className="border-2 rounded text-center text-lg disabled:opacity-75"
+        className="border-2 rounded text-lg disabled:opacity-75"
         placeholder={placeholder}
         disabled={isSubmitting}
         {...field}
