@@ -1,6 +1,10 @@
 import React from 'react';
 import Seo from '../../Seo';
-import CreateSubject from '../../Subject/CreateSubject';
+import {
+  CreateSubjectProvider,
+  CreateSubjectForm,
+} from '../../Subject/CreateSubject';
+import { Input } from '../../Input';
 import ChatBoxRightSideContent from './ChatBoxRightSideContent';
 import ChatItem from './ChatItem';
 import ChatBoxHeader, { ChatItemHeader } from './ChatBoxHeader';
@@ -44,17 +48,19 @@ const ChatBoxRightSide = ({
 
     case RightSideState.DisplayNewSubject:
       return (
-        <>
-          <Seo title="Neues Thema erstellen" />
-          <ChatBoxHeader displayOnSmallDevices={displayOnSmallDevices}>
-            Neues Thema
-          </ChatBoxHeader>
-          <ChatBoxRightSideContent
-            displayOnSmallDevices={displayOnSmallDevices}
-          >
-            <CreateSubject />
-          </ChatBoxRightSideContent>
-        </>
+        <CreateSubjectProvider>
+          <>
+            <Seo title="Neues Thema erstellen" />
+            <ChatBoxHeader displayOnSmallDevices={displayOnSmallDevices}>
+              <Input name="subject" placeholder="Neues Thema" />
+            </ChatBoxHeader>
+            <ChatBoxRightSideContent
+              displayOnSmallDevices={displayOnSmallDevices}
+            >
+              <CreateSubjectForm />
+            </ChatBoxRightSideContent>
+          </>
+        </CreateSubjectProvider>
       );
 
     case RightSideState.Empty:
