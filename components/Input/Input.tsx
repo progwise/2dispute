@@ -3,7 +3,7 @@ import { useField, useFormikContext } from 'formik';
 import InputError from './InputError';
 
 interface InputProps {
-  label: string;
+  label?: string;
   name: string;
   placeholder: string;
 }
@@ -16,7 +16,7 @@ const Input = ({ label, placeholder, name }: InputProps): JSX.Element => {
 
   return (
     <label className="w-full flex flex-col text-center py-2">
-      <span className="text-blue-600">{label}</span>
+      {label ? <span className="text-blue-600">{label}</span> : null}
       <input
         className="border-2 rounded text-center text-lg disabled:opacity-75"
         placeholder={placeholder}
