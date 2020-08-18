@@ -15,10 +15,10 @@ const Input = ({ label, placeholder, name }: InputProps): JSX.Element => {
   const error = meta.touched ? meta.error : undefined;
 
   return (
-    <label className="w-full flex flex-col text-center py-2">
+    <label className="w-full flex flex-col text-center">
       {label ? <span className="text-blue-600">{label}</span> : null}
       <input
-        className="border-2 rounded text-lg disabled:opacity-75"
+        className="border-2 rounded disabled:opacity-75"
         placeholder={placeholder}
         disabled={isSubmitting}
         {...field}
