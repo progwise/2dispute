@@ -58,10 +58,7 @@ const CreateSubjectForm = (): JSX.Element | null => {
           />
         </div>
         {displayTweetSelect ? (
-          <SelectTweet
-            onCancel={(): void => setDisplayTweetSelect(false)}
-            onSelect={handleSelectTweet}
-          />
+          <SelectTweet onSelect={handleSelectTweet} />
         ) : null}
         {tweetId && (
           <div className="px-4 mx-auto">
