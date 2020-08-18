@@ -27,9 +27,11 @@ const ChatItemHeader = ({
 
   return (
     <ChatBoxHeader
-      header={subject || ''}
       displayOnSmallDevices={displayOnSmallDevices}
-    />
+      title={subject}
+    >
+      {subject}
+    </ChatBoxHeader>
   );
 };
 
