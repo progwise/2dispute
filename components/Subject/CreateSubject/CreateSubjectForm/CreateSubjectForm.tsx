@@ -52,7 +52,7 @@ const CreateSubjectForm = (): JSX.Element | null => {
           <div>
             <Input
               name="tweetLink"
-              label="Twitter Link"
+              label="Tweet:"
               placeholder="https://twitter.com/..."
             />
             <p className="text-center">
