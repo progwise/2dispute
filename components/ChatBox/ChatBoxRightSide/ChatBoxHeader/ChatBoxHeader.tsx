@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
 import Link from '../../../Link/Link';
 import LogoSVG from '../../../Header/Logo/Logo.svg';
 
 interface ChatBoxHeaderProps {
-  header: string;
+  children: ReactNode;
   displayOnSmallDevices: boolean;
+  title?: string;
 }
 
 const ChatBoxHeader = ({
-  header,
+  children,
   displayOnSmallDevices,
+  title,
 }: ChatBoxHeaderProps): JSX.Element => (
   <div
     className={`row-start-1 col-start-1 md:col-start-2 md:col-span-2 border-b px-4 flex items-center py-2 ${
@@ -20,8 +22,8 @@ const ChatBoxHeader = ({
     <Link href="/" className="py-2 text-xl md:hidden">
       <FaChevronLeft />
     </Link>
-    <span className="py-2 truncate flex-grow md:!ml-0" title={header}>
-      {header}
+    <span className="py-2 truncate flex-grow md:!ml-0" title={title}>
+      {children}
     </span>
     <img src={LogoSVG} className="h-8 w-8" />
   </div>

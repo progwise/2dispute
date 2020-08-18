@@ -46,10 +46,9 @@ const ChatBoxRightSide = ({
       return (
         <>
           <Seo title="Neues Thema erstellen" />
-          <ChatBoxHeader
-            header="Neues Thema"
-            displayOnSmallDevices={displayOnSmallDevices}
-          />
+          <ChatBoxHeader displayOnSmallDevices={displayOnSmallDevices}>
+            Neues Thema
+          </ChatBoxHeader>
           <ChatBoxRightSideContent
             displayOnSmallDevices={displayOnSmallDevices}
           >
