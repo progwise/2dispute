@@ -29,14 +29,30 @@ const SelectTweet = ({ onSelect }: SelectTweetProps): JSX.Element => {
             <FaRegCircle className="group-hover:hidden" />
             <FaRegCheckCircle className="hidden group-hover:block text-blue-600" />
           </a>
-          <div>
+          <div className="relative">
             <TwitterTweetEmbed
               tweetId={tweet.id}
-              placeholder="Lade Tweet..."
+              placeholder={
+                <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+                  Lade Tweet...
+                </div>
+              }
               options={{
                 lang: 'de',
                 width: '100%',
               }}
+            />
+            <div
+              className="absolute inset-0 cursor-pointer hover:bg-blue-400 hover:bg-opacity-25"
+              style={{
+                // Q: Why inline styles and not tailwind classes?
+                // A: We have to use the same sizes to match twitters layout.
+                //    Tailwind uses rem as a unit, but twitter px.
+                marginTop: '10px',
+                marginBottom: '10px',
+                borderRadius: '15px',
+              }}
+              onClick={(): void => onSelect(tweet.link)}
             />
           </div>
         </React.Fragment>
