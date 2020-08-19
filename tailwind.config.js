@@ -21,9 +21,6 @@ module.exports = {
       minHeight: {
         '48': '12rem',
       },
-      gridTemplateColumns: {
-        selectTweet: 'min-content minmax(0, 550px)',
-      },
       gridTemplateRows: {
         fullPage: 'auto minmax(0, 1fr)',
         chatBox: 'min-content 1fr',
