@@ -1,7 +1,6 @@
 # import Subject, SubjectCreateInput, ReplyOnSubjectInput, SubjectConnection, SubjectFilter from './Subject/Subject.graphql'
 # import Dispute, ReplyOnDisputInput, DisputeConnection from './Dispute/Dispute.graphql'
 # import User from './User/User.graphql'
-# import NotificationConnection, NotificationsUpdate, NotificationStatus from './Notification/Notification.graphql'
 # import Message, UserVoting from './Message/Message.graphql'
 # import Tweet from './Tweet/Tweet.graphql'
 # import ChatItem, ChatScope, ChatConnection from './Chat/Chat.graphql'
@@ -26,12 +25,6 @@ type Query {
   me: User
   dispute(id: ID!): Dispute
   user(id: ID!): User
-  allNotifications(
-    limit: Int = 10
-    after: String
-    before: String
-  ): NotificationConnection
-  notificationStatus: NotificationStatus! @auth
   twitterTimeline: [Tweet!]
   chat(
     limit: Int = 10
@@ -47,8 +40,5 @@ type Mutation {
   createSubject(input: SubjectCreateInput!): Subject! @auth
   replyOnSubject(input: ReplyOnSubjectInput!): Dispute! @auth
   replyOnDispute(input: ReplyOnDisputInput!): Dispute! @auth
-  markNotificationAsRead(id: ID!): Notification! @auth
-  markMultipleNotificationAsRead(latestId: ID!): [Notification!]! @auth
-  markNotificationsAsReadForDispute(disputeId: ID!): NotificationsUpdate! @auth
   vote(messageId: ID!, voting: UserVoting!): Message! @auth
 }

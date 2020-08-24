@@ -30,9 +30,6 @@ generates:
         Subject: ../Subject/SubjectSchema#SubjectDocument
         Dispute: ../Dispute/DisputeSchema#DisputeDocument
         Message: ../Message/MessageSchema#MessageDocument
-        NewDisputeNotification: ../Notification/NotificationSchema#NewDisputeNotificationDocument
-        NewMessageNotification: ../Notification/NotificationSchema#NewMessageNotificationDocument
-        NotificationsUpdate: ../Notification/NotificationsUpdateMapper#NotificationsUpdateMapper
         User: ../User#UserMapper
       scalars:
         DateTime: string

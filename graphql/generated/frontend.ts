@@ -17,25 +17,17 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   allDisputes: DisputeConnection;
-  allNotifications?: Maybe<NotificationConnection>;
   allSubjects: SubjectConnection;
   chat?: Maybe<ChatConnection>;
   chatItem?: Maybe<ChatItem>;
   dispute?: Maybe<Dispute>;
   me?: Maybe<User>;
-  notificationStatus: NotificationStatus;
   subject?: Maybe<Subject>;
   twitterTimeline?: Maybe<Array<Tweet>>;
   user?: Maybe<User>;
 };
 
 export type QueryAllDisputesArgs = {
-  limit?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  before?: Maybe<Scalars['String']>;
-};
-
-export type QueryAllNotificationsArgs = {
   limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
@@ -75,9 +67,6 @@ export type QueryUserArgs = {
 export type Mutation = {
   __typename?: 'Mutation';
   createSubject: Subject;
-  markMultipleNotificationAsRead: Array<Notification>;
-  markNotificationAsRead: Notification;
-  markNotificationsAsReadForDispute: NotificationsUpdate;
   replyOnDispute: Dispute;
   replyOnSubject: Dispute;
   vote: Message;
@@ -85,18 +74,6 @@ export type Mutation = {
 
 export type MutationCreateSubjectArgs = {
   input: SubjectCreateInput;
-};
-
-export type MutationMarkMultipleNotificationAsReadArgs = {
-  latestId: Scalars['ID'];
-};
-
-export type MutationMarkNotificationAsReadArgs = {
-  id: Scalars['ID'];
-};
-
-export type MutationMarkNotificationsAsReadForDisputeArgs = {
-  disputeId: Scalars['ID'];
 };
 
 export type MutationReplyOnDisputeArgs = {
@@ -190,24 +167,6 @@ export type UserAllSubjectsArgs = {
   before?: Maybe<Scalars['String']>;
 };
 
-export type NotificationStatus = {
-  __typename?: 'NotificationStatus';
-  totalCountUnread: Scalars['Int'];
-};
-
-export type NotificationConnection = {
-  __typename?: 'NotificationConnection';
-  edges: Array<NotificationEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int'];
-};
-
-export type NotificationsUpdate = {
-  __typename?: 'NotificationsUpdate';
-  notificationStatus: NotificationStatus;
-  updatedNotification: Array<Notification>;
-};
-
 export type Message = {
   __typename?: 'Message';
   author: User;
@@ -254,12 +213,6 @@ export type PageInfo = {
   startCursor: Scalars['String'];
 };
 
-export type Notification = {
-  id: Scalars['ID'];
-  read: Scalars['Boolean'];
-  createdAt: Scalars['DateTime'];
-};
-
 export type SubjectEdge = {
   __typename?: 'SubjectEdge';
   cursor: Scalars['String'];
@@ -270,12 +223,6 @@ export type DisputeEdge = {
   __typename?: 'DisputeEdge';
   cursor: Scalars['String'];
   node: Dispute;
-};
-
-export type NotificationEdge = {
-  __typename?: 'NotificationEdge';
-  cursor: Scalars['String'];
-  node: Notification;
 };
 
 export type Votes = {
@@ -289,22 +236,6 @@ export type ChatEdge = {
   __typename?: 'ChatEdge';
   cursor: Scalars['String'];
   node: ChatItem;
-};
-
-export type NewMessageNotification = Notification & {
-  __typename?: 'NewMessageNotification';
-  id: Scalars['ID'];
-  read: Scalars['Boolean'];
-  createdAt: Scalars['DateTime'];
-  message: Message;
-};
-
-export type NewDisputeNotification = Notification & {
-  __typename?: 'NewDisputeNotification';
-  id: Scalars['ID'];
-  read: Scalars['Boolean'];
-  createdAt: Scalars['DateTime'];
-  dispute: Dispute;
 };
 
 export type VoteMutationVariables = {
@@ -424,31 +355,6 @@ type ChatListItem_Dispute_Fragment = { __typename?: 'Dispute' } & Pick<
 export type ChatListItemFragment =
   | ChatListItem_Subject_Fragment
   | ChatListItem_Dispute_Fragment;
-
-export type ClearNotificationsForDisputeMutationVariables = {
-  disputeId: Scalars['ID'];
-};
-
-export type ClearNotificationsForDisputeMutation = {
-  __typename?: 'Mutation';
-} & {
-  markNotificationsAsReadForDispute: { __typename?: 'NotificationsUpdate' } & {
-    updatedNotification: Array<
-      | ({ __typename?: 'NewMessageNotification' } & Pick<
-          NewMessageNotification,
-          'id' | 'read'
-        >)
-      | ({ __typename?: 'NewDisputeNotification' } & Pick<
-          NewDisputeNotification,
-          'id' | 'read'
-        >)
-    >;
-    notificationStatus: { __typename?: 'NotificationStatus' } & Pick<
-      NotificationStatus,
-      'totalCountUnread'
-    >;
-  };
-};
 
 export type GetDisputeQueryVariables = {
   disputeId: Scalars['ID'];
@@ -1048,58 +954,6 @@ export type ChatListLazyQueryHookResult = ReturnType<
 export type ChatListQueryResult = ApolloReactCommon.QueryResult<
   ChatListQuery,
   ChatListQueryVariables
->;
-export const ClearNotificationsForDisputeDocument = gql`
-  mutation clearNotificationsForDispute($disputeId: ID!) {
-    markNotificationsAsReadForDispute(disputeId: $disputeId) {
-      updatedNotification {
-        id
-        read
-      }
-      notificationStatus {
-        totalCountUnread
-      }
-    }
-  }
-`;
-
-/**
- * __useClearNotificationsForDisputeMutation__
- *
- * To run a mutation, you first call `useClearNotificationsForDisputeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useClearNotificationsForDisputeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [clearNotificationsForDisputeMutation, { data, loading, error }] = useClearNotificationsForDisputeMutation({
- *   variables: {
- *      disputeId: // value for 'disputeId'
- *   },
- * });
- */
-export function useClearNotificationsForDisputeMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    ClearNotificationsForDisputeMutation,
-    ClearNotificationsForDisputeMutationVariables
-  >,
-) {
-  return ApolloReactHooks.useMutation<
-    ClearNotificationsForDisputeMutation,
-    ClearNotificationsForDisputeMutationVariables
-  >(ClearNotificationsForDisputeDocument, baseOptions);
-}
-export type ClearNotificationsForDisputeMutationHookResult = ReturnType<
-  typeof useClearNotificationsForDisputeMutation
->;
-export type ClearNotificationsForDisputeMutationResult = ApolloReactCommon.MutationResult<
-  ClearNotificationsForDisputeMutation
->;
-export type ClearNotificationsForDisputeMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  ClearNotificationsForDisputeMutation,
-  ClearNotificationsForDisputeMutationVariables
 >;
 export const GetDisputeDocument = gql`
   query getDispute($disputeId: ID!) {

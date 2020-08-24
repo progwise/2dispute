@@ -13,15 +13,7 @@ import schemaDirectives from './schemaDirectives';
 import { userQueries, userResolvers } from './User';
 import { disputeResolvers, disputeQueries, disputeMutations } from './Dispute';
 import { messageResolvers, messageMutations } from './Message';
-import {
-  notificationQueries,
-  notificationResolvers,
-  notificationMutations,
-} from './Notification';
 import { tweetQueries } from './Tweet';
-import { newDisputeNotificationResolvers } from './Notification/NewDisputeNotification';
-import { newMessageNotificationResolvers } from './Notification/NewMessageNotification';
-import { notificationsUpdateResolvers } from './Notification/NotificationsUpdate';
 import { chatQueries, chatItemResolvers } from './Chat';
 
 const resolvers: Resolvers = {
@@ -29,14 +21,12 @@ const resolvers: Resolvers = {
     ...subjectQueries,
     ...userQueries,
     ...disputeQueries,
-    ...notificationQueries,
     ...tweetQueries,
     ...chatQueries,
   },
   Mutation: {
     ...subjectMutations,
     ...disputeMutations,
-    ...notificationMutations,
     ...messageMutations,
   },
   Subject: subjectResolvers,
@@ -44,10 +34,6 @@ const resolvers: Resolvers = {
   Message: messageResolvers,
   User: userResolvers,
   DateTime: GraphQLDateTime,
-  Notification: notificationResolvers,
-  NewDisputeNotification: newDisputeNotificationResolvers,
-  NewMessageNotification: newMessageNotificationResolvers,
-  NotificationsUpdate: notificationsUpdateResolvers,
   ChatItem: chatItemResolvers,
 };
 

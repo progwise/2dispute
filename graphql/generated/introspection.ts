@@ -7,7 +7,6 @@ export interface PossibleTypesResultData {
 const result: PossibleTypesResultData = {
   possibleTypes: {
     ChatItem: ['Subject', 'Dispute'],
-    Notification: ['NewMessageNotification', 'NewDisputeNotification'],
   },
 };
 
