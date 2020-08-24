@@ -3,20 +3,7 @@ import { AuthenticationError, ApolloError } from 'apollo-server-micro';
 import { MutationResolvers } from '../generated/backend';
 import { DisputeDocument } from '../Dispute/DisputeSchema';
 import trim from '../../utils/trim';
-import { Context } from '../context';
 import { SubjectDocument } from './SubjectSchema';
-
-const notifySubjectAuthor = async (
-  newDispute: DisputeDocument,
-  context: Context,
-): Promise<void> => {
-  const newNotification = new context.mongoose.models.NewDisputeNotification({
-    userId: newDispute.partnerIdA,
-    disputeId: newDispute._id,
-  });
-
-  await newNotification.save();
-};
 
 const mutations: MutationResolvers = {
   createSubject: (_parent, { input }, context) => {
@@ -86,8 +73,6 @@ const mutations: MutationResolvers = {
 
     subject.disputes.push(newDispute);
     await subject.save();
-
-    await notifySubjectAuthor(newDispute, context);
 
     return newDispute;
   },

@@ -1,8 +1,5 @@
-import React, { useEffect } from 'react';
-import {
-  useGetDisputeQuery,
-  useClearNotificationsForDisputeMutation,
-} from '../../graphql/generated/frontend';
+import React from 'react';
+import { useGetDisputeQuery } from '../../graphql/generated/frontend';
 import DisputePresentation from './DisputePresentation';
 
 interface DisputeProps {
@@ -15,19 +12,9 @@ const Dispute = ({ disputeId }: DisputeProps): JSX.Element => {
     pollInterval: 10 * 1000,
   });
 
-  const [clearNotifications] = useClearNotificationsForDisputeMutation({
-    variables: { disputeId },
-  });
-
   const handleNewMessage = async (): Promise<void> => {
     await refetch();
   };
-
-  useEffect(() => {
-    if (data?.dispute?.messages.length) {
-      clearNotifications();
-    }
-  }, [data?.dispute?.messages.length]);
 
   if (!called || loading) {
     return <p>Loading...</p>;

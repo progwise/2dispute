@@ -7,11 +7,6 @@ import {
 import { SubjectDocument } from '../Subject/SubjectSchema';
 import { DisputeDocument } from '../Dispute/DisputeSchema';
 import { MessageDocument } from '../Message/MessageSchema';
-import {
-  NewDisputeNotificationDocument,
-  NewMessageNotificationDocument,
-} from '../Notification/NotificationSchema';
-import { NotificationsUpdateMapper } from '../Notification/NotificationsUpdateMapper';
 import { UserMapper } from '../User';
 import { Context } from '../context';
 export type Maybe<T> = T | null;
@@ -35,25 +30,17 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   allDisputes: FieldWrapper<DisputeConnection>;
-  allNotifications?: FieldWrapper<Maybe<NotificationConnection>>;
   allSubjects: FieldWrapper<SubjectConnection>;
   chat?: FieldWrapper<Maybe<ChatConnection>>;
   chatItem?: FieldWrapper<Maybe<ChatItem>>;
   dispute?: FieldWrapper<Maybe<Dispute>>;
   me?: FieldWrapper<Maybe<User>>;
-  notificationStatus: FieldWrapper<NotificationStatus>;
   subject?: FieldWrapper<Maybe<Subject>>;
   twitterTimeline?: FieldWrapper<Maybe<Array<Tweet>>>;
   user?: FieldWrapper<Maybe<User>>;
 };
 
 export type QueryAllDisputesArgs = {
-  limit?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  before?: Maybe<Scalars['String']>;
-};
-
-export type QueryAllNotificationsArgs = {
   limit?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
@@ -93,9 +80,6 @@ export type QueryUserArgs = {
 export type Mutation = {
   __typename?: 'Mutation';
   createSubject: FieldWrapper<Subject>;
-  markMultipleNotificationAsRead: FieldWrapper<Array<Notification>>;
-  markNotificationAsRead: FieldWrapper<Notification>;
-  markNotificationsAsReadForDispute: FieldWrapper<NotificationsUpdate>;
   replyOnDispute: FieldWrapper<Dispute>;
   replyOnSubject: FieldWrapper<Dispute>;
   vote: FieldWrapper<Message>;
@@ -103,18 +87,6 @@ export type Mutation = {
 
 export type MutationCreateSubjectArgs = {
   input: SubjectCreateInput;
-};
-
-export type MutationMarkMultipleNotificationAsReadArgs = {
-  latestId: Scalars['ID'];
-};
-
-export type MutationMarkNotificationAsReadArgs = {
-  id: Scalars['ID'];
-};
-
-export type MutationMarkNotificationsAsReadForDisputeArgs = {
-  disputeId: Scalars['ID'];
 };
 
 export type MutationReplyOnDisputeArgs = {
@@ -208,24 +180,6 @@ export type UserAllSubjectsArgs = {
   before?: Maybe<Scalars['String']>;
 };
 
-export type NotificationStatus = {
-  __typename?: 'NotificationStatus';
-  totalCountUnread: FieldWrapper<Scalars['Int']>;
-};
-
-export type NotificationConnection = {
-  __typename?: 'NotificationConnection';
-  edges: FieldWrapper<Array<NotificationEdge>>;
-  pageInfo: FieldWrapper<PageInfo>;
-  totalCount: FieldWrapper<Scalars['Int']>;
-};
-
-export type NotificationsUpdate = {
-  __typename?: 'NotificationsUpdate';
-  notificationStatus: FieldWrapper<NotificationStatus>;
-  updatedNotification: FieldWrapper<Array<Notification>>;
-};
-
 export type Message = {
   __typename?: 'Message';
   author: FieldWrapper<User>;
@@ -272,12 +226,6 @@ export type PageInfo = {
   startCursor: FieldWrapper<Scalars['String']>;
 };
 
-export type Notification = {
-  id: FieldWrapper<Scalars['ID']>;
-  read: FieldWrapper<Scalars['Boolean']>;
-  createdAt: FieldWrapper<Scalars['DateTime']>;
-};
-
 export type SubjectEdge = {
   __typename?: 'SubjectEdge';
   cursor: FieldWrapper<Scalars['String']>;
@@ -288,12 +236,6 @@ export type DisputeEdge = {
   __typename?: 'DisputeEdge';
   cursor: FieldWrapper<Scalars['String']>;
   node: FieldWrapper<Dispute>;
-};
-
-export type NotificationEdge = {
-  __typename?: 'NotificationEdge';
-  cursor: FieldWrapper<Scalars['String']>;
-  node: FieldWrapper<Notification>;
 };
 
 export type Votes = {
@@ -307,22 +249,6 @@ export type ChatEdge = {
   __typename?: 'ChatEdge';
   cursor: FieldWrapper<Scalars['String']>;
   node: FieldWrapper<ChatItem>;
-};
-
-export type NewMessageNotification = Notification & {
-  __typename?: 'NewMessageNotification';
-  id: FieldWrapper<Scalars['ID']>;
-  read: FieldWrapper<Scalars['Boolean']>;
-  createdAt: FieldWrapper<Scalars['DateTime']>;
-  message: FieldWrapper<Message>;
-};
-
-export type NewDisputeNotification = Notification & {
-  __typename?: 'NewDisputeNotification';
-  id: FieldWrapper<Scalars['ID']>;
-  read: FieldWrapper<Scalars['Boolean']>;
-  createdAt: FieldWrapper<Scalars['DateTime']>;
-  dispute: FieldWrapper<Dispute>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -460,9 +386,6 @@ export type ResolversTypes = ResolversObject<{
   >;
   ReplyOnDisputInput: ReplyOnDisputInput;
   User: ResolverTypeWrapper<UserMapper>;
-  NotificationStatus: ResolverTypeWrapper<NotificationStatus>;
-  NotificationConnection: ResolverTypeWrapper<NotificationConnection>;
-  NotificationsUpdate: ResolverTypeWrapper<NotificationsUpdateMapper>;
   Message: ResolverTypeWrapper<MessageDocument>;
   UserVoting: UserVoting;
   Tweet: ResolverTypeWrapper<Tweet>;
@@ -470,20 +393,14 @@ export type ResolversTypes = ResolversObject<{
   ChatConnection: ResolverTypeWrapper<ChatConnection>;
   ChatScope: ChatScope;
   PageInfo: ResolverTypeWrapper<PageInfo>;
-  Notification:
-    | ResolversTypes['NewMessageNotification']
-    | ResolversTypes['NewDisputeNotification'];
   SubjectEdge: ResolverTypeWrapper<
     Omit<SubjectEdge, 'node'> & { node: ResolversTypes['Subject'] }
   >;
   DisputeEdge: ResolverTypeWrapper<
     Omit<DisputeEdge, 'node'> & { node: ResolversTypes['Dispute'] }
   >;
-  NotificationEdge: ResolverTypeWrapper<NotificationEdge>;
   Votes: ResolverTypeWrapper<Votes>;
   ChatEdge: ResolverTypeWrapper<ChatEdge>;
-  NewMessageNotification: ResolverTypeWrapper<NewMessageNotificationDocument>;
-  NewDisputeNotification: ResolverTypeWrapper<NewDisputeNotificationDocument>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -508,9 +425,6 @@ export type ResolversParentTypes = ResolversObject<{
   };
   ReplyOnDisputInput: ReplyOnDisputInput;
   User: UserMapper;
-  NotificationStatus: NotificationStatus;
-  NotificationConnection: NotificationConnection;
-  NotificationsUpdate: NotificationsUpdateMapper;
   Message: MessageDocument;
   UserVoting: UserVoting;
   Tweet: Tweet;
@@ -518,20 +432,14 @@ export type ResolversParentTypes = ResolversObject<{
   ChatConnection: ChatConnection;
   ChatScope: ChatScope;
   PageInfo: PageInfo;
-  Notification:
-    | ResolversParentTypes['NewMessageNotification']
-    | ResolversParentTypes['NewDisputeNotification'];
   SubjectEdge: Omit<SubjectEdge, 'node'> & {
     node: ResolversParentTypes['Subject'];
   };
   DisputeEdge: Omit<DisputeEdge, 'node'> & {
     node: ResolversParentTypes['Dispute'];
   };
-  NotificationEdge: NotificationEdge;
   Votes: Votes;
   ChatEdge: ChatEdge;
-  NewMessageNotification: NewMessageNotificationDocument;
-  NewDisputeNotification: NewDisputeNotificationDocument;
 }>;
 
 export type ComplexityDirectiveArgs = {
@@ -570,12 +478,6 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryAllDisputesArgs, 'limit'>
   >;
-  allNotifications?: Resolver<
-    Maybe<ResolversTypes['NotificationConnection']>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryAllNotificationsArgs, 'limit'>
-  >;
   allSubjects?: Resolver<
     ResolversTypes['SubjectConnection'],
     ParentType,
@@ -601,11 +503,6 @@ export type QueryResolvers<
     RequireFields<QueryDisputeArgs, 'id'>
   >;
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  notificationStatus?: Resolver<
-    ResolversTypes['NotificationStatus'],
-    ParentType,
-    ContextType
-  >;
   subject?: Resolver<
     Maybe<ResolversTypes['Subject']>,
     ParentType,
@@ -634,24 +531,6 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationCreateSubjectArgs, 'input'>
-  >;
-  markMultipleNotificationAsRead?: Resolver<
-    Array<ResolversTypes['Notification']>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationMarkMultipleNotificationAsReadArgs, 'latestId'>
-  >;
-  markNotificationAsRead?: Resolver<
-    ResolversTypes['Notification'],
-    ParentType,
-    ContextType,
-    RequireFields<MutationMarkNotificationAsReadArgs, 'id'>
-  >;
-  markNotificationsAsReadForDispute?: Resolver<
-    ResolversTypes['NotificationsUpdate'],
-    ParentType,
-    ContextType,
-    RequireFields<MutationMarkNotificationsAsReadForDisputeArgs, 'disputeId'>
   >;
   replyOnDispute?: Resolver<
     ResolversTypes['Dispute'],
@@ -764,45 +643,6 @@ export type UserResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
-export type NotificationStatusResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes['NotificationStatus'] = ResolversParentTypes['NotificationStatus']
-> = ResolversObject<{
-  totalCountUnread?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn<ParentType>;
-}>;
-
-export type NotificationConnectionResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes['NotificationConnection'] = ResolversParentTypes['NotificationConnection']
-> = ResolversObject<{
-  edges?: Resolver<
-    Array<ResolversTypes['NotificationEdge']>,
-    ParentType,
-    ContextType
-  >;
-  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn<ParentType>;
-}>;
-
-export type NotificationsUpdateResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes['NotificationsUpdate'] = ResolversParentTypes['NotificationsUpdate']
-> = ResolversObject<{
-  notificationStatus?: Resolver<
-    ResolversTypes['NotificationStatus'],
-    ParentType,
-    ContextType
-  >;
-  updatedNotification?: Resolver<
-    Array<ResolversTypes['Notification']>,
-    ParentType,
-    ContextType
-  >;
-  __isTypeOf?: isTypeOfResolverFn<ParentType>;
-}>;
-
 export type MessageResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']
@@ -858,20 +698,6 @@ export type PageInfoResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
-export type NotificationResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes['Notification'] = ResolversParentTypes['Notification']
-> = ResolversObject<{
-  __resolveType: TypeResolveFn<
-    'NewMessageNotification' | 'NewDisputeNotification',
-    ParentType,
-    ContextType
-  >;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  read?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-}>;
-
 export type SubjectEdgeResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['SubjectEdge'] = ResolversParentTypes['SubjectEdge']
@@ -887,15 +713,6 @@ export type DisputeEdgeResolvers<
 > = ResolversObject<{
   cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   node?: Resolver<ResolversTypes['Dispute'], ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn<ParentType>;
-}>;
-
-export type NotificationEdgeResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes['NotificationEdge'] = ResolversParentTypes['NotificationEdge']
-> = ResolversObject<{
-  cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  node?: Resolver<ResolversTypes['Notification'], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -918,28 +735,6 @@ export type ChatEdgeResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
-export type NewMessageNotificationResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes['NewMessageNotification'] = ResolversParentTypes['NewMessageNotification']
-> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  read?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  message?: Resolver<ResolversTypes['Message'], ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn<ParentType>;
-}>;
-
-export type NewDisputeNotificationResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes['NewDisputeNotification'] = ResolversParentTypes['NewDisputeNotification']
-> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  read?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  dispute?: Resolver<ResolversTypes['Dispute'], ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn<ParentType>;
-}>;
-
 export type Resolvers<ContextType = Context> = ResolversObject<{
   DateTime?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
@@ -949,22 +744,15 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   Dispute?: DisputeResolvers<ContextType>;
   DisputeConnection?: DisputeConnectionResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
-  NotificationStatus?: NotificationStatusResolvers<ContextType>;
-  NotificationConnection?: NotificationConnectionResolvers<ContextType>;
-  NotificationsUpdate?: NotificationsUpdateResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
   Tweet?: TweetResolvers<ContextType>;
   ChatItem?: ChatItemResolvers;
   ChatConnection?: ChatConnectionResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
-  Notification?: NotificationResolvers;
   SubjectEdge?: SubjectEdgeResolvers<ContextType>;
   DisputeEdge?: DisputeEdgeResolvers<ContextType>;
-  NotificationEdge?: NotificationEdgeResolvers<ContextType>;
   Votes?: VotesResolvers<ContextType>;
   ChatEdge?: ChatEdgeResolvers<ContextType>;
-  NewMessageNotification?: NewMessageNotificationResolvers<ContextType>;
-  NewDisputeNotification?: NewDisputeNotificationResolvers<ContextType>;
 }>;
 
 /**
@@ -994,13 +782,11 @@ scalar DateTime
 
 type Query {
   allDisputes(limit: Int = 10, after: String, before: String): DisputeConnection! @complexity(value: 1, multipliers: ["limit"])
-  allNotifications(limit: Int = 10, after: String, before: String): NotificationConnection
   allSubjects(limit: Int = 10, after: String, before: String, filter: SubjectFilter): SubjectConnection! @complexity(value: 1, multipliers: ["limit"])
   chat(limit: Int = 10, after: DateTime, before: DateTime, search: String, scope: ChatScope! = USER_SCOPE): ChatConnection @complexity(value: 1, multipliers: ["limit"])
   chatItem(id: ID!): ChatItem
   dispute(id: ID!): Dispute
   me: User
-  notificationStatus: NotificationStatus! @auth
   subject(id: ID!): Subject
   twitterTimeline: [Tweet!]
   user(id: ID!): User
@@ -1008,9 +794,6 @@ type Query {
 
 type Mutation {
   createSubject(input: SubjectCreateInput!): Subject! @auth
-  markMultipleNotificationAsRead(latestId: ID!): [Notification!]! @auth
-  markNotificationAsRead(id: ID!): Notification! @auth
-  markNotificationsAsReadForDispute(disputeId: ID!): NotificationsUpdate! @auth
   replyOnDispute(input: ReplyOnDisputInput!): Dispute! @auth
   replyOnSubject(input: ReplyOnSubjectInput!): Dispute! @auth
   vote(messageId: ID!, voting: UserVoting!): Message! @auth
@@ -1077,21 +860,6 @@ type User {
   twitterHandle: String
 }
 
-type NotificationStatus {
-  totalCountUnread: Int!
-}
-
-type NotificationConnection {
-  edges: [NotificationEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type NotificationsUpdate {
-  notificationStatus: NotificationStatus! @auth
-  updatedNotification: [Notification!]!
-}
-
 type Message {
   author: User!
   createdAt: DateTime!
@@ -1134,12 +902,6 @@ type PageInfo {
   startCursor: String!
 }
 
-interface Notification {
-  id: ID!
-  read: Boolean!
-  createdAt: DateTime!
-}
-
 type SubjectEdge {
   cursor: String!
   node: Subject!
@@ -1148,11 +910,6 @@ type SubjectEdge {
 type DisputeEdge {
   cursor: String!
   node: Dispute!
-}
-
-type NotificationEdge {
-  cursor: String!
-  node: Notification!
 }
 
 type Votes {
@@ -1164,19 +921,5 @@ type Votes {
 type ChatEdge {
   cursor: String!
   node: ChatItem!
-}
-
-type NewMessageNotification implements Notification {
-  id: ID!
-  read: Boolean!
-  createdAt: DateTime!
-  message: Message!
-}
-
-type NewDisputeNotification implements Notification {
-  id: ID!
-  read: Boolean!
-  createdAt: DateTime!
-  dispute: Dispute!
 }
 `;
