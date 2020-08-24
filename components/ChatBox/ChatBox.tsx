@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useContext } from 'react';
-import { useFullPage } from '../FullPage';
 import Seo from '../Seo';
 import ChatList from './ChatList';
 import SearchAndCreateSubjectBox from './SearchAndCreateSubjectBox';
@@ -17,7 +16,6 @@ const ChatBox = ({
   showNewSubjectForm = false,
 }: ChatBoxProps): JSX.Element => {
   const { search, setSearch, scope, setScope } = useContext(ChatContext);
-  useFullPage();
 
   // When search or scope change scroll in chat list to the top
   const scrollableChatList = useRef<HTMLDivElement>(null);
