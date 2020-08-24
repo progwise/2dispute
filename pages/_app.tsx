@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useContext } from 'react';
-import Header from '../components/Header';
 import '../css/tailwind.css';
 import Layout from '../components/Layout';
 import TokenManager from '../components/TokenManager';
@@ -16,13 +15,12 @@ interface MyAppProp {
 const MyApp = ({ Component, pageProps }: MyAppProp): JSX.Element => {
   const isFullPage = useContext(FullPageContext).fullPage;
 
-  const className = isFullPage ? 'grid h-screen grid-rows-fullPage' : undefined;
+  const className = isFullPage ? 'h-screen' : undefined;
 
   return (
     <div className={className}>
       <Seo />
       <TokenManager />
-      <Header />
       <Layout className="h-full">
         <main className="h-full">
           <Component {...pageProps} />

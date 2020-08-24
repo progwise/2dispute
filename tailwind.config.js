@@ -22,7 +22,6 @@ module.exports = {
         '48': '12rem',
       },
       gridTemplateRows: {
-        fullPage: 'auto minmax(0, 1fr)',
         chatBox: 'min-content 1fr',
       },
       gridRowEnd: {

@@ -1,6 +1,6 @@
 import React from 'react';
-import LogoSVG from '../../Header/Logo/Logo.svg';
 import Link from '../../Link/Link';
+import LogoSVG from './Logo.svg';
 
 const ChatBoxRightSideEmpty = (): JSX.Element => (
   <div className="flex flex-col h-full items-center justify-center space-y-4">
