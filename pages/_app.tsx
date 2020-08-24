@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useContext } from 'react';
+import React from 'react';
 import '../css/tailwind.css';
 import Layout from '../components/Layout';
 import TokenManager from '../components/TokenManager';
-import { FullPageProvider, FullPageContext } from '../components/FullPage';
 import { ChatContextProvider } from '../components/ChatBox/ChatContext';
 import Seo from '../components/Seo';
 
@@ -12,31 +11,23 @@ interface MyAppProp {
   pageProps: any;
 }
 
-const MyApp = ({ Component, pageProps }: MyAppProp): JSX.Element => {
-  const isFullPage = useContext(FullPageContext).fullPage;
-
-  const className = isFullPage ? 'h-screen' : undefined;
-
-  return (
-    <div className={className}>
-      <Seo />
-      <TokenManager />
-      <Layout className="h-full">
-        <main className="h-full">
-          <Component {...pageProps} />
-        </main>
-        <footer />
-      </Layout>
-    </div>
-  );
-};
+const MyApp = ({ Component, pageProps }: MyAppProp): JSX.Element => (
+  <div className="h-screen">
+    <Seo />
+    <TokenManager />
+    <Layout className="h-full">
+      <main className="h-full">
+        <Component {...pageProps} />
+      </main>
+      <footer />
+    </Layout>
+  </div>
+);
 
 const MyAppWithProvider = (props): JSX.Element => (
-  <FullPageProvider>
-    <ChatContextProvider>
-      <MyApp {...props} />
-    </ChatContextProvider>
-  </FullPageProvider>
+  <ChatContextProvider>
+    <MyApp {...props} />
+  </ChatContextProvider>
 );
 
 export default MyAppWithProvider;
