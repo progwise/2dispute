@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
 import Link from '../../../Link/Link';
-import LogoSVG from '../../../Header/Logo/Logo.svg';
+import LogoSVG from '../Logo.svg';
 
 interface ChatBoxHeaderProps {
   children: ReactNode;
