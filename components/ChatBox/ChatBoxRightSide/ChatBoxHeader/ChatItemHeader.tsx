@@ -14,7 +14,6 @@ const ChatItemHeader = ({
 }: ChatItemHeaderProps): JSX.Element => {
   const { data } = useChatItemHeaderQuery({
     variables: { chatItemId },
-    fetchPolicy: 'cache-only',
   });
 
   const chatItem = data?.chatItem;

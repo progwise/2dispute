@@ -12,11 +12,4 @@ fragment Subject on Subject {
   topic: subject
   tweetId
   ...ChatSubject
-  disputes {
-    id
-    partnerB {
-      id
-      name
-    }
-  }
 }

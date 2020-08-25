@@ -6,7 +6,6 @@ import {
   useReplyOnSubjectMutation,
 } from '../../graphql/generated/frontend';
 import { SubjectChat, ChatFormValues } from '../Chat';
-import Link from '../Link/Link';
 import constants from '../../utils/constants';
 import Seo from '../Seo';
 import SubjectHeader from './SubjectHeader';
@@ -42,22 +41,6 @@ const SubjectPresentation = ({
       <Seo title={`${subject.topic} von ${authorName}`} />
       <SubjectHeader tweetId={subject.tweetId ?? undefined} />
       <SubjectChat subject={subject} me={me} onNewMessage={handleNewMessage} />
-      <div>
-        Dispute zu diesem Thema:
-        {subject.disputes.length === 0 ? (
-          'Es existieren noch keine Dispute'
-        ) : (
-          <ul className="list-disc pl-8">
-            {subject.disputes.map(dispute => (
-              <li key={dispute.id}>
-                <Link href="/dispute/[disputeId]" as={`/dispute/${dispute.id}`}>
-                  Disput mit {dispute.partnerB.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
     </>
   );
 };
