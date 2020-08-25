@@ -302,6 +302,7 @@ export type SubjectInHeaderFragment = { __typename?: 'Subject' } & Pick<
   'id'
 > & { topic: Subject['subject'] } & {
     disputes: Array<{ __typename?: 'Dispute' } & DisputeInHeaderFragment>;
+    author: { __typename?: 'User' } & Pick<User, 'id'>;
   };
 
 export type DisputeInHeaderFragment = { __typename?: 'Dispute' } & Pick<
@@ -569,6 +570,9 @@ export const SubjectInHeaderFragmentDoc = gql`
     topic: subject
     disputes {
       ...DisputeInHeader
+    }
+    author {
+      id
     }
   }
   ${DisputeInHeaderFragmentDoc}

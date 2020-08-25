@@ -32,11 +32,7 @@ const ChatItemHeader = ({
           {subject?.topic}
         </div>
         {subject ? (
-          <DisputeDropdown
-            disputes={subject.disputes}
-            selectedChatItem={chatItemId}
-            subjectId={subject.id}
-          />
+          <DisputeDropdown subject={subject} selectedChatItem={chatItemId} />
         ) : null}
       </div>
     </ChatBoxHeader>

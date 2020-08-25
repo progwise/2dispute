@@ -1,13 +1,14 @@
 import { UrlObject } from 'url';
 import React, { useState, useRef } from 'react';
 import { FaChevronCircleDown, FaChevronCircleUp } from 'react-icons/fa';
-import { DisputeInHeaderFragment } from '../../../../../graphql/generated/frontend';
+import {
+  DisputeInHeaderFragment,
+  SubjectInHeaderFragment,
+} from '../../../../../graphql/generated/frontend';
 import constants from '../../../../../utils/constants';
 import useUser from '../../../../../utils/react-hooks/useUser';
 import useOutSideClick from '../../../../../utils/react-hooks/useOutsideClick';
 import DisputeDropdownItem from './DisputeDropdownItem';
-
-const CREATE_NEW_DISPUTE_TEXT = 'Ein neuen Dispute starten';
 
 const createDisputeText = (dispute: DisputeInHeaderFragment): string => {
   const partnerNameA = dispute.partnerA.name ?? constants.FALLBACK_USER.NAME;
@@ -16,15 +17,13 @@ const createDisputeText = (dispute: DisputeInHeaderFragment): string => {
 };
 
 interface DisputeDropdownProps {
-  disputes: DisputeInHeaderFragment[];
+  subject: SubjectInHeaderFragment;
   selectedChatItem: string;
-  subjectId: string;
 }
 
 const DisputeDropdown = ({
-  disputes,
+  subject,
   selectedChatItem,
-  subjectId,
 }: DisputeDropdownProps): JSX.Element => {
   const user = useUser();
   const [open, setOpen] = useState(false);
@@ -40,22 +39,27 @@ const DisputeDropdown = ({
   );
 
   const newDisputeLink: UrlObject = user
-    ? { pathname: '/', query: { chatId: subjectId } }
+    ? { pathname: '/', query: { chatId: subject.id } }
     : {
         pathname: '/api/auth/twitter',
-        query: { redirectTo: `/?chatId=${subjectId}` },
+        query: { redirectTo: `/?chatId=${subject.id}` },
       };
 
   const handleClick = (): void => setOpen(false);
 
-  const currentDispute = disputes.find(
+  const dropdownItemTextForSubjectPage =
+    user?.twitterId === subject.author.id
+      ? '- Dispute auswählen - '
+      : 'Ein neuen Dispute starten';
+
+  const currentDispute = subject.disputes.find(
     dispute => dispute.id === selectedChatItem,
   );
   const selectedItemText =
     currentDispute !== undefined
       ? createDisputeText(currentDispute)
-      : selectedChatItem === subjectId
-      ? CREATE_NEW_DISPUTE_TEXT
+      : selectedChatItem === subject.id
+      ? dropdownItemTextForSubjectPage
       : undefined;
 
   return (
@@ -74,12 +78,12 @@ const DisputeDropdown = ({
         >
           <DisputeDropdownItem
             href={newDisputeLink}
-            isSelected={selectedChatItem === subjectId}
+            isSelected={selectedChatItem === subject.id}
             onClick={handleClick}
           >
-            {CREATE_NEW_DISPUTE_TEXT}
+            {dropdownItemTextForSubjectPage}
           </DisputeDropdownItem>
-          {disputes.map(dispute => (
+          {subject.disputes.map(dispute => (
             <DisputeDropdownItem
               key={dispute.id}
               href={{ pathname: '/', query: { chatId: dispute.id } }}

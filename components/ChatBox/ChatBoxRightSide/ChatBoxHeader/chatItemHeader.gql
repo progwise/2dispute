@@ -16,6 +16,9 @@ fragment SubjectInHeader on Subject {
   disputes {
     ...DisputeInHeader
   }
+  author {
+    id
+  }
 }
 
 fragment DisputeInHeader on Dispute {
