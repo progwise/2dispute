@@ -14,6 +14,7 @@ const ChatItemHeader = ({
 }: ChatItemHeaderProps): JSX.Element => {
   const { data } = useChatItemHeaderQuery({
     variables: { chatItemId },
+    pollInterval: 60 * 1000,
   });
 
   const chatItem = data?.chatItem;
