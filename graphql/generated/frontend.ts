@@ -290,14 +290,27 @@ export type ChatItemHeaderQueryVariables = {
 
 export type ChatItemHeaderQuery = { __typename?: 'Query' } & {
   chatItem?: Maybe<
-    | ({ __typename?: 'Subject' } & Pick<Subject, 'id'> & {
-          topic: Subject['subject'];
-        })
+    | ({ __typename?: 'Subject' } & SubjectInHeaderFragment)
     | ({ __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
-          subject: { __typename?: 'Subject' } & Pick<Subject, 'subject'>;
+          subject: { __typename?: 'Subject' } & SubjectInHeaderFragment;
         })
   >;
 };
+
+export type SubjectInHeaderFragment = { __typename?: 'Subject' } & Pick<
+  Subject,
+  'id'
+> & { topic: Subject['subject'] } & {
+    disputes: Array<{ __typename?: 'Dispute' } & DisputeInHeaderFragment>;
+  };
+
+export type DisputeInHeaderFragment = { __typename?: 'Dispute' } & Pick<
+  Dispute,
+  'id'
+> & {
+    partnerA: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
+    partnerB: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
+  };
 
 export type ChatItemQueryVariables = {
   id: Scalars['ID'];
@@ -550,6 +563,29 @@ export type GetAllSubjectsQuery = { __typename?: 'Query' } & {
   };
 };
 
+export const DisputeInHeaderFragmentDoc = gql`
+  fragment DisputeInHeader on Dispute {
+    id
+    partnerA {
+      id
+      name
+    }
+    partnerB {
+      id
+      name
+    }
+  }
+`;
+export const SubjectInHeaderFragmentDoc = gql`
+  fragment SubjectInHeader on Subject {
+    id
+    topic: subject
+    disputes {
+      ...DisputeInHeader
+    }
+  }
+  ${DisputeInHeaderFragmentDoc}
+`;
 export const ChatPersonFragmentDoc = gql`
   fragment ChatPerson on User {
     id
@@ -759,17 +795,16 @@ export type VoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
 export const ChatItemHeaderDocument = gql`
   query ChatItemHeader($chatItemId: ID!) {
     chatItem(id: $chatItemId) {
-      id
+      ...SubjectInHeader
       ... on Dispute {
+        id
         subject {
-          subject
+          ...SubjectInHeader
         }
-      }
-      ... on Subject {
-        topic: subject
       }
     }
   }
+  ${SubjectInHeaderFragmentDoc}
 `;
 
 /**
