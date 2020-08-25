@@ -385,14 +385,7 @@ export type DisputeFragment = { __typename?: 'Dispute' } & Pick<
     subject: { __typename?: 'Subject' } & Pick<
       Subject,
       'id' | 'subject' | 'tweetId'
-    > & {
-        disputes: Array<
-          { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
-              partnerA: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
-              partnerB: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
-            }
-        >;
-      };
+    >;
   } & ChatDisputeFragment;
 
 export type ReplyOnDisputeMutationVariables = {
@@ -452,13 +445,7 @@ export type GetSubjectQuery = { __typename?: 'Query' } & {
 export type SubjectFragment = { __typename?: 'Subject' } & Pick<
   Subject,
   'id' | 'tweetId'
-> & { topic: Subject['subject'] } & {
-    disputes: Array<
-      { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
-          partnerB: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
-        }
-    >;
-  } & ChatSubjectFragment;
+> & { topic: Subject['subject'] } & ChatSubjectFragment;
 
 export type ReplyOnSubjectMutationVariables = {
   subjectId: Scalars['ID'];
@@ -665,17 +652,6 @@ export const DisputeFragmentDoc = gql`
       id
       subject
       tweetId
-      disputes {
-        id
-        partnerA {
-          id
-          name
-        }
-        partnerB {
-          id
-          name
-        }
-      }
     }
     ...ChatDispute
   }
@@ -701,13 +677,6 @@ export const SubjectFragmentDoc = gql`
     topic: subject
     tweetId
     ...ChatSubject
-    disputes {
-      id
-      partnerB {
-        id
-        name
-      }
-    }
   }
   ${ChatSubjectFragmentDoc}
 `;

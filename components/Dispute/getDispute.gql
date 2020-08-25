@@ -13,17 +13,6 @@ fragment Dispute on Dispute {
     id
     subject
     tweetId
-    disputes {
-      id
-      partnerA {
-        id
-        name
-      }
-      partnerB {
-        id
-        name
-      }
-    }
   }
   ...ChatDispute
 }
