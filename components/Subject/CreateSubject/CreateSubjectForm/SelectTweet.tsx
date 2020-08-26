@@ -23,11 +23,7 @@ const SelectTweet = ({ onSelect }: SelectTweetProps): JSX.Element => {
         <div key={tweet.id} className="relative">
           <TwitterTweetEmbed
             tweetId={tweet.id}
-            placeholder={
-              <div style={{ marginTop: '10px', marginBottom: '10px' }}>
-                Lade Tweet...
-              </div>
-            }
+            placeholder={<div className="min-h-48 my-3">Lade Tweet...</div>}
             options={{
               lang: 'de',
               width: '100%',
