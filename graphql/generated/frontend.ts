@@ -71,6 +71,7 @@ export type QueryUserArgs = {
 export type Mutation = {
   __typename?: 'Mutation';
   createSubject: Subject;
+  editSubjectTitle: Subject;
   replyOnDispute: Dispute;
   replyOnSubject: Dispute;
   vote: Message;
@@ -78,6 +79,11 @@ export type Mutation = {
 
 export type MutationCreateSubjectArgs = {
   input: SubjectCreateInput;
+};
+
+export type MutationEditSubjectTitleArgs = {
+  subjectId: Scalars['ID'];
+  title: Scalars['String'];
 };
 
 export type MutationReplyOnDisputeArgs = {

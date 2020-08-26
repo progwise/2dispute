@@ -84,6 +84,7 @@ export type QueryUserArgs = {
 export type Mutation = {
   __typename?: 'Mutation';
   createSubject: FieldWrapper<Subject>;
+  editSubjectTitle: FieldWrapper<Subject>;
   replyOnDispute: FieldWrapper<Dispute>;
   replyOnSubject: FieldWrapper<Dispute>;
   vote: FieldWrapper<Message>;
@@ -91,6 +92,11 @@ export type Mutation = {
 
 export type MutationCreateSubjectArgs = {
   input: SubjectCreateInput;
+};
+
+export type MutationEditSubjectTitleArgs = {
+  subjectId: Scalars['ID'];
+  title: Scalars['String'];
 };
 
 export type MutationReplyOnDisputeArgs = {
@@ -553,6 +559,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationCreateSubjectArgs, 'input'>
   >;
+  editSubjectTitle?: Resolver<
+    ResolversTypes['Subject'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationEditSubjectTitleArgs, 'subjectId' | 'title'>
+  >;
   replyOnDispute?: Resolver<
     ResolversTypes['Dispute'],
     ParentType,
@@ -835,6 +847,7 @@ type Query {
 
 type Mutation {
   createSubject(input: SubjectCreateInput!): Subject! @auth
+  editSubjectTitle(subjectId: ID!, title: String!): Subject! @auth
   replyOnDispute(input: ReplyOnDisputInput!): Dispute! @auth
   replyOnSubject(input: ReplyOnSubjectInput!): Dispute! @auth
   vote(messageId: ID!, voting: UserVoting!): Message! @auth

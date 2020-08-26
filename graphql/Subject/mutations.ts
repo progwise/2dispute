@@ -76,6 +76,22 @@ const mutations: MutationResolvers = {
 
     return newDispute;
   },
+  editSubjectTitle: async (parent, args, context) => {
+    const subject = await context.mongoose.models.Subject.findById(
+      mongoose.Types.ObjectId(args.subjectId),
+    );
+
+    if (!subject) {
+      throw new ApolloError('subject not found');
+    }
+
+    if (subject.userId !== context.user?.id) {
+      throw new ApolloError('user is not subject creator');
+    }
+
+    subject.subject = args.title;
+    return subject.save();
+  },
 };
 
 export default mutations;
