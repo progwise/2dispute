@@ -20,6 +20,7 @@ const tweetQueries: QueryResolvers = {
 
       const timeline = await twitterClient.get('statuses/home_timeline', {
         include_entities: false,
+        count: 200,
       });
 
       return timeline.map(tweet => {
