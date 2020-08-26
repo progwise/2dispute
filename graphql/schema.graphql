@@ -41,4 +41,5 @@ type Mutation {
   replyOnSubject(input: ReplyOnSubjectInput!): Dispute! @auth
   replyOnDispute(input: ReplyOnDisputInput!): Dispute! @auth
   vote(messageId: ID!, voting: UserVoting!): Message! @auth
+  editSubjectTitle(subjectId: ID!, title: String!): Subject! @auth
 }

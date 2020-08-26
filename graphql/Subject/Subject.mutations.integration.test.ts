@@ -199,3 +199,83 @@ describe('replyOnSubject mutation', () => {
     });
   });
 });
+
+describe('editSubjectTitle', () => {
+  const editSubjectTitleMutation = `
+    mutation {
+      editSubjectTitle(subjectId: "81c408836fc2e528e7ed82f3", title: "New Title") {
+        id
+        subject
+      }
+    }
+  `;
+
+  test('returns error when unauthenticated', async () => {
+    const result = await request(app)
+      .post('')
+      .send({ query: editSubjectTitleMutation })
+      .expect(200);
+
+    expect(result.body.errors[0].message).toBe('not authenticated');
+    expect(result.body.data).toBeNull();
+  });
+
+  test('returns error when subject not exists', async () => {
+    const result = await request(app)
+      .post('')
+      .set('Cookie', [`token=${token}`])
+      .send({ query: editSubjectTitleMutation })
+      .expect(200);
+
+    expect(result.body.errors[0].message).toBe('subject not found');
+    expect(result.body.data).toBeNull();
+  });
+
+  test('returns error when user is not subject creator', async () => {
+    await new mongoose.models.Subject(subject2).save();
+
+    const result = await request(app)
+      .post('')
+      .set('Cookie', [`token=${token}`])
+      .send({ query: editSubjectTitleMutation })
+      .expect(200);
+
+    expect(result.body.errors[0].message).toBe('user is not subject creator');
+    expect(result.body.data).toBeNull();
+  });
+
+  test('updates successfully', async () => {
+    await new mongoose.models.Subject(subject2).save();
+
+    const user = {
+      twitterId: '1',
+      accessToken: {
+        oauth_token: 'oauth_token',
+        oauth_token_secret: 'oauth_token_secret',
+      },
+    };
+    const token = jwt.sign(user, process.env.JWT_SECRET ?? '');
+
+    const result = await request(app)
+      .post('')
+      .set('Cookie', [`token=${token}`])
+      .send({ query: editSubjectTitleMutation })
+      .expect(200);
+
+    expect(result.body).toMatchInlineSnapshot(`
+      Object {
+        "data": Object {
+          "editSubjectTitle": Object {
+            "id": "81c408836fc2e528e7ed82f3",
+            "subject": "New Title",
+          },
+        },
+      }
+    `);
+
+    const updatedSubjectFromDB = await mongoose.models.Subject.findById(
+      '81c408836fc2e528e7ed82f3',
+    );
+    expect(updatedSubjectFromDB).toMatchObject({ subject: 'New Title' });
+  });
+});
