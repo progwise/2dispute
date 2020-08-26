@@ -46,6 +46,7 @@ const createCache = (initialState: any): InMemoryCache =>
       Query: {
         fields: {
           chat: fixedRelayStylePagination(['search', 'scope']),
+          twitterTimeline: fixedRelayStylePagination(),
         },
       },
     },

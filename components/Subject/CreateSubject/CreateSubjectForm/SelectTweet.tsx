@@ -10,7 +10,7 @@ interface SelectTweetProps {
 }
 
 const SelectTweet = ({ onSelect }: SelectTweetProps): JSX.Element => {
-  const { data, loading, error } = useTwitterTimelineQuery();
+  const { data, loading, error, fetchMore } = useTwitterTimelineQuery();
   const [page, setPage] = useState(0);
 
   if (loading) {
@@ -26,9 +26,13 @@ const SelectTweet = ({ onSelect }: SelectTweetProps): JSX.Element => {
     data.twitterTimeline.edges.length / TWEETS_PER_PAGE,
   );
 
-  const handleFetchMore = (): void => {
+  const handleFetchMore = async (): Promise<void> => {
     if (page < maxPages - 1) {
       setPage(oldPage => oldPage + 1);
+    } else {
+      await fetchMore({
+        variables: { after: data.twitterTimeline?.pageInfo.endCursor },
+      });
     }
   };
 

@@ -1,11 +1,15 @@
-query TwitterTimeline {
-  twitterTimeline {
+query TwitterTimeline($after: String) {
+  twitterTimeline(after: $after) {
     edges {
       cursor
       node {
         id
         link
       }
+    }
+    pageInfo {
+      startCursor
+      endCursor
     }
   }
 }
