@@ -10,9 +10,19 @@ import { closeConnection } from '../mongoose';
 jest.mock('twitter-lite');
 const MockedTwitter = (Twitter as unknown) as jest.Mock;
 
+const tweets = [
+  { id_str: '1', user: { screen_name: '2dispute' } },
+  { id_str: '2', user: { screen_name: 'Twitter' } },
+];
+
+const twitterGetMethod = jest.fn().mockReturnValue(tweets);
+MockedTwitter.mockReturnValue({ get: twitterGetMethod });
+
 let app: http.Server;
 
 beforeAll(() => (app = createTestServer()));
+
+afterEach(() => jest.clearAllMocks());
 
 afterAll(async () => {
   await closeConnection();
@@ -39,6 +49,14 @@ const twitterTimelineQuery = `
   }
 `;
 
+const user = {
+  accessToken: {
+    oauth_token: 'oauth_token',
+    oauth_token_secret: 'oauth_token_secret',
+  },
+};
+const token = jwt.sign(user, process.env.JWT_SECRET ?? '');
+
 test('twitterTimeline returns null when unauthenticated', async () => {
   const result = await request(app)
     .post('')
@@ -49,21 +67,6 @@ test('twitterTimeline returns null when unauthenticated', async () => {
 });
 
 test('twitterTimeline returns tweets when authenticated', async () => {
-  const tweets = [
-    { id_str: '1', user: { screen_name: '2dispute' } },
-    { id_str: '2', user: { screen_name: 'Twitter' } },
-  ];
-  const twitterGetMethod = jest.fn().mockReturnValue(tweets);
-  MockedTwitter.mockReturnValue({ get: twitterGetMethod });
-
-  const user = {
-    accessToken: {
-      oauth_token: 'oauth_token',
-      oauth_token_secret: 'oauth_token_secret',
-    },
-  };
-  const token = jwt.sign(user, process.env.JWT_SECRET ?? '');
-
   const result = await request(app)
     .post('')
     .set('Cookie', [`token=${token}`])
@@ -77,6 +80,10 @@ test('twitterTimeline returns tweets when authenticated', async () => {
     access_token_secret: 'oauth_token_secret',
   });
   expect(twitterGetMethod).toHaveBeenCalledTimes(1);
+  expect(twitterGetMethod).toHaveBeenCalledWith('statuses/home_timeline', {
+    count: 200,
+    include_entities: false,
+  });
 
   expect(result.body).toMatchInlineSnapshot(`
     Object {
@@ -104,6 +111,57 @@ test('twitterTimeline returns tweets when authenticated', async () => {
             "hasPreviousPage": true,
             "startCursor": "1",
           },
+        },
+      },
+    }
+  `);
+});
+
+test('twitterTimeline with after args', async () => {
+  const queryWithAfterArgs = `
+    { 
+      twitterTimeline(after: "1") {
+        edges {
+          node {
+            id
+            link
+          }
+        }
+      }
+    }
+  `;
+
+  const result = await request(app)
+    .post('')
+    .set('Cookie', [`token=${token}`])
+    .send({ query: queryWithAfterArgs })
+    .expect(200);
+
+  expect(Twitter).toHaveBeenCalledWith({
+    consumer_key: 'TWITTER_CONSUMER_KEY',
+    consumer_secret: 'TWITTER_CONSUMER_SECRET',
+    access_token_key: 'oauth_token',
+    access_token_secret: 'oauth_token_secret',
+  });
+  expect(twitterGetMethod).toHaveBeenCalledTimes(1);
+  expect(twitterGetMethod).toHaveBeenCalledWith('statuses/home_timeline', {
+    count: 200,
+    include_entities: false,
+    max_id: '1',
+  });
+
+  expect(result.body).toMatchInlineSnapshot(`
+    Object {
+      "data": Object {
+        "twitterTimeline": Object {
+          "edges": Array [
+            Object {
+              "node": Object {
+                "id": "2",
+                "link": "https://twitter.com/Twitter/status/2",
+              },
+            },
+          ],
         },
       },
     }

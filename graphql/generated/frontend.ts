@@ -60,6 +60,10 @@ export type QuerySubjectArgs = {
   id: Scalars['ID'];
 };
 
+export type QueryTwitterTimelineArgs = {
+  after?: Maybe<Scalars['String']>;
+};
+
 export type QueryUserArgs = {
   id: Scalars['ID'];
 };
