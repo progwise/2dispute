@@ -423,7 +423,9 @@ export type ReplyOnDisputeMutation = { __typename?: 'Mutation' } & {
     };
 };
 
-export type TwitterTimelineQueryVariables = {};
+export type TwitterTimelineQueryVariables = {
+  after?: Maybe<Scalars['String']>;
+};
 
 export type TwitterTimelineQuery = { __typename?: 'Query' } & {
   twitterTimeline?: Maybe<
@@ -432,6 +434,10 @@ export type TwitterTimelineQuery = { __typename?: 'Query' } & {
         { __typename?: 'TweetEdge' } & Pick<TweetEdge, 'cursor'> & {
             node: { __typename?: 'Tweet' } & Pick<Tweet, 'id' | 'link'>;
           }
+      >;
+      pageInfo: { __typename?: 'PageInfo' } & Pick<
+        PageInfo,
+        'startCursor' | 'endCursor'
       >;
     }
   >;
@@ -1100,14 +1106,18 @@ export type ReplyOnDisputeMutationOptions = ApolloReactCommon.BaseMutationOption
   ReplyOnDisputeMutationVariables
 >;
 export const TwitterTimelineDocument = gql`
-  query TwitterTimeline {
-    twitterTimeline {
+  query TwitterTimeline($after: String) {
+    twitterTimeline(after: $after) {
       edges {
         cursor
         node {
           id
           link
         }
+      }
+      pageInfo {
+        startCursor
+        endCursor
       }
     }
   }
@@ -1125,6 +1135,7 @@ export const TwitterTimelineDocument = gql`
  * @example
  * const { data, loading, error } = useTwitterTimelineQuery({
  *   variables: {
+ *      after: // value for 'after'
  *   },
  * });
  */
