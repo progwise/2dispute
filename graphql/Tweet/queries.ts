@@ -18,18 +18,35 @@ const tweetQueries: QueryResolvers = {
         access_token_secret: context.user.twitter.oauth_token_secret,
       });
 
-      const timeline = await twitterClient.get('statuses/home_timeline', {
-        include_entities: false,
-        count: 200,
-      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const timeline: any[] = await twitterClient.get(
+        'statuses/home_timeline',
+        {
+          include_entities: false,
+          count: 200,
+        },
+      );
 
-      return timeline.map(tweet => {
-        const user = tweet.user.screen_name;
-        const id = tweet.id_str;
+      const edges = timeline.map(tweet => {
+        const user: string = tweet.user.screen_name;
+        const id: string = tweet.id_str;
         const link = `https://twitter.com/${user}/status/${id}`;
 
-        return { id, link };
+        return {
+          cursor: id,
+          node: { id, link },
+        };
       });
+
+      return {
+        edges,
+        pageInfo: {
+          startCursor: edges.length > 0 ? edges[0].node.id : '',
+          endCursor: edges.length > 0 ? edges[edges.length - 1].node.id : '',
+          hasNextPage: true,
+          hasPreviousPage: true,
+        },
+      };
     } catch (err) {
       return null;
     }

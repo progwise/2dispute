@@ -23,7 +23,7 @@ export type Query = {
   dispute?: Maybe<Dispute>;
   me?: Maybe<User>;
   subject?: Maybe<Subject>;
-  twitterTimeline?: Maybe<Array<Tweet>>;
+  twitterTimeline?: Maybe<TweetConnection>;
   user?: Maybe<User>;
 };
 
@@ -213,6 +213,12 @@ export type PageInfo = {
   startCursor: Scalars['String'];
 };
 
+export type TweetConnection = {
+  __typename?: 'TweetConnection';
+  pageInfo: PageInfo;
+  edges: Array<TweetEdge>;
+};
+
 export type SubjectEdge = {
   __typename?: 'SubjectEdge';
   cursor: Scalars['String'];
@@ -236,6 +242,12 @@ export type ChatEdge = {
   __typename?: 'ChatEdge';
   cursor: Scalars['String'];
   node: ChatItem;
+};
+
+export type TweetEdge = {
+  __typename?: 'TweetEdge';
+  cursor: Scalars['String'];
+  node: Tweet;
 };
 
 export type VoteMutationVariables = {
@@ -411,7 +423,13 @@ export type TwitterTimelineQueryVariables = {};
 
 export type TwitterTimelineQuery = { __typename?: 'Query' } & {
   twitterTimeline?: Maybe<
-    Array<{ __typename?: 'Tweet' } & Pick<Tweet, 'id' | 'link'>>
+    { __typename?: 'TweetConnection' } & {
+      edges: Array<
+        { __typename?: 'TweetEdge' } & Pick<TweetEdge, 'cursor'> & {
+            node: { __typename?: 'Tweet' } & Pick<Tweet, 'id' | 'link'>;
+          }
+      >;
+    }
   >;
 };
 
@@ -1080,8 +1098,13 @@ export type ReplyOnDisputeMutationOptions = ApolloReactCommon.BaseMutationOption
 export const TwitterTimelineDocument = gql`
   query TwitterTimeline {
     twitterTimeline {
-      id
-      link
+      edges {
+        cursor
+        node {
+          id
+          link
+        }
+      }
     }
   }
 `;

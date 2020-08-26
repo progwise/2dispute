@@ -36,7 +36,7 @@ export type Query = {
   dispute?: FieldWrapper<Maybe<Dispute>>;
   me?: FieldWrapper<Maybe<User>>;
   subject?: FieldWrapper<Maybe<Subject>>;
-  twitterTimeline?: FieldWrapper<Maybe<Array<Tweet>>>;
+  twitterTimeline?: FieldWrapper<Maybe<TweetConnection>>;
   user?: FieldWrapper<Maybe<User>>;
 };
 
@@ -226,6 +226,12 @@ export type PageInfo = {
   startCursor: FieldWrapper<Scalars['String']>;
 };
 
+export type TweetConnection = {
+  __typename?: 'TweetConnection';
+  pageInfo: FieldWrapper<PageInfo>;
+  edges: FieldWrapper<Array<TweetEdge>>;
+};
+
 export type SubjectEdge = {
   __typename?: 'SubjectEdge';
   cursor: FieldWrapper<Scalars['String']>;
@@ -249,6 +255,12 @@ export type ChatEdge = {
   __typename?: 'ChatEdge';
   cursor: FieldWrapper<Scalars['String']>;
   node: FieldWrapper<ChatItem>;
+};
+
+export type TweetEdge = {
+  __typename?: 'TweetEdge';
+  cursor: FieldWrapper<Scalars['String']>;
+  node: FieldWrapper<Tweet>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -393,6 +405,7 @@ export type ResolversTypes = ResolversObject<{
   ChatConnection: ResolverTypeWrapper<ChatConnection>;
   ChatScope: ChatScope;
   PageInfo: ResolverTypeWrapper<PageInfo>;
+  TweetConnection: ResolverTypeWrapper<TweetConnection>;
   SubjectEdge: ResolverTypeWrapper<
     Omit<SubjectEdge, 'node'> & { node: ResolversTypes['Subject'] }
   >;
@@ -401,6 +414,7 @@ export type ResolversTypes = ResolversObject<{
   >;
   Votes: ResolverTypeWrapper<Votes>;
   ChatEdge: ResolverTypeWrapper<ChatEdge>;
+  TweetEdge: ResolverTypeWrapper<TweetEdge>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -432,6 +446,7 @@ export type ResolversParentTypes = ResolversObject<{
   ChatConnection: ChatConnection;
   ChatScope: ChatScope;
   PageInfo: PageInfo;
+  TweetConnection: TweetConnection;
   SubjectEdge: Omit<SubjectEdge, 'node'> & {
     node: ResolversParentTypes['Subject'];
   };
@@ -440,6 +455,7 @@ export type ResolversParentTypes = ResolversObject<{
   };
   Votes: Votes;
   ChatEdge: ChatEdge;
+  TweetEdge: TweetEdge;
 }>;
 
 export type ComplexityDirectiveArgs = {
@@ -510,7 +526,7 @@ export type QueryResolvers<
     RequireFields<QuerySubjectArgs, 'id'>
   >;
   twitterTimeline?: Resolver<
-    Maybe<Array<ResolversTypes['Tweet']>>,
+    Maybe<ResolversTypes['TweetConnection']>,
     ParentType,
     ContextType
   >;
@@ -698,6 +714,15 @@ export type PageInfoResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
+export type TweetConnectionResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['TweetConnection'] = ResolversParentTypes['TweetConnection']
+> = ResolversObject<{
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  edges?: Resolver<Array<ResolversTypes['TweetEdge']>, ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
 export type SubjectEdgeResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['SubjectEdge'] = ResolversParentTypes['SubjectEdge']
@@ -735,6 +760,15 @@ export type ChatEdgeResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
+export type TweetEdgeResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['TweetEdge'] = ResolversParentTypes['TweetEdge']
+> = ResolversObject<{
+  cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  node?: Resolver<ResolversTypes['Tweet'], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
 export type Resolvers<ContextType = Context> = ResolversObject<{
   DateTime?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
@@ -749,10 +783,12 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   ChatItem?: ChatItemResolvers;
   ChatConnection?: ChatConnectionResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
+  TweetConnection?: TweetConnectionResolvers<ContextType>;
   SubjectEdge?: SubjectEdgeResolvers<ContextType>;
   DisputeEdge?: DisputeEdgeResolvers<ContextType>;
   Votes?: VotesResolvers<ContextType>;
   ChatEdge?: ChatEdgeResolvers<ContextType>;
+  TweetEdge?: TweetEdgeResolvers<ContextType>;
 }>;
 
 /**
@@ -788,7 +824,7 @@ type Query {
   dispute(id: ID!): Dispute
   me: User
   subject(id: ID!): Subject
-  twitterTimeline: [Tweet!]
+  twitterTimeline: TweetConnection
   user(id: ID!): User
 }
 
@@ -902,6 +938,11 @@ type PageInfo {
   startCursor: String!
 }
 
+type TweetConnection {
+  pageInfo: PageInfo!
+  edges: [TweetEdge!]!
+}
+
 type SubjectEdge {
   cursor: String!
   node: Subject!
@@ -921,5 +962,10 @@ type Votes {
 type ChatEdge {
   cursor: String!
   node: ChatItem!
+}
+
+type TweetEdge {
+  cursor: String!
+  node: Tweet!
 }
 `;

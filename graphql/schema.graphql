@@ -25,7 +25,7 @@ type Query {
   me: User
   dispute(id: ID!): Dispute
   user(id: ID!): User
-  twitterTimeline: [Tweet!]
+  twitterTimeline: TweetConnection
   chat(
     limit: Int = 10
     after: DateTime

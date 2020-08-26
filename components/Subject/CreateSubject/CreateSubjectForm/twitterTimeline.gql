@@ -1,6 +1,11 @@
 query TwitterTimeline {
   twitterTimeline {
-    id
-    link
+    edges {
+      cursor
+      node {
+        id
+        link
+      }
+    }
   }
 }

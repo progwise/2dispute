@@ -1,4 +1,16 @@
+# import PageInfo from '../PageInfo/PageInfo.graphql'
+
 type Tweet {
   id: ID!
   link: String!
+}
+
+type TweetConnection {
+  pageInfo: PageInfo!
+  edges: [TweetEdge!]!
+}
+
+type TweetEdge {
+  cursor: String!
+  node: Tweet!
 }

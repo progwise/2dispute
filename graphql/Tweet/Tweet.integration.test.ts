@@ -22,8 +22,19 @@ afterAll(async () => {
 const twitterTimelineQuery = `
   { 
     twitterTimeline {
-      id
-      link
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        cursor
+        node {
+          id
+          link
+        }
+      }
     }
   }
 `;
@@ -70,16 +81,30 @@ test('twitterTimeline returns tweets when authenticated', async () => {
   expect(result.body).toMatchInlineSnapshot(`
     Object {
       "data": Object {
-        "twitterTimeline": Array [
-          Object {
-            "id": "1",
-            "link": "https://twitter.com/2dispute/status/1",
+        "twitterTimeline": Object {
+          "edges": Array [
+            Object {
+              "cursor": "1",
+              "node": Object {
+                "id": "1",
+                "link": "https://twitter.com/2dispute/status/1",
+              },
+            },
+            Object {
+              "cursor": "2",
+              "node": Object {
+                "id": "2",
+                "link": "https://twitter.com/Twitter/status/2",
+              },
+            },
+          ],
+          "pageInfo": Object {
+            "endCursor": "2",
+            "hasNextPage": true,
+            "hasPreviousPage": true,
+            "startCursor": "1",
           },
-          Object {
-            "id": "2",
-            "link": "https://twitter.com/Twitter/status/2",
-          },
-        ],
+        },
       },
     }
   `);

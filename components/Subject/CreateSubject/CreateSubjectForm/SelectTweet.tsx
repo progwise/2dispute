@@ -22,7 +22,9 @@ const SelectTweet = ({ onSelect }: SelectTweetProps): JSX.Element => {
   }
 
   const numberOfTweets = (page + 1) * TWEETS_PER_PAGE;
-  const maxPages = Math.ceil(data.twitterTimeline.length / TWEETS_PER_PAGE);
+  const maxPages = Math.ceil(
+    data.twitterTimeline.edges.length / TWEETS_PER_PAGE,
+  );
 
   const handleFetchMore = (): void => {
     if (page < maxPages - 1) {
@@ -30,11 +32,11 @@ const SelectTweet = ({ onSelect }: SelectTweetProps): JSX.Element => {
     }
   };
 
-  const tweets = data.twitterTimeline.slice(0, numberOfTweets);
+  const tweets = data.twitterTimeline.edges.slice(0, numberOfTweets);
 
   return (
     <div>
-      {tweets.map(tweet => (
+      {tweets.map(({ node: tweet }) => (
         <div key={tweet.id} className="relative">
           <TwitterTweetEmbed
             tweetId={tweet.id}
@@ -58,7 +60,7 @@ const SelectTweet = ({ onSelect }: SelectTweetProps): JSX.Element => {
         </div>
       ))}
       <Waypoint
-        key={tweets.length > 0 ? tweets[tweets.length - 1].id : undefined}
+        key={tweets.length > 0 ? tweets[tweets.length - 1].node.id : undefined}
         onEnter={handleFetchMore}
         bottomOffset="-100px"
       />
