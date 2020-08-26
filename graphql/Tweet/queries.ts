@@ -24,19 +24,23 @@ const tweetQueries: QueryResolvers = {
         {
           include_entities: false,
           count: 200,
+          ...(args.after && { max_id: args.after }),
         },
       );
 
-      const edges = timeline.map(tweet => {
-        const user: string = tweet.user.screen_name;
-        const id: string = tweet.id_str;
-        const link = `https://twitter.com/${user}/status/${id}`;
+      const edges = timeline
+        .map(tweet => {
+          const user: string = tweet.user.screen_name;
+          const id: string = tweet.id_str;
+          const link = `https://twitter.com/${user}/status/${id}`;
 
-        return {
-          cursor: id,
-          node: { id, link },
-        };
-      });
+          return {
+            cursor: id,
+            node: { id, link },
+          };
+        })
+        // The property max_id in twitter API includes the chosen tweet
+        .filter(edge => edge.cursor !== args.after);
 
       return {
         edges,

@@ -73,6 +73,10 @@ export type QuerySubjectArgs = {
   id: Scalars['ID'];
 };
 
+export type QueryTwitterTimelineArgs = {
+  after?: Maybe<Scalars['String']>;
+};
+
 export type QueryUserArgs = {
   id: Scalars['ID'];
 };
@@ -528,7 +532,8 @@ export type QueryResolvers<
   twitterTimeline?: Resolver<
     Maybe<ResolversTypes['TweetConnection']>,
     ParentType,
-    ContextType
+    ContextType,
+    RequireFields<QueryTwitterTimelineArgs, never>
   >;
   user?: Resolver<
     Maybe<ResolversTypes['User']>,
@@ -824,7 +829,7 @@ type Query {
   dispute(id: ID!): Dispute
   me: User
   subject(id: ID!): Subject
-  twitterTimeline: TweetConnection
+  twitterTimeline(after: String): TweetConnection
   user(id: ID!): User
 }
 
