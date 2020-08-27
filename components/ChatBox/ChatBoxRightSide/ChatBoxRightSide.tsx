@@ -52,7 +52,11 @@ const ChatBoxRightSide = ({
           <>
             <Seo title="Neues Thema erstellen" />
             <ChatBoxHeader displayOnSmallDevices={displayOnSmallDevices}>
-              <Input name="subject" placeholder="Neues Thema" />
+              <Input
+                className="flex-grow md:!ml-0"
+                name="subject"
+                placeholder="Neues Thema"
+              />
             </ChatBoxHeader>
             <ChatBoxRightSideContent
               displayOnSmallDevices={displayOnSmallDevices}

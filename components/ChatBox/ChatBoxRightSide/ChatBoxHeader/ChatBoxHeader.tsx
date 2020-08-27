@@ -6,13 +6,11 @@ import LogoSVG from '../Logo.svg';
 interface ChatBoxHeaderProps {
   children: ReactNode;
   displayOnSmallDevices: boolean;
-  title?: string;
 }
 
 const ChatBoxHeader = ({
   children,
   displayOnSmallDevices,
-  title,
 }: ChatBoxHeaderProps): JSX.Element => (
   <div
     className={`row-start-1 col-start-1 md:col-start-2 md:col-span-2 border-b px-4 flex items-center py-2 ${
@@ -22,9 +20,7 @@ const ChatBoxHeader = ({
     <Link href="/" className="py-2 text-xl md:hidden">
       <FaChevronLeft />
     </Link>
-    <span className="py-2 truncate flex-grow md:!ml-0" title={title}>
-      {children}
-    </span>
+    {children}
     <img src={LogoSVG} className="h-8 w-8" />
   </div>
 );

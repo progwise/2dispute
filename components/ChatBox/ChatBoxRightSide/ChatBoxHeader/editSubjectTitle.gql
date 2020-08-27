@@ -1,0 +1,6 @@
+mutation editSubjectTitle($subjectId: ID!, $title: String!) {
+  editSubjectTitle(subjectId: $subjectId, title: $title) {
+    id
+    subject
+  }
+}
