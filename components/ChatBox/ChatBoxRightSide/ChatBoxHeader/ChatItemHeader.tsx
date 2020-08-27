@@ -58,7 +58,9 @@ const ChatItemHeader = ({
               text={subject.topic}
               onUpdate={handleTitleUpdate}
             />
-          ) : null}
+          ) : (
+            subject?.topic
+          )}
         </div>
         {subject ? (
           <DisputeDropdown subject={subject} selectedChatItem={chatItemId} />
