@@ -335,6 +335,18 @@ export type DisputeInHeaderFragment = { __typename?: 'Dispute' } & Pick<
     partnerB: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
   };
 
+export type EditSubjectTitleMutationVariables = {
+  subjectId: Scalars['ID'];
+  title: Scalars['String'];
+};
+
+export type EditSubjectTitleMutation = { __typename?: 'Mutation' } & {
+  editSubjectTitle: { __typename?: 'Subject' } & Pick<
+    Subject,
+    'id' | 'subject'
+  >;
+};
+
 export type ChatItemQueryVariables = {
   id: Scalars['ID'];
 };
@@ -861,6 +873,54 @@ export type ChatItemHeaderLazyQueryHookResult = ReturnType<
 export type ChatItemHeaderQueryResult = ApolloReactCommon.QueryResult<
   ChatItemHeaderQuery,
   ChatItemHeaderQueryVariables
+>;
+export const EditSubjectTitleDocument = gql`
+  mutation editSubjectTitle($subjectId: ID!, $title: String!) {
+    editSubjectTitle(subjectId: $subjectId, title: $title) {
+      id
+      subject
+    }
+  }
+`;
+
+/**
+ * __useEditSubjectTitleMutation__
+ *
+ * To run a mutation, you first call `useEditSubjectTitleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditSubjectTitleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editSubjectTitleMutation, { data, loading, error }] = useEditSubjectTitleMutation({
+ *   variables: {
+ *      subjectId: // value for 'subjectId'
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useEditSubjectTitleMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EditSubjectTitleMutation,
+    EditSubjectTitleMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EditSubjectTitleMutation,
+    EditSubjectTitleMutationVariables
+  >(EditSubjectTitleDocument, baseOptions);
+}
+export type EditSubjectTitleMutationHookResult = ReturnType<
+  typeof useEditSubjectTitleMutation
+>;
+export type EditSubjectTitleMutationResult = ApolloReactCommon.MutationResult<
+  EditSubjectTitleMutation
+>;
+export type EditSubjectTitleMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EditSubjectTitleMutation,
+  EditSubjectTitleMutationVariables
 >;
 export const ChatItemDocument = gql`
   query ChatItem($id: ID!) {

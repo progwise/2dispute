@@ -1,7 +1,12 @@
 import React from 'react';
-import { useChatItemHeaderQuery } from '../../../../graphql/generated/frontend';
+import {
+  useChatItemHeaderQuery,
+  useEditSubjectTitleMutation,
+} from '../../../../graphql/generated/frontend';
+import useUser from '../../../../utils/react-hooks/useUser';
 import ChatBoxHeader from './ChatBoxHeader';
 import DisputeDropdown from './DisputeDropdown';
+import EditableText from './EditableText';
 
 interface ChatItemHeaderProps {
   chatItemId: string;
@@ -16,6 +21,8 @@ const ChatItemHeader = ({
     variables: { chatItemId },
     pollInterval: 60 * 1000,
   });
+  const [editSubjectTitle] = useEditSubjectTitleMutation();
+  const user = useUser();
 
   const chatItem = data?.chatItem;
 
@@ -26,16 +33,37 @@ const ChatItemHeader = ({
       ? chatItem
       : undefined;
 
+  const handleTitleUpdate = (title: string): void => {
+    if (!subject) return;
+    editSubjectTitle({
+      variables: { subjectId: subject.id, title },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        editSubjectTitle: {
+          __typename: 'Subject',
+          id: subject.id,
+          subject: title,
+        },
+      },
+    });
+  };
+
   return (
     <ChatBoxHeader displayOnSmallDevices={displayOnSmallDevices}>
-      <div className="flex items-center">
-        <div className="flex-grow truncate" title={subject?.topic}>
-          {subject?.topic}
+      <>
+        <div className="flex-grow truncate md:!ml-0" title={subject?.topic}>
+          {!!subject && !!user && subject.author.id === user.twitterId ? (
+            <EditableText
+              key={subject.id}
+              text={subject.topic}
+              onUpdate={handleTitleUpdate}
+            />
+          ) : null}
         </div>
         {subject ? (
           <DisputeDropdown subject={subject} selectedChatItem={chatItemId} />
         ) : null}
-      </div>
+      </>
     </ChatBoxHeader>
   );
 };
