@@ -44,6 +44,7 @@ export default new ApolloServer({
   schemaDirectives,
   plugins: [
     {
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       requestDidStart: () => ({
         didResolveOperation: ({ request, document }): void => {
           const complexity = getComplexity({
