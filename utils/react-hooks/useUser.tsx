@@ -1,6 +1,6 @@
 import Cookie from 'js-cookie';
 import jwt from 'jsonwebtoken';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, createContext, useContext } from 'react';
 import constants from '../constants';
 import { UserDocument } from '../../graphql/User/UserSchema';
 import useInterval from './useInterval';
@@ -16,7 +16,9 @@ const getUserFromToken = (token: string): UserDocument | null => {
   }
 };
 
-const useUser = (): UserDocument | null => {
+const UserContext = createContext<UserDocument | null>(null);
+
+export const UserProvider = (props): JSX.Element => {
   const [token, setToken] = useState(getTokenFromCookie());
   const [user, setUser] = useState(token ? getUserFromToken(token) : null);
 
@@ -29,7 +31,9 @@ const useUser = (): UserDocument | null => {
     }
   }, [token]);
 
-  return user;
+  return <UserContext.Provider value={user} {...props} />;
 };
+
+const useUser = (): UserDocument | null => useContext(UserContext);
 
 export default useUser;

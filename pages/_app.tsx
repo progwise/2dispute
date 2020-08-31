@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 import TokenManager from '../components/TokenManager';
 import { ChatContextProvider } from '../components/ChatBox/ChatContext';
 import Seo from '../components/Seo';
+import { UserProvider } from '../utils/react-hooks/useUser';
 
 interface MyAppProp {
   Component: new (props: any) => React.Component;
@@ -25,9 +26,11 @@ const MyApp = ({ Component, pageProps }: MyAppProp): JSX.Element => (
 );
 
 const MyAppWithProvider = (props): JSX.Element => (
-  <ChatContextProvider>
-    <MyApp {...props} />
-  </ChatContextProvider>
+  <UserProvider>
+    <ChatContextProvider>
+      <MyApp {...props} />
+    </ChatContextProvider>
+  </UserProvider>
 );
 
 export default MyAppWithProvider;
