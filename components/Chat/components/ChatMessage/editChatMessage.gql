@@ -1,0 +1,6 @@
+mutation editMessage($messageId: ID!, $text: String!) {
+  editMessage(messageId: $messageId, text: $text) {
+    id
+    text
+  }
+}

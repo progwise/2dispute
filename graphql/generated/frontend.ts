@@ -277,6 +277,15 @@ export type VoteMutation = { __typename?: 'Mutation' } & {
     };
 };
 
+export type EditMessageMutationVariables = {
+  messageId: Scalars['ID'];
+  text: Scalars['String'];
+};
+
+export type EditMessageMutation = { __typename?: 'Mutation' } & {
+  editMessage: Array<{ __typename?: 'Message' } & Pick<Message, 'id' | 'text'>>;
+};
+
 export type ChatSubjectFragment = { __typename?: 'Subject' } & Pick<
   Subject,
   'id' | 'createdAt'
@@ -816,6 +825,54 @@ export type VoteMutationResult = ApolloReactCommon.MutationResult<VoteMutation>;
 export type VoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
   VoteMutation,
   VoteMutationVariables
+>;
+export const EditMessageDocument = gql`
+  mutation editMessage($messageId: ID!, $text: String!) {
+    editMessage(messageId: $messageId, text: $text) {
+      id
+      text
+    }
+  }
+`;
+
+/**
+ * __useEditMessageMutation__
+ *
+ * To run a mutation, you first call `useEditMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editMessageMutation, { data, loading, error }] = useEditMessageMutation({
+ *   variables: {
+ *      messageId: // value for 'messageId'
+ *      text: // value for 'text'
+ *   },
+ * });
+ */
+export function useEditMessageMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EditMessageMutation,
+    EditMessageMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EditMessageMutation,
+    EditMessageMutationVariables
+  >(EditMessageDocument, baseOptions);
+}
+export type EditMessageMutationHookResult = ReturnType<
+  typeof useEditMessageMutation
+>;
+export type EditMessageMutationResult = ApolloReactCommon.MutationResult<
+  EditMessageMutation
+>;
+export type EditMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EditMessageMutation,
+  EditMessageMutationVariables
 >;
 export const ChatItemHeaderDocument = gql`
   query ChatItemHeader($chatItemId: ID!) {
