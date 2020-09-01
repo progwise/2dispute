@@ -3,7 +3,7 @@ import { ChatMessageFragment } from '../../../../graphql/generated/frontend';
 import useUser from '../../../../utils/react-hooks/useUser';
 import DateTime from './DateTime';
 import ChatBubble from './ChatBubble';
-import ChatMessageFormatter from './ChatMessageFormatter/ChatMessageFormatter';
+import ChatMessageFormatter from './ChatMessageFormatter';
 import Votes from './Votes';
 import ChatMessageEdit from './ChatMessageEdit';
 

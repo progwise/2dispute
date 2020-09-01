@@ -374,6 +374,21 @@ export type ChatItemQuery = { __typename?: 'Query' } & {
   me?: Maybe<{ __typename?: 'User' } & ChatPersonFragment>;
 };
 
+export type DisputeFragment = { __typename?: 'Dispute' } & Pick<
+  Dispute,
+  'id'
+> & {
+    subject: { __typename?: 'Subject' } & Pick<
+      Subject,
+      'id' | 'subject' | 'tweetId'
+    >;
+  } & ChatDisputeFragment;
+
+export type SubjectFragment = { __typename?: 'Subject' } & Pick<
+  Subject,
+  'id' | 'tweetId'
+> & { topic: Subject['subject'] } & ChatSubjectFragment;
+
 export type ChatListQueryVariables = {
   after?: Maybe<Scalars['DateTime']>;
   before?: Maybe<Scalars['DateTime']>;
@@ -418,25 +433,6 @@ type ChatListItem_Dispute_Fragment = { __typename?: 'Dispute' } & Pick<
 export type ChatListItemFragment =
   | ChatListItem_Subject_Fragment
   | ChatListItem_Dispute_Fragment;
-
-export type GetDisputeQueryVariables = {
-  disputeId: Scalars['ID'];
-};
-
-export type GetDisputeQuery = { __typename?: 'Query' } & {
-  dispute?: Maybe<{ __typename?: 'Dispute' } & DisputeFragment>;
-  me?: Maybe<{ __typename?: 'User' } & ChatPersonFragment>;
-};
-
-export type DisputeFragment = { __typename?: 'Dispute' } & Pick<
-  Dispute,
-  'id'
-> & {
-    subject: { __typename?: 'Subject' } & Pick<
-      Subject,
-      'id' | 'subject' | 'tweetId'
-    >;
-  } & ChatDisputeFragment;
 
 export type ReplyOnDisputeMutationVariables = {
   disputeId: Scalars['ID'];
@@ -495,20 +491,6 @@ export type CreateSubjectMutation = { __typename?: 'Mutation' } & {
   >;
 };
 
-export type GetSubjectQueryVariables = {
-  subjectId: Scalars['ID'];
-};
-
-export type GetSubjectQuery = { __typename?: 'Query' } & {
-  subject?: Maybe<{ __typename?: 'Subject' } & SubjectFragment>;
-  me?: Maybe<{ __typename?: 'User' } & ChatPersonFragment>;
-};
-
-export type SubjectFragment = { __typename?: 'Subject' } & Pick<
-  Subject,
-  'id' | 'tweetId'
-> & { topic: Subject['subject'] } & ChatSubjectFragment;
-
 export type ReplyOnSubjectMutationVariables = {
   subjectId: Scalars['ID'];
   message: Scalars['String'];
@@ -553,59 +535,6 @@ export type UserInfoFragment = { __typename?: 'User' } & Pick<
     };
   };
 
-export type GetAllDisputesQueryVariables = {
-  cursor?: Maybe<Scalars['String']>;
-};
-
-export type GetAllDisputesQuery = { __typename?: 'Query' } & {
-  allDisputes: { __typename?: 'DisputeConnection' } & {
-    edges: Array<
-      { __typename?: 'DisputeEdge' } & {
-        node: { __typename?: 'Dispute' } & Pick<
-          Dispute,
-          'id' | 'lastUpdateAt'
-        > & {
-            subject: { __typename?: 'Subject' } & Pick<
-              Subject,
-              'id' | 'subject'
-            >;
-            partnerA: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
-            partnerB: { __typename?: 'User' } & Pick<User, 'id' | 'name'>;
-          };
-      }
-    >;
-    pageInfo: { __typename?: 'PageInfo' } & Pick<
-      PageInfo,
-      'endCursor' | 'hasNextPage'
-    >;
-  };
-};
-
-export type GetAllSubjectsQueryVariables = {
-  cursor?: Maybe<Scalars['String']>;
-};
-
-export type GetAllSubjectsQuery = { __typename?: 'Query' } & {
-  allSubjects: { __typename?: 'SubjectConnection' } & {
-    edges: Array<
-      { __typename?: 'SubjectEdge' } & {
-        node: { __typename?: 'Subject' } & Pick<Subject, 'id' | 'subject'> & {
-            author: { __typename?: 'User' } & Pick<User, 'name'>;
-            disputes: Array<
-              { __typename?: 'Dispute' } & Pick<Dispute, 'id'> & {
-                  partnerB: { __typename?: 'User' } & Pick<User, 'name'>;
-                }
-            >;
-          };
-      }
-    >;
-    pageInfo: { __typename?: 'PageInfo' } & Pick<
-      PageInfo,
-      'hasNextPage' | 'endCursor'
-    >;
-  };
-};
-
 export const DisputeInHeaderFragmentDoc = gql`
   fragment DisputeInHeader on Dispute {
     id
@@ -639,32 +568,6 @@ export const ChatPersonFragmentDoc = gql`
     twitterHandle
     picture
   }
-`;
-export const ChatListItemFragmentDoc = gql`
-  fragment ChatListItem on ChatItem {
-    id
-    lastUpdateAt
-    ... on Dispute {
-      createdAt
-      subject {
-        id
-        subject
-      }
-      partnerA {
-        ...ChatPerson
-      }
-      partnerB {
-        ...ChatPerson
-      }
-    }
-    ... on Subject {
-      author {
-        ...ChatPerson
-      }
-      subjectTitle: subject
-    }
-  }
-  ${ChatPersonFragmentDoc}
 `;
 export const MessageVotesFragmentDoc = gql`
   fragment MessageVotes on Votes {
@@ -738,6 +641,32 @@ export const SubjectFragmentDoc = gql`
     ...ChatSubject
   }
   ${ChatSubjectFragmentDoc}
+`;
+export const ChatListItemFragmentDoc = gql`
+  fragment ChatListItem on ChatItem {
+    id
+    lastUpdateAt
+    ... on Dispute {
+      createdAt
+      subject {
+        id
+        subject
+      }
+      partnerA {
+        ...ChatPerson
+      }
+      partnerB {
+        ...ChatPerson
+      }
+    }
+    ... on Subject {
+      author {
+        ...ChatPerson
+      }
+      subjectTitle: subject
+    }
+  }
+  ${ChatPersonFragmentDoc}
 `;
 export const UserInfoFragmentDoc = gql`
   fragment UserInfo on User {
@@ -1114,65 +1043,6 @@ export type ChatListQueryResult = ApolloReactCommon.QueryResult<
   ChatListQuery,
   ChatListQueryVariables
 >;
-export const GetDisputeDocument = gql`
-  query getDispute($disputeId: ID!) {
-    dispute(id: $disputeId) {
-      ...Dispute
-    }
-    me {
-      ...ChatPerson
-    }
-  }
-  ${DisputeFragmentDoc}
-  ${ChatPersonFragmentDoc}
-`;
-
-/**
- * __useGetDisputeQuery__
- *
- * To run a query within a React component, call `useGetDisputeQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetDisputeQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetDisputeQuery({
- *   variables: {
- *      disputeId: // value for 'disputeId'
- *   },
- * });
- */
-export function useGetDisputeQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetDisputeQuery,
-    GetDisputeQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<GetDisputeQuery, GetDisputeQueryVariables>(
-    GetDisputeDocument,
-    baseOptions,
-  );
-}
-export function useGetDisputeLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    GetDisputeQuery,
-    GetDisputeQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    GetDisputeQuery,
-    GetDisputeQueryVariables
-  >(GetDisputeDocument, baseOptions);
-}
-export type GetDisputeQueryHookResult = ReturnType<typeof useGetDisputeQuery>;
-export type GetDisputeLazyQueryHookResult = ReturnType<
-  typeof useGetDisputeLazyQuery
->;
-export type GetDisputeQueryResult = ApolloReactCommon.QueryResult<
-  GetDisputeQuery,
-  GetDisputeQueryVariables
->;
 export const ReplyOnDisputeDocument = gql`
   mutation replyOnDispute($disputeId: ID!, $message: String!) {
     replyOnDispute(input: { disputeId: $disputeId, message: $message }) {
@@ -1403,65 +1273,6 @@ export type CreateSubjectMutationOptions = ApolloReactCommon.BaseMutationOptions
   CreateSubjectMutation,
   CreateSubjectMutationVariables
 >;
-export const GetSubjectDocument = gql`
-  query getSubject($subjectId: ID!) {
-    subject(id: $subjectId) {
-      ...Subject
-    }
-    me {
-      ...ChatPerson
-    }
-  }
-  ${SubjectFragmentDoc}
-  ${ChatPersonFragmentDoc}
-`;
-
-/**
- * __useGetSubjectQuery__
- *
- * To run a query within a React component, call `useGetSubjectQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetSubjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetSubjectQuery({
- *   variables: {
- *      subjectId: // value for 'subjectId'
- *   },
- * });
- */
-export function useGetSubjectQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetSubjectQuery,
-    GetSubjectQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<GetSubjectQuery, GetSubjectQueryVariables>(
-    GetSubjectDocument,
-    baseOptions,
-  );
-}
-export function useGetSubjectLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    GetSubjectQuery,
-    GetSubjectQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    GetSubjectQuery,
-    GetSubjectQueryVariables
-  >(GetSubjectDocument, baseOptions);
-}
-export type GetSubjectQueryHookResult = ReturnType<typeof useGetSubjectQuery>;
-export type GetSubjectLazyQueryHookResult = ReturnType<
-  typeof useGetSubjectLazyQuery
->;
-export type GetSubjectQueryResult = ApolloReactCommon.QueryResult<
-  GetSubjectQuery,
-  GetSubjectQueryVariables
->;
 export const ReplyOnSubjectDocument = gql`
   mutation replyOnSubject($subjectId: ID!, $message: String!) {
     replyOnSubject(input: { subjectId: $subjectId, message: $message }) {
@@ -1565,155 +1376,4 @@ export type GetUserInfoByIdLazyQueryHookResult = ReturnType<
 export type GetUserInfoByIdQueryResult = ApolloReactCommon.QueryResult<
   GetUserInfoByIdQuery,
   GetUserInfoByIdQueryVariables
->;
-export const GetAllDisputesDocument = gql`
-  query getAllDisputes($cursor: String) {
-    allDisputes(limit: 20, after: $cursor) {
-      edges {
-        node {
-          id
-          lastUpdateAt
-          subject {
-            id
-            subject
-          }
-          partnerA {
-            id
-            name
-          }
-          partnerB {
-            id
-            name
-          }
-        }
-      }
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
-    }
-  }
-`;
-
-/**
- * __useGetAllDisputesQuery__
- *
- * To run a query within a React component, call `useGetAllDisputesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllDisputesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAllDisputesQuery({
- *   variables: {
- *      cursor: // value for 'cursor'
- *   },
- * });
- */
-export function useGetAllDisputesQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetAllDisputesQuery,
-    GetAllDisputesQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<
-    GetAllDisputesQuery,
-    GetAllDisputesQueryVariables
-  >(GetAllDisputesDocument, baseOptions);
-}
-export function useGetAllDisputesLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    GetAllDisputesQuery,
-    GetAllDisputesQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    GetAllDisputesQuery,
-    GetAllDisputesQueryVariables
-  >(GetAllDisputesDocument, baseOptions);
-}
-export type GetAllDisputesQueryHookResult = ReturnType<
-  typeof useGetAllDisputesQuery
->;
-export type GetAllDisputesLazyQueryHookResult = ReturnType<
-  typeof useGetAllDisputesLazyQuery
->;
-export type GetAllDisputesQueryResult = ApolloReactCommon.QueryResult<
-  GetAllDisputesQuery,
-  GetAllDisputesQueryVariables
->;
-export const GetAllSubjectsDocument = gql`
-  query getAllSubjects($cursor: String) {
-    allSubjects(limit: 20, after: $cursor) {
-      edges {
-        node {
-          id
-          subject
-          author {
-            name
-          }
-          disputes {
-            id
-            partnerB {
-              name
-            }
-          }
-        }
-      }
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-    }
-  }
-`;
-
-/**
- * __useGetAllSubjectsQuery__
- *
- * To run a query within a React component, call `useGetAllSubjectsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllSubjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAllSubjectsQuery({
- *   variables: {
- *      cursor: // value for 'cursor'
- *   },
- * });
- */
-export function useGetAllSubjectsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetAllSubjectsQuery,
-    GetAllSubjectsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<
-    GetAllSubjectsQuery,
-    GetAllSubjectsQueryVariables
-  >(GetAllSubjectsDocument, baseOptions);
-}
-export function useGetAllSubjectsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    GetAllSubjectsQuery,
-    GetAllSubjectsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    GetAllSubjectsQuery,
-    GetAllSubjectsQueryVariables
-  >(GetAllSubjectsDocument, baseOptions);
-}
-export type GetAllSubjectsQueryHookResult = ReturnType<
-  typeof useGetAllSubjectsQuery
->;
-export type GetAllSubjectsLazyQueryHookResult = ReturnType<
-  typeof useGetAllSubjectsLazyQuery
->;
-export type GetAllSubjectsQueryResult = ApolloReactCommon.QueryResult<
-  GetAllSubjectsQuery,
-  GetAllSubjectsQueryVariables
 >;

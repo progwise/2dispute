@@ -8,3 +8,20 @@ query ChatItem($id: ID!) {
     ...ChatPerson
   }
 }
+
+fragment Dispute on Dispute {
+  id
+  subject {
+    id
+    subject
+    tweetId
+  }
+  ...ChatDispute
+}
+
+fragment Subject on Subject {
+  id
+  topic: subject
+  tweetId
+  ...ChatSubject
+}
