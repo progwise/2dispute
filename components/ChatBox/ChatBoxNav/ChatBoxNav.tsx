@@ -15,7 +15,7 @@ const ChatBoxNav = (): JSX.Element => {
         href="/"
         icon={FaComments}
         text="Chat"
-        isActive={router.pathname === '/'}
+        isActive={['/', '/[chatItemId]'].includes(router.pathname)}
       />
       <ChatBoxNavItem href="/me" icon={FaUser} text="Profil" />
       {isAuthenticated ? (
@@ -23,6 +23,7 @@ const ChatBoxNav = (): JSX.Element => {
           href="/api/auth/logout"
           icon={FaSignInAlt}
           text="Abmelden"
+          isActive={router.pathname === '/me'}
         />
       ) : (
         <ChatBoxNavItem
