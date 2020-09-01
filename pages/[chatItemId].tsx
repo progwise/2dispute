@@ -5,7 +5,7 @@ import { ChatBoxRightSideContent } from '../components/ChatBox/ChatBoxRightSide'
 import ChatItem from '../components/ChatBox/ChatBoxRightSide/ChatItem';
 import { useSetSelectedChatItem } from '../utils/react-hooks/useSelectChatItem';
 
-const ChatItemApp = (): JSX.Element => {
+const ChatItemApp = (): JSX.Element | null => {
   const router = useRouter();
   const setSelectedChatItem = useSetSelectedChatItem();
 
@@ -17,6 +17,10 @@ const ChatItemApp = (): JSX.Element => {
     setSelectedChatItem(chatItemId);
     return (): void => setSelectedChatItem(undefined);
   }, [setSelectedChatItem, chatItemId]);
+
+  if (!chatItemId) {
+    return null;
+  }
 
   return (
     <>
