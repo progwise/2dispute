@@ -10,7 +10,8 @@
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,css,md,html,json,graphql,gql}\"",
     "format:run": "prettier --write \"**/*.{js,jsx,ts,tsx,css,md,html,json,graphql,gql}\"",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\"",
-    "graphql:codegen": "graphql-codegen --config codegen.yml"
+    "graphql:codegen": "graphql-codegen --config codegen.yml",
+    "find:unused": "next-unused"
   },
   "dependencies": {
     "@apollo/client": "^3.0.2",
@@ -73,6 +74,7 @@
     "jest": "^26.0.1",
     "lint-staged": "^10.1.2",
     "mongodb-memory-server": "^6.6.1",
+    "next-unused": "0.0.2",
     "prettier": "^2.0.4",
     "supertest": "^4.0.2",
     "typescript": "^3.8.3"
@@ -86,5 +88,10 @@
     "*.{js,jsx,ts,tsx,css,md,html,json,graphql,gql}": "prettier --write",
     "*.{js,jsx,ts,tsx}": "eslint --fix",
     "*": "npm run graphql:codegen"
+  },
+  "next-unused": {
+    "include": [
+      "components"
+    ]
   }
 }
