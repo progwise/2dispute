@@ -6,23 +6,20 @@ import {
   ChatListItemFragment,
 } from '../../../graphql/generated/frontend';
 import useInterval from '../../../utils/react-hooks/useInterval';
+import { useSelectedChatItem } from '../../../utils/react-hooks/useSelectChatItem';
 import ChatListItem from './ChatListItem';
 import Loader from './Loader';
 
 interface ChatListProps {
-  selectedChatItemId?: string;
   search: string;
   scope: ChatScope;
 }
 
-const ChatList = ({
-  selectedChatItemId,
-  search,
-  scope,
-}: ChatListProps): JSX.Element => {
+const ChatList = ({ search, scope }: ChatListProps): JSX.Element => {
   const { data, loading, error, fetchMore } = useChatListQuery({
     variables: { search, scope },
   });
+  const selectedChatItemId = useSelectedChatItem();
 
   const fetchNewerDisputes = async (): Promise<void> => {
     if (!data?.chat) {

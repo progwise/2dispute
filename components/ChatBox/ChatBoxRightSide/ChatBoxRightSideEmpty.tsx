@@ -7,10 +7,7 @@ const ChatBoxRightSideEmpty = (): JSX.Element => (
     <img src={LogoSVG} className="w-24 h-24" />
     <p className="text-center">
       Wähle ein Dispute aus der linken Liste aus oder{' '}
-      <Link
-        href={{ pathname: '/', query: { new: '' } }}
-        className="whitespace-no-wrap"
-      >
+      <Link href="/new" className="whitespace-no-wrap">
         erstelle ein neuen
       </Link>
       .
