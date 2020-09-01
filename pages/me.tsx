@@ -1,9 +1,12 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import withApollo from '../utils/withApollo';
-import { ChatBoxRightSideContent } from '../components/ChatBox/ChatBoxRightSide';
+import {
+  ChatBoxRightSideContent,
+  ChatBoxHeader,
+} from '../components/ChatBox/ChatBoxRightSide';
 import useUser from '../utils/react-hooks/useUser';
-import { UserInfoById } from '../components/UserInfo';
+import { UserInfoById, UserInfoHeader } from '../components/UserInfo';
 
 const Me = (): JSX.Element | null => {
   const router = useRouter();
@@ -17,9 +20,14 @@ const Me = (): JSX.Element | null => {
   }
 
   return (
-    <ChatBoxRightSideContent>
-      <UserInfoById userId={user.twitterId} />
-    </ChatBoxRightSideContent>
+    <>
+      <ChatBoxHeader>
+        <UserInfoHeader userId={user.twitterId} />
+      </ChatBoxHeader>
+      <ChatBoxRightSideContent>
+        <UserInfoById userId={user.twitterId} />
+      </ChatBoxRightSideContent>
+    </>
   );
 };
 
