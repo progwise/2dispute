@@ -30,10 +30,7 @@ const UserInfo = ({ user }: UserInfoProps): JSX.Element => {
                 dispute.partnerB.name ?? constants.FALLBACK_USER.NAME;
               return (
                 <li key={dispute.id}>
-                  <Link
-                    href="/dispute/[disputeId]"
-                    as={`/dispute/${dispute.id}`}
-                  >
+                  <Link href="/[chatItemId]" as={`/${dispute.id}`}>
                     {userA} vs {userB} (Thema: {dispute.subject.subject})
                   </Link>
                 </li>
@@ -46,10 +43,7 @@ const UserInfo = ({ user }: UserInfoProps): JSX.Element => {
           <ul className="list-disc pl-8">
             {user.allSubjects.edges.map(({ node: subject }) => (
               <li key={subject.id}>
-                <Link
-                  href="/subjects/[subjectId]"
-                  as={`/subjects/${subject.id}`}
-                >
+                <Link href="/[chatItemId]" as={`/${subject.id}`}>
                   {subject.subject}
                 </Link>
               </li>
