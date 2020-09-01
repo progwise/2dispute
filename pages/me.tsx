@@ -3,22 +3,23 @@ import { useRouter } from 'next/router';
 import { useMeUserInfoQuery } from '../graphql/generated/frontend';
 import UserInfo from '../components/UserInfo';
 import withApollo from '../utils/withApollo';
+import { ChatBoxRightSideContent } from '../components/ChatBox/ChatBoxRightSide';
 
 const Me = (): JSX.Element | null => {
   const { called, loading, data, error } = useMeUserInfoQuery();
   const router = useRouter();
 
   if (!called || loading) {
-    return <p>Loading...</p>;
+    return <ChatBoxRightSideContent>Loading...</ChatBoxRightSideContent>;
   }
 
   if (error || !data) {
     return (
-      <p>
+      <ChatBoxRightSideContent>
         Fehler
         <br />
         {JSON.stringify(error)}
-      </p>
+      </ChatBoxRightSideContent>
     );
   }
 
@@ -27,7 +28,11 @@ const Me = (): JSX.Element | null => {
     return null;
   }
 
-  return <UserInfo user={data.me} />;
+  return (
+    <ChatBoxRightSideContent>
+      <UserInfo user={data.me} />
+    </ChatBoxRightSideContent>
+  );
 };
 
 export default withApollo(Me);

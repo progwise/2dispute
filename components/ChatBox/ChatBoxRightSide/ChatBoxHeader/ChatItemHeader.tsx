@@ -10,13 +10,9 @@ import EditableText from './EditableText';
 
 interface ChatItemHeaderProps {
   chatItemId: string;
-  displayOnSmallDevices: boolean;
 }
 
-const ChatItemHeader = ({
-  chatItemId,
-  displayOnSmallDevices,
-}: ChatItemHeaderProps): JSX.Element => {
+const ChatItemHeader = ({ chatItemId }: ChatItemHeaderProps): JSX.Element => {
   const { data } = useChatItemHeaderQuery({
     variables: { chatItemId },
     pollInterval: 60 * 1000,
@@ -49,7 +45,7 @@ const ChatItemHeader = ({
   };
 
   return (
-    <ChatBoxHeader displayOnSmallDevices={displayOnSmallDevices}>
+    <ChatBoxHeader>
       <>
         <div className="flex-grow truncate md:!ml-0" title={subject?.topic}>
           {!!subject && !!user && subject.author.id === user.twitterId ? (

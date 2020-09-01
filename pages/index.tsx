@@ -1,17 +1,15 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-import withApollo from '../utils/withApollo';
-import ChatBox from '../components/ChatBox';
+import { ChatBoxRightSideContent } from '../components/ChatBox/ChatBoxRightSide';
+import ChatBoxRightSideEmpty from '../components/ChatBox/ChatBoxRightSide/ChatBoxRightSideEmpty';
+import { setDisplayChatListOnSmallDevices } from '../utils/react-hooks/useDisplayChatListOnSmallDevices';
 
 const Chat = (): JSX.Element => {
-  const router = useRouter();
-
-  if ('new' in router.query) {
-    return <ChatBox showNewSubjectForm />;
-  }
-
-  const chatId = router.query.chatId as string | undefined;
-  return <ChatBox selectedChatItemId={chatId} />;
+  setDisplayChatListOnSmallDevices();
+  return (
+    <ChatBoxRightSideContent>
+      <ChatBoxRightSideEmpty />
+    </ChatBoxRightSideContent>
+  );
 };
 
-export default withApollo(Chat);
+export default Chat;

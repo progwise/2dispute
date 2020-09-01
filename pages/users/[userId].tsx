@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import withApollo from '../../utils/withApollo';
 import { UserInfoById } from '../../components/UserInfo';
+import { ChatBoxRightSideContent } from '../../components/ChatBox/ChatBoxRightSide';
 
 const UserPage = (): JSX.Element => {
   const router = useRouter();
@@ -10,13 +11,13 @@ const UserPage = (): JSX.Element => {
     : router.query.userId;
 
   if (userId === undefined) {
-    return <p>Loading</p>;
+    return <ChatBoxRightSideContent>Loading</ChatBoxRightSideContent>;
   }
 
   return (
-    <>
+    <ChatBoxRightSideContent>
       <UserInfoById userId={userId} />
-    </>
+    </ChatBoxRightSideContent>
   );
 };
 
