@@ -38,12 +38,15 @@ const DisputeDropdown = ({
     [open, setOpen],
   );
 
-  const newDisputeLink: UrlObject = user
-    ? { pathname: '/', query: { chatId: subject.id } }
+  const newDisputeLinkHref: UrlObject | string = user
+    ? '/[chatItemId]'
     : {
         pathname: '/api/auth/twitter',
-        query: { redirectTo: `/?chatId=${subject.id}` },
+        query: { redirectTo: `/${subject.id}` },
       };
+  const newDisputeLinkAs: string | undefined = user
+    ? `/${subject.id}`
+    : undefined;
 
   const handleClick = (): void => setOpen(false);
 
@@ -77,7 +80,8 @@ const DisputeDropdown = ({
           ref={listRef}
         >
           <DisputeDropdownItem
-            href={newDisputeLink}
+            href={newDisputeLinkHref}
+            as={newDisputeLinkAs}
             isSelected={selectedChatItem === subject.id}
             onClick={handleClick}
           >
@@ -86,7 +90,8 @@ const DisputeDropdown = ({
           {subject.disputes.map(dispute => (
             <DisputeDropdownItem
               key={dispute.id}
-              href={{ pathname: '/', query: { chatId: dispute.id } }}
+              href="/[chatItemId]"
+              as={`/${dispute.id}`}
               isSelected={dispute.id === selectedChatItem}
               onClick={handleClick}
             >
