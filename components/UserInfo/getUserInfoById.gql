@@ -3,3 +3,36 @@ query getUserInfoById($userId: ID!) {
     ...UserInfo
   }
 }
+
+fragment UserInfo on User {
+  id
+  name
+  picture
+  allDisputes(limit: 10) {
+    edges {
+      node {
+        id
+        partnerA {
+          id
+          name
+        }
+        partnerB {
+          id
+          name
+        }
+        subject {
+          id
+          subject
+        }
+      }
+    }
+  }
+  allSubjects(limit: 10) {
+    edges {
+      node {
+        id
+        subject
+      }
+    }
+  }
+}
