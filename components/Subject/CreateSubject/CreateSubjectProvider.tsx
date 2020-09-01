@@ -51,7 +51,7 @@ const CreateSubjectProvider = ({
 
     const subjectId = data.createSubject.id;
 
-    router.push({ pathname: '/', query: { chatId: subjectId } });
+    router.push('/[chatItemId]', `/${subjectId}`);
   };
 
   return (

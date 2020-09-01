@@ -31,7 +31,7 @@ const SubjectPresentation = ({
     if (errors || !data) throw new Error('submit failed');
 
     const chatItemId = data.replyOnSubject.id;
-    router.push({ pathname: '/', query: { chatId: chatItemId } });
+    router.push('/[chatItemId]', `/${chatItemId}`);
   };
 
   const authorName = subject.author.name ?? constants.FALLBACK_USER.NAME;
