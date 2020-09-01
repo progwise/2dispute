@@ -24,7 +24,7 @@ export interface MyNextApiRequest extends NextApiRequest {
 }
 
 export const getMongooseHelper = async (): Promise<MongooseHelper> => {
-  const isMongoConnected = mongoose.connections[0].readyState === 1;
+  const isMongoConnected = mongoose.connections[0].readyState !== 0;
 
   if (!isMongoConnected) {
     await mongoose.connect(process.env.MONGODB_CONNECTION_STRING ?? '', {
