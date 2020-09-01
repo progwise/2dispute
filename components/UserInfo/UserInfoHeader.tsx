@@ -21,7 +21,7 @@ const UserInfoHeader = ({
         className="w-10 h-10 rounded-full"
         src={data.user.picture ?? constants.FALLBACK_USER.PICTURE}
       />
-      <span className="flex-grow">
+      <span className="flex-grow truncate">
         {data.user.name ?? constants.FALLBACK_USER.NAME}
       </span>
     </>
