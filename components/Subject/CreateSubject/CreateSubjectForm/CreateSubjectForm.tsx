@@ -67,7 +67,7 @@ const CreateSubjectForm = (): JSX.Element | null => {
             <TwitterTweetEmbed
               tweetId={tweetId}
               key={tweetId}
-              placeholder={t('chat.form.loadTweet')}
+              placeholder={t('chat.loadTweet')}
               className="mx-auto"
               options={{
                 lang: 'de',
