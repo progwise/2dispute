@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useContext } from 'react';
+import i18n from '../../utils/i18n';
 import Seo from '../Seo';
 import useDisplayChatListOnSmallDevices from '../../utils/react-hooks/useDisplayChatListOnSmallDevices';
 import ChatList from './ChatList';
@@ -13,6 +14,7 @@ interface ChatBoxProps {
 const ChatBox = ({ children }: ChatBoxProps): JSX.Element => {
   const { search, setSearch, scope, setScope } = useContext(ChatContext);
   const displayChatListOnSmallDevices = useDisplayChatListOnSmallDevices();
+  const { t } = i18n.useTranslation();
 
   // When search or scope change scroll in chat list to the top
   const scrollableChatList = useRef<HTMLDivElement>(null);
@@ -22,7 +24,7 @@ const ChatBox = ({ children }: ChatBoxProps): JSX.Element => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-chatBox h-full text-gray-900">
-      <Seo title="Chat" />
+      <Seo title={t('seo.title.chat')} />
 
       {/* top left */}
       <SearchAndCreateSubjectBox

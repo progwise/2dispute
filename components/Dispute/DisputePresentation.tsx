@@ -4,6 +4,7 @@ import {
   useReplyOnDisputeMutation,
   ChatPersonFragment,
 } from '../../graphql/generated/frontend';
+import i18n from '../../utils/i18n';
 import SubjectHeader from '../Subject/SubjectHeader';
 import { DisputeChat, ChatFormValues } from '../Chat';
 import Seo from '../Seo';
@@ -20,6 +21,7 @@ const DisputePresentation = ({
   me,
   onNewMessage,
 }: DisputePresentationProps): JSX.Element => {
+  const { t } = i18n.useTranslation();
   const [replyOnDispute] = useReplyOnDisputeMutation();
 
   const handleNewMessage = async (values: ChatFormValues): Promise<void> => {
@@ -41,7 +43,7 @@ const DisputePresentation = ({
 
   return (
     <>
-      <Seo title={`Dispute ${partnerAName} vs. ${partnerBName}`} />
+      <Seo title={t('seo.title.dispute', { partnerAName, partnerBName })} />
       <SubjectHeader tweetId={dispute.subject.tweetId ?? undefined} />
       <DisputeChat dispute={dispute} me={me} onNewMessage={handleNewMessage} />
     </>

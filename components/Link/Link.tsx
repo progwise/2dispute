@@ -7,11 +7,20 @@ interface LinkProps {
   as?: string;
   className?: string;
   children: React.ReactNode;
+  title?: string;
 }
 
-const Link = ({ href, as, className, children }: LinkProps): JSX.Element => (
+const Link = ({
+  href,
+  as,
+  className,
+  children,
+  title,
+}: LinkProps): JSX.Element => (
   <NextLink href={href} as={as}>
-    <a className={`text-blue-600 underline ${className}`}>{children}</a>
+    <a className={`text-blue-600 underline ${className}`} title={title}>
+      {children}
+    </a>
   </NextLink>
 );
 

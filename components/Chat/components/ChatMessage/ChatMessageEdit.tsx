@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 import Yup from '../../../../utils/yup';
+import i18n from '../../../../utils/i18n';
 import { TextareaInput } from '../../../Input';
 import Button from '../../../Button/Button';
 import { useEditMessageMutation } from '../../../../graphql/generated/frontend';
@@ -27,6 +28,7 @@ const ChatMessageEdit = ({
   onUpdate,
 }: ChatMessageEditProps): JSX.Element => {
   const [editMessageMutation] = useEditMessageMutation();
+  const { t } = i18n.useTranslation();
 
   const handleCancel = (): void => onCancel();
 
@@ -47,12 +49,15 @@ const ChatMessageEdit = ({
     >
       {(formik): JSX.Element => (
         <Form>
-          <TextareaInput name="message" placeholder="Deine Position *" />
+          <TextareaInput
+            name="message"
+            placeholder={`${t('chat.form.yourPosition')} *`}
+          />
           <Button type="submit" disabled={formik.isSubmitting}>
-            Speichern
+            {t('chat.form.save')}
           </Button>{' '}
           <Button type="button" onClick={handleCancel}>
-            Abbrechen
+            {t('chat.form.cancel')}
           </Button>
         </Form>
       )}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { Form, useFormikContext } from 'formik';
+import i18n from '../../../../utils/i18n';
 import { Input, TextareaInput } from '../../../Input';
 import Button from '../../../Button/Button';
 import ChatContainer from '../../../Chat/components/ChatContainer';
@@ -17,6 +18,7 @@ const CreateSubjectForm = (): JSX.Element | null => {
   const [displayTweetSelect, setDisplayTweetSelect] = useState(false);
   const { data, loading, error } = useMeQuery();
   const router = useRouter();
+  const { t } = i18n.useTranslation();
 
   const formik = useFormikContext<FormValues>();
   const tweetId = getTweetId(formik.values.tweetLink);
@@ -65,7 +67,7 @@ const CreateSubjectForm = (): JSX.Element | null => {
             <TwitterTweetEmbed
               tweetId={tweetId}
               key={tweetId}
-              placeholder="Lade Tweet..."
+              placeholder={t('chat.form.loadTweet')}
               className="mx-auto"
               options={{
                 lang: 'de',
@@ -76,13 +78,16 @@ const CreateSubjectForm = (): JSX.Element | null => {
         )}
         <ChatContainer>
           <ChatBubble position="left" author={data.me}>
-            <TextareaInput name="firstMessage" placeholder="Deine Position *" />
+            <TextareaInput
+              name="firstMessage"
+              placeholder={`${t('chat.form.yourPosition')} *`}
+            />
           </ChatBubble>
         </ChatContainer>
       </div>
       <ChatItemFullWidth className="py-4 flex justify-center">
         <Button type="submit" disabled={formik.isSubmitting}>
-          Thema veröffentlichen
+          {t('chat.form.publishTopic')}
         </Button>
       </ChatItemFullWidth>
     </Form>

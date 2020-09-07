@@ -4,6 +4,7 @@ import Yup from '../../../utils/yup';
 import Button from '../../Button/Button';
 import { TextareaInput } from '../../Input';
 import { ChatPersonFragment } from '../../../graphql/generated/frontend';
+import i18n from '../../../utils/i18n';
 import ChatBubble from './ChatMessage/ChatBubble';
 
 export interface ChatFormValues {
@@ -28,6 +29,7 @@ const ChatMessageForm = ({
   user,
   onSubmit,
 }: ChatMessageFormProps): JSX.Element => {
+  const { t } = i18n.useTranslation();
   const handleSubmit = async (
     values: ChatFormValues,
     formikHelpers: FormikHelpers<ChatFormValues>,
@@ -45,7 +47,10 @@ const ChatMessageForm = ({
       >
         {(formik): JSX.Element => (
           <Form className="flex flex-col items-start space-y-2">
-            <TextareaInput name="message" placeholder="Deine Position *" />
+            <TextareaInput
+              name="message"
+              placeholder={`${t('chat.form.yourPosition')} *`}
+            />
             <Button type="submit" disabled={formik.isSubmitting}>
               {submitButtonText}
             </Button>

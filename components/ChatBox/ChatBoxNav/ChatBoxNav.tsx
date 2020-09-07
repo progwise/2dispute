@@ -2,11 +2,13 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { FaComments, FaSignInAlt, FaUser } from 'react-icons/fa';
 import useUser from '../../../utils/react-hooks/useUser';
+import i18n from '../../../utils/i18n';
 import ChatBoxNavItem from './ChatBoxNavItem';
 
 const ChatBoxNav = (): JSX.Element => {
   const user = useUser();
   const router = useRouter();
+  const { t } = i18n.useTranslation();
   const isAuthenticated = user !== null;
 
   return (
@@ -14,20 +16,20 @@ const ChatBoxNav = (): JSX.Element => {
       <ChatBoxNavItem
         href="/"
         icon={FaComments}
-        text="Chat"
+        text={t('navbar.chat')}
         isActive={['/', '/[chatItemId]'].includes(router.pathname)}
       />
       <ChatBoxNavItem
         href="/me"
         icon={FaUser}
-        text="Profil"
+        text={t('navbar.profile')}
         isActive={router.pathname === '/me'}
       />
       {isAuthenticated ? (
         <ChatBoxNavItem
           href="/api/auth/logout"
           icon={FaSignInAlt}
-          text="Abmelden"
+          text={t('navbar.signOut')}
         />
       ) : (
         <ChatBoxNavItem
@@ -36,7 +38,7 @@ const ChatBoxNav = (): JSX.Element => {
             query: { redirectTo: router.asPath },
           }}
           icon={FaSignInAlt}
-          text="Anmelden"
+          text={t('navbar.signIn')}
         />
       )}
     </div>

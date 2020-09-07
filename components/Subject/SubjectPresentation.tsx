@@ -7,6 +7,7 @@ import {
 } from '../../graphql/generated/frontend';
 import { SubjectChat, ChatFormValues } from '../Chat';
 import constants from '../../utils/constants';
+import i18n from '../../utils/i18n';
 import Seo from '../Seo';
 import SubjectHeader from './SubjectHeader';
 
@@ -20,6 +21,7 @@ const SubjectPresentation = ({
   me,
 }: SubjectPresentationProps): JSX.Element => {
   const router = useRouter();
+  const { t } = i18n.useTranslation();
 
   const [replyOnSubjectMutation] = useReplyOnSubjectMutation();
 
@@ -38,7 +40,9 @@ const SubjectPresentation = ({
 
   return (
     <>
-      <Seo title={`${subject.topic} von ${authorName}`} />
+      <Seo
+        title={t('seo.title.subject', { topic: subject.topic, authorName })}
+      />
       <SubjectHeader tweetId={subject.tweetId ?? undefined} />
       <SubjectChat subject={subject} me={me} onNewMessage={handleNewMessage} />
     </>
