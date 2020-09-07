@@ -10,6 +10,7 @@ import ChatBox from '../components/ChatBox';
 import withApollo from '../utils/withApollo';
 import { SelectedChatItemProvider } from '../utils/react-hooks/useSelectChatItem';
 import { DisplayChatListOnSmallDevicesProvider } from '../utils/react-hooks/useDisplayChatListOnSmallDevices';
+import i18n from '../utils/i18n';
 
 interface MyAppProp {
   Component: new (props: any) => React.Component;
@@ -39,4 +40,4 @@ const MyApp = ({ Component, pageProps }: MyAppProp): JSX.Element => (
   </UserProvider>
 );
 
-export default withApollo(MyApp);
+export default i18n.appWithTranslation(withApollo(MyApp));
