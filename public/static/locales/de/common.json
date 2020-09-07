@@ -6,7 +6,6 @@
   "chat": {
     "form": {
       "cancel": "Abbrechen",
-      "loadTweet": "Lade Tweet...",
       "newTopic": "Neues Thema",
       "publishTopic": "Thema veröffentlichen",
       "save": "Speichern",
@@ -19,6 +18,7 @@
       "chooseDispute": "- Dispute auswählen - ",
       "startDispute": "Ein neuen Dispute starten"
     },
+    "loadTweet": "Lade Tweet...",
     "message": {
       "edit": "bearbeiten"
     }

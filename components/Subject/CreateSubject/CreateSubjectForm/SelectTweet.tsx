@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { Waypoint } from 'react-waypoint';
 import { useTwitterTimelineQuery } from '../../../../graphql/generated/frontend';
+import i18n from '../../../../utils/i18n';
 
 const TWEETS_PER_PAGE = 5;
 
@@ -12,6 +13,7 @@ interface SelectTweetProps {
 const SelectTweet = ({ onSelect }: SelectTweetProps): JSX.Element => {
   const { data, loading, error, fetchMore } = useTwitterTimelineQuery();
   const [page, setPage] = useState(0);
+  const { t } = i18n.useTranslation();
 
   if (loading) {
     return <span>Loading</span>;
@@ -44,7 +46,9 @@ const SelectTweet = ({ onSelect }: SelectTweetProps): JSX.Element => {
         <div key={tweet.id} className="relative">
           <TwitterTweetEmbed
             tweetId={tweet.id}
-            placeholder={<div className="min-h-48 my-3">Lade Tweet...</div>}
+            placeholder={
+              <div className="min-h-48 my-3">{t('chat.loadTweet')}</div>
+            }
             options={{
               lang: 'de',
               width: '100%',
