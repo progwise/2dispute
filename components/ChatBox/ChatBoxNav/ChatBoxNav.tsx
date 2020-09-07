@@ -17,13 +17,17 @@ const ChatBoxNav = (): JSX.Element => {
         text="Chat"
         isActive={['/', '/[chatItemId]'].includes(router.pathname)}
       />
-      <ChatBoxNavItem href="/me" icon={FaUser} text="Profil" />
+      <ChatBoxNavItem
+        href="/me"
+        icon={FaUser}
+        text="Profil"
+        isActive={router.pathname === '/me'}
+      />
       {isAuthenticated ? (
         <ChatBoxNavItem
           href="/api/auth/logout"
           icon={FaSignInAlt}
           text="Abmelden"
-          isActive={router.pathname === '/me'}
         />
       ) : (
         <ChatBoxNavItem
