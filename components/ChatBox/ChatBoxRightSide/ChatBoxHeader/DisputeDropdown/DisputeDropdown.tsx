@@ -8,6 +8,7 @@ import {
 import constants from '../../../../../utils/constants';
 import useUser from '../../../../../utils/react-hooks/useUser';
 import useOutSideClick from '../../../../../utils/react-hooks/useOutsideClick';
+import i18n from '../../../../../utils/i18n';
 import DisputeDropdownItem from './DisputeDropdownItem';
 
 const createDisputeText = (dispute: DisputeInHeaderFragment): string => {
@@ -29,6 +30,7 @@ const DisputeDropdown = ({
   const [open, setOpen] = useState(false);
   const toggleOpen = (): void => setOpen(oldState => !oldState);
   const listRef = useRef<HTMLUListElement>(null);
+  const { t } = i18n.useTranslation();
 
   useOutSideClick(
     listRef,
@@ -52,8 +54,8 @@ const DisputeDropdown = ({
 
   const dropdownItemTextForSubjectPage =
     user?.twitterId === subject.author.id
-      ? '- Dispute auswählen - '
-      : 'Ein neuen Dispute starten';
+      ? t('chat.header.chooseDispute')
+      : t('chat.header.startDispute');
 
   const currentDispute = subject.disputes.find(
     dispute => dispute.id === selectedChatItem,

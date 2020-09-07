@@ -1,1 +1,49 @@
-{}
+{
+  "authFailed": {
+    "title": "Anmeldung fehlgeschlagen",
+    "tryAgain": "Erneut versuchen"
+  },
+  "chat": {
+    "form": {
+      "cancel": "Abbrechen",
+      "loadTweet": "Lade Tweet...",
+      "newTopic": "Neues Thema",
+      "publishTopic": "Thema veröffentlichen",
+      "save": "Speichern",
+      "sendMessage": "Nachricht senden",
+      "signInToReply": "Melden Sie sich an, um auf dieses Thema zu antworten",
+      "startDispute": "Dispute starten",
+      "yourPosition": "Deine Position"
+    },
+    "header": {
+      "chooseDispute": "- Dispute auswählen - ",
+      "startDispute": "Ein neuen Dispute starten"
+    },
+    "message": {
+      "edit": "bearbeiten"
+    }
+  },
+  "emptyScreen": "Wähle ein Dispute aus der linken Liste aus oder <2>erstelle ein neuen</2>.",
+  "navbar": {
+    "chat": "Chat",
+    "profile": "Profil",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden"
+  },
+  "searchAndCreateBox": {
+    "allDisputes": "Alle Dispute",
+    "changeLanguage": "Sprache ändern",
+    "createDispute": "Neuen Dispute erstellen",
+    "myDisputes": "Meine Dispute",
+    "search": "Suche"
+  },
+  "seo": {
+    "title": {
+      "authFailed": "Anmeldung fehlgeschlagen",
+      "chat": "Chat",
+      "dispute": "Dispute {{partnerAName}} vs. {{partnerBName}}",
+      "newTopic": "Neues Thema erstellen",
+      "subject": "{{topic}} von {{authorName}}"
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import i18n from '../utils/i18n';
 import {
   CreateSubjectProvider,
   CreateSubjectForm,
@@ -10,22 +11,25 @@ import {
   ChatBoxHeader,
 } from '../components/ChatBox/ChatBoxRightSide';
 
-const New = (): JSX.Element => (
-  <CreateSubjectProvider>
-    <>
-      <Seo title="Neues Thema erstellen" />
-      <ChatBoxHeader>
-        <Input
-          className="flex-grow md:!ml-0"
-          name="subject"
-          placeholder="Neues Thema"
-        />
-      </ChatBoxHeader>
-      <ChatBoxRightSideContent>
-        <CreateSubjectForm />
-      </ChatBoxRightSideContent>
-    </>
-  </CreateSubjectProvider>
-);
+const New = (): JSX.Element => {
+  const { t } = i18n.useTranslation();
+  return (
+    <CreateSubjectProvider>
+      <>
+        <Seo title={t('seo.title.newTopic')} />
+        <ChatBoxHeader>
+          <Input
+            className="flex-grow md:!ml-0"
+            name="subject"
+            placeholder={t('chat.form.newTopic')}
+          />
+        </ChatBoxHeader>
+        <ChatBoxRightSideContent>
+          <CreateSubjectForm />
+        </ChatBoxRightSideContent>
+      </>
+    </CreateSubjectProvider>
+  );
+};
 
 export default New;

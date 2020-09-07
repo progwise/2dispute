@@ -4,6 +4,7 @@ import {
   ChatSubjectFragment,
   ChatPersonFragment,
 } from '../../graphql/generated/frontend';
+import i18n from '../../utils/i18n';
 import Button from '../Button/Button';
 import ChatContainer from './components/ChatContainer';
 import ChatMessage from './components/ChatMessage';
@@ -29,6 +30,7 @@ const SubjectChat = ({
   onNewMessage,
 }: SubjectChatProps): JSX.Element => {
   const router = useRouter();
+  const { t } = i18n.useTranslation();
 
   let userState: UserState;
   switch (me?.id) {
@@ -57,14 +59,14 @@ const SubjectChat = ({
         <ChatMessageForm
           user={me}
           position="right"
-          submitButtonText="Disput Starten"
+          submitButtonText={t('chat.form.startDispute')}
           onSubmit={onNewMessage}
         />
       )}
       {userState === UserState.Unauthenticated && (
         <ChatItemFullWidth className="py-4 flex justify-center">
           <Button onClick={handleLoginClick}>
-            Melden Sie sich an, um auf dieses Thema zu antworten.
+            {t('chat.form.signInToReply')}
           </Button>
         </ChatItemFullWidth>
       )}

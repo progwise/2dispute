@@ -4,6 +4,7 @@ import {
   ChatPersonFragment,
   ChatMessageFragment,
 } from '../../graphql/generated/frontend';
+import i18n from '../../utils/i18n';
 import ChatContainer from './components/ChatContainer';
 import ChatMessage from './components/ChatMessage';
 import ChatMessageForm, { ChatFormValues } from './components/ChatMessageForm';
@@ -65,6 +66,8 @@ const DisputeChat = ({
   me,
   onNewMessage,
 }: DisputeChatProps): JSX.Element => {
+  const { t } = i18n.useTranslation();
+
   let userState: UserState;
   switch (me?.id) {
     case dispute.partnerA.id:
@@ -95,7 +98,7 @@ const DisputeChat = ({
         <ChatMessageForm
           position={userState === UserState.PartnerA ? 'left' : 'right'}
           user={me}
-          submitButtonText="Nachricht senden"
+          submitButtonText={t('chat.form.sendMessage')}
           onSubmit={onNewMessage}
         />
       )}

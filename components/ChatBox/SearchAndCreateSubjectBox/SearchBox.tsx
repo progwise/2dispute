@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaSearch, FaTimesCircle } from 'react-icons/fa';
+import i18n from '../../../utils/i18n';
 
 interface SearchBoxProps {
   search: string;
@@ -12,6 +13,8 @@ const SearchBox = ({
   onChange,
   className = '',
 }: SearchBoxProps): JSX.Element => {
+  const { t } = i18n.useTranslation();
+
   const handleReset = (): void => onChange('');
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void =>
     onChange(event.target.value);
@@ -24,7 +27,7 @@ const SearchBox = ({
       <FaSearch />
       <input
         className="bg-transparent w-full py-2 outline-none"
-        placeholder="Suche"
+        placeholder={t('searchAndCreateBox.search')}
         onChange={handleChange}
         defaultValue={search}
       />

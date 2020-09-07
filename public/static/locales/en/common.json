@@ -1,1 +1,49 @@
-{}
+{
+  "authFailed": {
+    "title": "Authentication failed",
+    "tryAgain": "try again"
+  },
+  "chat": {
+    "form": {
+      "cancel": "Cancel",
+      "loadTweet": "load tweet...",
+      "newTopic": "new topic",
+      "publishTopic": "publish topic",
+      "save": "Save",
+      "sendMessage": "send message",
+      "signInToReply": "Sign in to reply",
+      "startDispute": "Dispute starten",
+      "yourPosition": "your position"
+    },
+    "header": {
+      "chooseDispute": "- choose a dispute - ",
+      "startDispute": "start a new dispute"
+    },
+    "message": {
+      "edit": "edit"
+    }
+  },
+  "emptyScreen": "Select a dispute on the left side or <2>create a new one</2>.",
+  "navbar": {
+    "chat": "chat",
+    "profile": "profile",
+    "signIn": "sign in",
+    "signOut": "sign out"
+  },
+  "searchAndCreateBox": {
+    "allDisputes": "all disputes",
+    "changeLanguage": "change language",
+    "createDispute": "create new dispute",
+    "myDisputes": "my disputes",
+    "search": "search"
+  },
+  "seo": {
+    "title": {
+      "authFailed": "Authentication failed",
+      "chat": "Chat",
+      "dispute": "Dispute {{partnerAName}} vs. {{partnerBName}}",
+      "newTopic": "Create new topic",
+      "subject": "{{topic}} from {{authorName}}"
+    }
+  }
+}
