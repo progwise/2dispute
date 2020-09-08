@@ -2,6 +2,7 @@ import React from 'react';
 import { useChatItemQuery } from '../../../../graphql/generated/frontend';
 import DisputePresentation from '../../../Dispute/DisputePresentation';
 import SubjectPresentation from '../../../Subject/SubjectPresentation';
+import constants from '../../../../utils/constants';
 
 interface ChatItemProps {
   chatItemId: string;
@@ -10,6 +11,7 @@ interface ChatItemProps {
 const ChatItem = ({ chatItemId }: ChatItemProps): JSX.Element => {
   const { data, loading, error, refetch } = useChatItemQuery({
     variables: { id: chatItemId },
+    pollInterval: constants.DEFAULT_POLL_INTERVAL,
   });
 
   if (loading) {

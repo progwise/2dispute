@@ -4,6 +4,7 @@ import {
   useEditSubjectTitleMutation,
 } from '../../../../graphql/generated/frontend';
 import useUser from '../../../../utils/react-hooks/useUser';
+import constants from '../../../../utils/constants';
 import ChatBoxHeader from './ChatBoxHeader';
 import DisputeDropdown from './DisputeDropdown';
 import EditableText from './EditableText';
@@ -15,7 +16,7 @@ interface ChatItemHeaderProps {
 const ChatItemHeader = ({ chatItemId }: ChatItemHeaderProps): JSX.Element => {
   const { data } = useChatItemHeaderQuery({
     variables: { chatItemId },
-    pollInterval: 60 * 1000,
+    pollInterval: constants.DEFAULT_POLL_INTERVAL,
   });
   const [editSubjectTitle] = useEditSubjectTitleMutation();
   const user = useUser();

@@ -4,4 +4,5 @@ export default {
     NAME: 'Spook',
     PICTURE: '/fa-ghost.svg',
   },
+  DEFAULT_POLL_INTERVAL: 30 * 1000,
 };

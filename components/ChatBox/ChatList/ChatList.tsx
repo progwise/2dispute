@@ -7,6 +7,7 @@ import {
 } from '../../../graphql/generated/frontend';
 import useInterval from '../../../utils/react-hooks/useInterval';
 import { useSelectedChatItem } from '../../../utils/react-hooks/useSelectChatItem';
+import constants from '../../../utils/constants';
 import ChatListItem from './ChatListItem';
 import Loader from './Loader';
 
@@ -35,7 +36,7 @@ const ChatList = ({ search, scope }: ChatListProps): JSX.Element => {
     await fetchMore({ variables: { after: data.chat.pageInfo.endCursor } });
   };
 
-  useInterval(() => fetchNewerDisputes(), 30 * 1000);
+  useInterval(() => fetchNewerDisputes(), constants.DEFAULT_POLL_INTERVAL);
 
   if (loading) {
     return (
