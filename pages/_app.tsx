@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
+import App from 'next/app';
 import '../css/tailwind.css';
 import Layout from '../components/Layout';
 import TokenManager from '../components/TokenManager';
@@ -39,5 +40,9 @@ const MyApp = ({ Component, pageProps }: MyAppProp): JSX.Element => (
     </SelectedChatItemProvider>
   </UserProvider>
 );
+
+MyApp.getInitialProps = async (appContext): Promise<{ pageProps: any }> => ({
+  ...(await App.getInitialProps(appContext)),
+});
 
 export default i18n.appWithTranslation(withApollo(MyApp));

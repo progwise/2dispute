@@ -17,4 +17,8 @@ const AuthFailed = (): JSX.Element => {
   );
 };
 
+AuthFailed.getInitialProps = (): { [prop: string]: unknown } => ({
+  namespacesRequired: ['common'],
+});
+
 export default AuthFailed;

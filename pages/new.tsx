@@ -32,4 +32,8 @@ const New = (): JSX.Element => {
   );
 };
 
+New.getInitialProps = (): { [prop: string]: unknown } => ({
+  namespacesRequired: ['common'],
+});
+
 export default New;

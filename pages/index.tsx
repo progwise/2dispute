@@ -12,4 +12,8 @@ const Chat = (): JSX.Element => {
   );
 };
 
+Chat.getInitialProps = (): { [prop: string]: unknown } => ({
+  namespacesRequired: ['common'],
+});
+
 export default Chat;
