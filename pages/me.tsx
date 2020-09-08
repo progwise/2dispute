@@ -31,4 +31,8 @@ const Me = (): JSX.Element | null => {
   );
 };
 
+Me.getInitialProps = (): { [prop: string]: unknown } => ({
+  namespacesRequired: ['common'],
+});
+
 export default withApollo(Me);

@@ -35,4 +35,8 @@ const UserPage = (): JSX.Element => {
   );
 };
 
+UserPage.getInitialProps = (): { [prop: string]: unknown } => ({
+  namespacesRequired: ['common'],
+});
+
 export default withApollo(UserPage);

@@ -32,4 +32,8 @@ const ChatItemApp = (): JSX.Element | null => {
   );
 };
 
+ChatItemApp.getInitialProps = (): { [prop: string]: unknown } => ({
+  namespacesRequired: ['common'],
+});
+
 export default ChatItemApp;
