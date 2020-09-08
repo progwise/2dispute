@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { FaPen, FaUser, FaUserFriends, FaLanguage } from 'react-icons/fa';
+import { FaPen, FaUser, FaUserFriends } from 'react-icons/fa';
 import Link from '../../Link/Link';
 import { ChatScope } from '../../../graphql/generated/backend';
 import useUser from '../../../utils/react-hooks/useUser';
@@ -77,7 +77,7 @@ const SearchAndCreateSubjectBox = ({
           onClick={handleToggleLanguage}
           title={t('searchAndCreateBox.changeLanguage')}
         >
-          <FaLanguage className="m-2" />
+          <span className="m-2">{i18n.language === 'de' ? '🇩🇪' : '🇺🇸'}</span>
         </a>
       </div>
     </div>
