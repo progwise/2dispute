@@ -33,7 +33,7 @@ const SubjectPresentation = ({
     if (errors || !data) throw new Error('submit failed');
 
     const chatItemId = data.replyOnSubject.id;
-    router.push('/[chatItemId]', `/${chatItemId}`);
+    router.push('/[chatItemId]', `/${chatItemId}#form`);
   };
 
   const authorName = subject.author.name ?? constants.FALLBACK_USER.NAME;

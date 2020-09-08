@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Formik, Form, FormikHelpers } from 'formik';
 import Yup from '../../../utils/yup';
 import Button from '../../Button/Button';
@@ -30,6 +30,15 @@ const ChatMessageForm = ({
   onSubmit,
 }: ChatMessageFormProps): JSX.Element => {
   const { t } = useTranslation();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    const hasFormHash = window.location.hash === '#form';
+    if (formRef.current && hasFormHash) {
+      formRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [formRef]);
+
   const handleSubmit = async (
     values: ChatFormValues,
     formikHelpers: FormikHelpers<ChatFormValues>,
@@ -46,7 +55,7 @@ const ChatMessageForm = ({
         onSubmit={handleSubmit}
       >
         {(formik): JSX.Element => (
-          <Form className="flex flex-col items-start space-y-2">
+          <Form className="flex flex-col items-start space-y-2" ref={formRef}>
             <TextareaInput
               name="message"
               placeholder={`${t('chat.form.yourPosition')} *`}
