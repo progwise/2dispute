@@ -4,6 +4,7 @@
     "tryAgain": "try again"
   },
   "chat": {
+    "errorLoadingChatItems": "Can't load chat partners",
     "form": {
       "cancel": "Cancel",
       "newTopic": "new topic",
