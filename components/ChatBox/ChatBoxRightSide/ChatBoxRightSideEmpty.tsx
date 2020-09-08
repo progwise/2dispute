@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from '../../Link/Link';
-import i18nInstance from '../../../utils/i18n';
+import i18nInstance, { useTranslation } from '../../../utils/i18n';
 import LogoSVG from './Logo.svg';
 
 const ChatBoxRightSideEmpty = (): JSX.Element => {
-  const { t } = i18nInstance.useTranslation();
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col h-full items-center justify-center space-y-4">
       <img src={LogoSVG} className="w-24 h-24" />
