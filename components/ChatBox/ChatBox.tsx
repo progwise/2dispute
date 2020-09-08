@@ -49,10 +49,12 @@ const ChatBox = ({ children }: ChatBoxProps): JSX.Element => {
       <div
         className={`${
           displayChatListOnSmallDevices ? '' : 'hidden'
-        } md:grid md:grid-cols-3 w-full absolute bottom-0 left-0 right-0 max-w-screen-lg mx-auto`}
+        } md:block w-full absolute bottom-0 left-0 right-0 px-8`}
       >
-        <div className={`border-t md:border-r bg-white`}>
-          <ChatBoxNav />
+        <div className="md:grid md:grid-cols-3 max-w-screen-lg mx-auto">
+          <div className={`border-t md:border-r bg-white`}>
+            <ChatBoxNav />
+          </div>
         </div>
       </div>
 
