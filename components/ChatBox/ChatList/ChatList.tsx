@@ -8,6 +8,7 @@ import {
 import useInterval from '../../../utils/react-hooks/useInterval';
 import { useSelectedChatItem } from '../../../utils/react-hooks/useSelectChatItem';
 import constants from '../../../utils/constants';
+import { useTranslation } from '../../../utils/i18n';
 import ChatListItem from './ChatListItem';
 import Loader from './Loader';
 
@@ -17,6 +18,7 @@ interface ChatListProps {
 }
 
 const ChatList = ({ search, scope }: ChatListProps): JSX.Element => {
+  const { t } = useTranslation();
   const { data, loading, error, fetchMore } = useChatListQuery({
     variables: { search, scope },
   });
@@ -47,7 +49,7 @@ const ChatList = ({ search, scope }: ChatListProps): JSX.Element => {
   }
 
   if (error || !data?.chat) {
-    return <p>Chat Partner konnten nicht geladen werden</p>;
+    return <p>{t('chat.errorLoadingChatItems')}</p>;
   }
 
   const reduceDuplicates = (

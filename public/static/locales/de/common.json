@@ -4,6 +4,7 @@
     "tryAgain": "Erneut versuchen"
   },
   "chat": {
+    "errorLoadingChatItems": "Chat Partner konnten nicht geladen werden",
     "form": {
       "cancel": "Abbrechen",
       "newTopic": "Neues Thema",
