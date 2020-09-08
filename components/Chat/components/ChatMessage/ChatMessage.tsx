@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChatMessageFragment } from '../../../../graphql/generated/frontend';
 import useUser from '../../../../utils/react-hooks/useUser';
-import i18n from '../../../../utils/i18n';
+import { useTranslation } from '../../../../utils/i18n';
 import DateTime from './DateTime';
 import ChatBubble from './ChatBubble';
 import ChatMessageFormatter from './ChatMessageFormatter';
@@ -25,7 +25,7 @@ const ChatMessage = ({
     string | undefined
   >(undefined);
   const user = useUser();
-  const { t } = i18n.useTranslation();
+  const { t } = useTranslation();
   const messages = Array.isArray(message) ? message : [message];
 
   if (messages.length === 0) return null;

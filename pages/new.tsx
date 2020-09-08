@@ -1,5 +1,5 @@
 import React from 'react';
-import i18n from '../utils/i18n';
+import { useTranslation } from '../utils/i18n';
 import {
   CreateSubjectProvider,
   CreateSubjectForm,
@@ -12,7 +12,7 @@ import {
 } from '../components/ChatBox/ChatBoxRightSide';
 
 const New = (): JSX.Element => {
-  const { t } = i18n.useTranslation();
+  const { t } = useTranslation();
   return (
     <CreateSubjectProvider>
       <>

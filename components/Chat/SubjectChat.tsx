@@ -4,7 +4,7 @@ import {
   ChatSubjectFragment,
   ChatPersonFragment,
 } from '../../graphql/generated/frontend';
-import i18n from '../../utils/i18n';
+import { useTranslation } from '../../utils/i18n';
 import Button from '../Button/Button';
 import ChatContainer from './components/ChatContainer';
 import ChatMessage from './components/ChatMessage';
@@ -30,7 +30,7 @@ const SubjectChat = ({
   onNewMessage,
 }: SubjectChatProps): JSX.Element => {
   const router = useRouter();
-  const { t } = i18n.useTranslation();
+  const { t } = useTranslation();
 
   let userState: UserState;
   switch (me?.id) {

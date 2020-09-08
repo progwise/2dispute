@@ -2,13 +2,13 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { FaComments, FaSignInAlt, FaUser } from 'react-icons/fa';
 import useUser from '../../../utils/react-hooks/useUser';
-import i18n from '../../../utils/i18n';
+import { useTranslation } from '../../../utils/i18n';
 import ChatBoxNavItem from './ChatBoxNavItem';
 
 const ChatBoxNav = (): JSX.Element => {
   const user = useUser();
   const router = useRouter();
-  const { t } = i18n.useTranslation();
+  const { t } = useTranslation();
   const isAuthenticated = user !== null;
 
   return (

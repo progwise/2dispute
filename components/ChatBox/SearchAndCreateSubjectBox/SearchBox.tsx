@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaSearch, FaTimesCircle } from 'react-icons/fa';
-import i18n from '../../../utils/i18n';
+import { useTranslation } from '../../../utils/i18n';
 
 interface SearchBoxProps {
   search: string;
@@ -13,7 +13,7 @@ const SearchBox = ({
   onChange,
   className = '',
 }: SearchBoxProps): JSX.Element => {
-  const { t } = i18n.useTranslation();
+  const { t } = useTranslation();
 
   const handleReset = (): void => onChange('');
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void =>

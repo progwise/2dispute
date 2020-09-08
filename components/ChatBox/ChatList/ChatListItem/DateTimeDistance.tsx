@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { formatDistanceToNow, format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
-import i18nInstance from '../../../../utils/i18n';
+import { useTranslation } from '../../../../utils/i18n';
 
 const getDistance = (dateTime: string, locale: Locale): string => {
   const date = new Date(dateTime);
@@ -22,7 +22,7 @@ const DateTimeDistance = ({
   dateTime,
   className,
 }: DateTimeDistanceProps): JSX.Element => {
-  const { language } = i18nInstance.useTranslation().i18n;
+  const { language } = useTranslation().i18n;
   const locale = language === 'de' ? de : enUS;
 
   const [distance, setDistance] = useState(getDistance(dateTime, locale));

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { Waypoint } from 'react-waypoint';
 import { useTwitterTimelineQuery } from '../../../../graphql/generated/frontend';
-import i18n from '../../../../utils/i18n';
+import { useTranslation } from '../../../../utils/i18n';
 
 const TWEETS_PER_PAGE = 5;
 
@@ -13,7 +13,7 @@ interface SelectTweetProps {
 const SelectTweet = ({ onSelect }: SelectTweetProps): JSX.Element => {
   const { data, loading, error, fetchMore } = useTwitterTimelineQuery();
   const [page, setPage] = useState(0);
-  const { t } = i18n.useTranslation();
+  const { t } = useTranslation();
 
   if (loading) {
     return <span>Loading</span>;

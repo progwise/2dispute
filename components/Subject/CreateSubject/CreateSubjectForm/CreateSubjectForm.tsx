@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { Form, useFormikContext } from 'formik';
-import i18n from '../../../../utils/i18n';
+import { useTranslation } from '../../../../utils/i18n';
 import { Input, TextareaInput } from '../../../Input';
 import Button from '../../../Button/Button';
 import ChatContainer from '../../../Chat/components/ChatContainer';
@@ -18,7 +18,7 @@ const CreateSubjectForm = (): JSX.Element | null => {
   const [displayTweetSelect, setDisplayTweetSelect] = useState(false);
   const { data, loading, error } = useMeQuery();
   const router = useRouter();
-  const { t } = i18n.useTranslation();
+  const { t } = useTranslation();
 
   const formik = useFormikContext<FormValues>();
   const tweetId = getTweetId(formik.values.tweetLink);

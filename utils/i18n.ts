@@ -1,8 +1,13 @@
 import path from 'path';
-import NextI18Next from 'next-i18next';
+import NextI18Next, { UseTranslation } from 'next-i18next';
 
-export default new NextI18Next({
+const nextI18Next = new NextI18Next({
   defaultLanguage: 'en',
   otherLanguages: ['de'],
   localePath: path.resolve('./public/static/locales'),
 });
+
+export const useTranslation: UseTranslation = () =>
+  nextI18Next.useTranslation();
+
+export default nextI18Next;

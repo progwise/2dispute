@@ -4,7 +4,7 @@ import Yup from '../../../utils/yup';
 import Button from '../../Button/Button';
 import { TextareaInput } from '../../Input';
 import { ChatPersonFragment } from '../../../graphql/generated/frontend';
-import i18n from '../../../utils/i18n';
+import { useTranslation } from '../../../utils/i18n';
 import ChatBubble from './ChatMessage/ChatBubble';
 
 export interface ChatFormValues {
@@ -29,7 +29,7 @@ const ChatMessageForm = ({
   user,
   onSubmit,
 }: ChatMessageFormProps): JSX.Element => {
-  const { t } = i18n.useTranslation();
+  const { t } = useTranslation();
   const handleSubmit = async (
     values: ChatFormValues,
     formikHelpers: FormikHelpers<ChatFormValues>,

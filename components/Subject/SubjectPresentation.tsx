@@ -7,7 +7,7 @@ import {
 } from '../../graphql/generated/frontend';
 import { SubjectChat, ChatFormValues } from '../Chat';
 import constants from '../../utils/constants';
-import i18n from '../../utils/i18n';
+import { useTranslation } from '../../utils/i18n';
 import Seo from '../Seo';
 import SubjectHeader from './SubjectHeader';
 
@@ -21,7 +21,7 @@ const SubjectPresentation = ({
   me,
 }: SubjectPresentationProps): JSX.Element => {
   const router = useRouter();
-  const { t } = i18n.useTranslation();
+  const { t } = useTranslation();
 
   const [replyOnSubjectMutation] = useReplyOnSubjectMutation();
 
