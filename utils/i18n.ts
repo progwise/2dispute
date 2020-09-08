@@ -10,4 +10,6 @@ const nextI18Next = new NextI18Next({
 export const useTranslation: UseTranslation = () =>
   nextI18Next.useTranslation();
 
+export const Trans = nextI18Next.Trans;
+
 export default nextI18Next;
