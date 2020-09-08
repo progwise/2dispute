@@ -1,13 +1,13 @@
 import React from 'react';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
-import i18n from '../../utils/i18n';
+import { useTranslation } from '../../utils/i18n';
 
 interface SubjectHeaderProps {
   tweetId?: string;
 }
 
 const SubjectHeader = ({ tweetId }: SubjectHeaderProps): JSX.Element | null => {
-  const { t } = i18n.useTranslation();
+  const { t } = useTranslation();
 
   if (!tweetId) {
     return null;

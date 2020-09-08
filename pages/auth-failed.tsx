@@ -2,10 +2,10 @@ import React from 'react';
 import Link from '../components/Link/Link';
 import Seo from '../components/Seo';
 import { ChatBoxRightSideContent } from '../components/ChatBox/ChatBoxRightSide';
-import i18n from '../utils/i18n';
+import { useTranslation } from '../utils/i18n';
 
 const AuthFailed = (): JSX.Element => {
-  const { t } = i18n.useTranslation();
+  const { t } = useTranslation();
   return (
     <ChatBoxRightSideContent>
       <Seo title={t('seo.title.authFailed')} />

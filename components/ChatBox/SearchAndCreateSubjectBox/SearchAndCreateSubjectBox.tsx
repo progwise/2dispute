@@ -4,7 +4,7 @@ import { FaPen, FaUser, FaUserFriends, FaLanguage } from 'react-icons/fa';
 import Link from '../../Link/Link';
 import { ChatScope } from '../../../graphql/generated/backend';
 import useUser from '../../../utils/react-hooks/useUser';
-import i18nInstance from '../../../utils/i18n';
+import { useTranslation } from '../../../utils/i18n';
 import SearchBox from './SearchBox';
 
 interface SearchAndCreateSubjectBoxProps {
@@ -24,7 +24,7 @@ const SearchAndCreateSubjectBox = ({
 }: SearchAndCreateSubjectBoxProps): JSX.Element => {
   const user = useUser();
   const router = useRouter();
-  const { t, i18n } = i18nInstance.useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleScopeChange = (): void => {
     const isAuthenticated = user !== null;

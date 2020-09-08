@@ -4,7 +4,7 @@ import {
   useReplyOnDisputeMutation,
   ChatPersonFragment,
 } from '../../graphql/generated/frontend';
-import i18n from '../../utils/i18n';
+import { useTranslation } from '../../utils/i18n';
 import SubjectHeader from '../Subject/SubjectHeader';
 import { DisputeChat, ChatFormValues } from '../Chat';
 import Seo from '../Seo';
@@ -21,7 +21,7 @@ const DisputePresentation = ({
   me,
   onNewMessage,
 }: DisputePresentationProps): JSX.Element => {
-  const { t } = i18n.useTranslation();
+  const { t } = useTranslation();
   const [replyOnDispute] = useReplyOnDisputeMutation();
 
   const handleNewMessage = async (values: ChatFormValues): Promise<void> => {

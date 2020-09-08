@@ -1,6 +1,6 @@
 import React from 'react';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
-import i18n from '../../../../../utils/i18n';
+import { useTranslation } from '../../../../../utils/i18n';
 
 export default abstract class ChatMessage {
   public abstract render(): JSX.Element;
@@ -46,7 +46,7 @@ export class ChatMessageTweet extends ChatMessage {
   }
 
   public render(): JSX.Element {
-    const { t } = i18n.useTranslation();
+    const { t } = useTranslation();
 
     return (
       <TwitterTweetEmbed

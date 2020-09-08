@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 import Yup from '../../../../utils/yup';
-import i18n from '../../../../utils/i18n';
+import { useTranslation } from '../../../../utils/i18n';
 import { TextareaInput } from '../../../Input';
 import Button from '../../../Button/Button';
 import { useEditMessageMutation } from '../../../../graphql/generated/frontend';
@@ -28,7 +28,7 @@ const ChatMessageEdit = ({
   onUpdate,
 }: ChatMessageEditProps): JSX.Element => {
   const [editMessageMutation] = useEditMessageMutation();
-  const { t } = i18n.useTranslation();
+  const { t } = useTranslation();
 
   const handleCancel = (): void => onCancel();
 
