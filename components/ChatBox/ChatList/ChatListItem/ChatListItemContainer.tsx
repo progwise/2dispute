@@ -12,7 +12,7 @@ const ChatListItemContainer = ({
   isSelected = false,
   children,
 }: ChatListItemContainerProps): JSX.Element => (
-  <li className="border-b">
+  <li>
     <Link href="/[chatItemId]" as={`/${chatItemId}`}>
       <a
         className={`p-3 cursor-pointer block space-y-1 ${

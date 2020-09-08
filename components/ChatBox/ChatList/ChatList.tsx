@@ -61,7 +61,7 @@ const ChatList = ({ search, scope }: ChatListProps): JSX.Element => {
   };
 
   return (
-    <ul>
+    <ul className="divide-y">
       {data.chat.edges
         .map(edge => edge.node)
         .reduce(reduceDuplicates, [])
