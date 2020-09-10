@@ -26,10 +26,11 @@ const SearchBox = ({
     >
       <FaSearch />
       <input
-        className="bg-transparent w-full py-2 outline-none"
+        className="bg-transparent min-w-0 max-w-full flex-grow py-2 outline-none"
         placeholder={t('searchAndCreateBox.search')}
         onChange={handleChange}
         defaultValue={search}
+        size={1}
       />
       <button type="reset" className="self-stretch outline-none">
         <FaTimesCircle />
