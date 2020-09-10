@@ -53,9 +53,11 @@ const DisputeDropdown = ({
   const handleClick = (): void => setOpen(false);
 
   const dropdownItemTextForSubjectPage =
-    user?.twitterId === subject.author.id
-      ? t('chat.header.chooseDispute')
-      : t('chat.header.startDispute');
+    user?.twitterId !== subject.author.id
+      ? t('chat.header.startDispute')
+      : subject.disputes.length === 0
+      ? t('chat.header.noDispute')
+      : t('chat.header.chooseDispute');
 
   const currentDispute = subject.disputes.find(
     dispute => dispute.id === selectedChatItem,

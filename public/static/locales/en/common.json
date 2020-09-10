@@ -16,7 +16,8 @@
       "yourPosition": "your position"
     },
     "header": {
-      "chooseDispute": "- choose a dispute - ",
+      "chooseDispute": "choose a dispute",
+      "noDispute": "no disputes",
       "startDispute": "start a new dispute"
     },
     "loadTweet": "Loading Tweet...",
